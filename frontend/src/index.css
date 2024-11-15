@@ -3,10 +3,38 @@
 @tailwind utilities;
 
 :root {
-    --swiper-navigation-size: 28px !important;
-    --swiper-navigation-color: #aaa !important;
+  --swiper-navigation-size: 28px !important;
+  --swiper-navigation-color: #aaa !important;
 }
 
 body {
-    font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.swiper {
+  width: 100%;
+  width: 1000px;
+  max-height: 264px;
+  height: 100%;
+}
+
+.swiper-slide {
+  text-align: center;
+  font-size: 18px;
+  background: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.swiper-slide img {
+  display: block;
+  object-fit: cover;
 }

@@ -49,5 +49,62 @@ const hotProducts = [
     route: "/iphone-11",
   },
 ];
+const HOME_SIDEBAR = [
+    {
+      "title": "Apple chính hãng",
+      "icon": "apple",
+      "link": "/apple-chinh-hang"
+    },
+    {
+      "title": "iPhone",
+      "icon": "iphone",
+      "link": "/iphone"
+    },
+    {
+      "title": "Samsung",
+      "icon": "samsung",
+      "link": "/samsung"
+    },
+    {
+      "title": "Điện thoại khác",
+      "icon": "other_phone",
+      "link": "/dien-thoai-khac"
+    },
+    {
+      "title": "MacBook - iMac",
+      "icon": "macbook_imac",
+      "link": "/macbook-imac"
+    },
+    {
+      "title": "Máy tính bảng",
+      "icon": "tablet",
+      "link": "/may-tinh-bang"
+    },
+    {
+      "title": "Smartwatch",
+      "icon": "smartwatch",
+      "link": "/smartwatch"
+    },
+    {
+      "title": "Phụ kiện",
+      "icon": "accessories",
+      "link": "/phu-kien"
+    },
+    {
+      "title": "Khuyến mãi",
+      "icon": "promotion",
+      "link": "/khuyen-mai"
+    },
+    {
+      "title": "Tin công nghệ",
+      "icon": "tech_news",
+      "link": "/tin-cong-nghe"
+    },
+    {
+      "title": "Thu cũ đổi mới",
+      "icon": "trade_in",
+      "link": "/thu-cu-doi-moi"
+    }
+  ]
 
-export { hotProducts, storesAddress };
+export { hotProducts, storesAddress,HOME_SIDEBAR };
