@@ -12,6 +12,7 @@ import header2 from '../assets/img/header/header-2.jpg'
 import logo from '../assets/img/logo.png'
 import webicons from '../assets/img/webicons.png'
 import { hotProducts, storesAddress } from '../constants'
+
 const Header = () => {
   const [slideIndex, setSlideIndex] = useState(0)
   const [showShowroom, setShowShowroom] = useState(false)
@@ -32,6 +33,7 @@ const Header = () => {
               setSlideIndex(swiper.realIndex)
             }}
             effect="fade"
+            className="!w-full"
           >
             <SwiperSlide>
               <img src={header1} alt="header-1" />
@@ -67,7 +69,10 @@ const Header = () => {
               <button>
                 <IoSearchOutline className="h-7 w-7" />
               </button>
-              <input className="ml-2 rounded-md border-none text-sm outline-none" type="text" />
+              <input
+                className="ml-2 rounded-md border-none text-sm outline-none"
+                type="text"
+              />
             </div>
 
             <div className="stores relative ml-6">
@@ -77,7 +82,12 @@ const Header = () => {
                   className="flex cursor-pointer items-center gap-2 text-sm"
                   onClick={() => setShowShowroom(!showShowroom)}
                 >
-                  10 cửa hàng {showShowroom ? <FaAngleUp className="h-3 w-3" /> : <FaAngleDown className="h-3 w-3" />}
+                  10 cửa hàng{' '}
+                  {showShowroom ? (
+                    <FaAngleUp className="h-3 w-3" />
+                  ) : (
+                    <FaAngleDown className="h-3 w-3" />
+                  )}
                 </b>
               </span>
               <div
@@ -136,7 +146,9 @@ const Header = () => {
                   <li
                     key={index}
                     className={`flex items-center gap-2 px-2 transition-all hover:text-[#777] hover:underline ${
-                      index !== hotProducts.length - 1 ? 'border-r border-gray-300' : ''
+                      index !== hotProducts.length - 1
+                        ? 'border-r border-gray-300'
+                        : ''
                     }`}
                   >
                     <Link to={product.route}>

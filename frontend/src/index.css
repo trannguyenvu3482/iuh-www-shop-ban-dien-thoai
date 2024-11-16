@@ -21,5 +21,16 @@ body {
 .swiper {
   width: 100%;
   width: 1000px;
-  height: 100%;
+  height: fit-content;
+}
+
+.custom-swiper-hide .swiper-button-next,
+.custom-swiper-hide .swiper-button-prev {
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.custom-swiper-hide:hover .swiper-button-next,
+.custom-swiper-hide:hover .swiper-button-prev {
+  opacity: 1;
 }

@@ -1,19 +1,22 @@
-import { Swiper, SwiperSlide } from 'swiper/react'
 import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
+import { Swiper, SwiperSlide } from 'swiper/react'
 
-import { Pagination } from 'swiper/modules'
+import { Navigation, Pagination } from 'swiper/modules'
 
 export default function SwiperCustom() {
   return (
     <>
       <Swiper
-        cssMode={true}
+        modules={[Navigation, Pagination]}
         navigation={true}
         pagination={true}
-        modules={[Pagination]}
-        className="max-h-[264px]"
+        loop={true}
+        className="custom-swiper-hide h-fit rounded-xl pt-2"
+        spaceBetween={0}
+        slidesPerView={1}
+        paginationClickable={true}
       >
         <SwiperSlide>
           <div>

@@ -1,14 +1,14 @@
-import BannerHome from './Banner'
-import HeadSection from './HeadSection'
-import Sidebar from './Sidebar'
-import ListSection from './ListSection'
+import ScrollToTop from '../../components/ScrollToTop'
 import { SECTIONS_OF_HOME } from '../../constants'
 import AccessoryCategory from './AccessoryList'
-import ScrollToTop from '../../components/ScrollToTop'
+import BannerHome from './Banner'
+import HeadSection from './HeadSection'
+import ListSection from './ListSection'
+import Sidebar from './Sidebar'
 
 export default function Home() {
   return (
-    <div className="bg-primary-purple m-auto max-w-[100vw]">
+    <div className="m-auto max-w-[100vw] bg-primary-purple">
       <div className="mx-auto w-[1220px] pb-8 pt-2">
         <div className="mb-8 flex">
           <Sidebar />
