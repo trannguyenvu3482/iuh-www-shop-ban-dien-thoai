@@ -1,4 +1,4 @@
-import logo from "../assets/img/logo.png";
+import logo from '../assets/img/logo.png'
 const Error = () => {
   return (
     <>
@@ -29,11 +29,11 @@ const Error = () => {
               <span aria-hidden="true">&larr;</span> Trở về trang chủ
             </a>
           </div>
-          <img className="mx-auto h-12 w-auto mt-8" src={logo} alt="logo" />
+          <img className="mx-auto mt-8 h-12 w-auto" src={logo} alt="logo" />
         </div>
       </main>
     </>
-  );
-};
+  )
+}
 
-export default Error;
+export default Error
