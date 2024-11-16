@@ -1,7 +1,7 @@
 import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
-import { Navigation } from 'swiper/modules'
+import { Autoplay, Navigation } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import SwiperCustom from '../../../components/Swiper'
 function BannerHome() {
@@ -10,12 +10,16 @@ function BannerHome() {
       <SwiperCustom />
       <div className="p-2">
         <Swiper
-          modules={[Navigation]}
+          modules={[Autoplay, Navigation]}
           navigation={true}
           loop={true}
           className="custom-swiper-hide h-fit rounded-xl"
           spaceBetween={0}
           slidesPerView={2}
+          autoplay={{
+            delay: 5000,
+            disableOnInteraction: false,
+          }}
         >
           <SwiperSlide>
             <img

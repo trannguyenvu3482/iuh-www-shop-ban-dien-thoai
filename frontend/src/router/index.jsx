@@ -1,10 +1,11 @@
 /* eslint-disable react-refresh/only-export-components */
-import { createBrowserRouter } from 'react-router-dom'
 import { lazy } from 'react'
+import { createBrowserRouter } from 'react-router-dom'
 import App from '../App'
 import Error from '../pages/Error'
 import ProductDetail from '../pages/ProductDetail'
 const Home = lazy(() => import('../pages/Home'))
+
 const router = createBrowserRouter([
   {
     path: '/',
