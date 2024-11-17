@@ -3,13 +3,13 @@ import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 import { Swiper, SwiperSlide } from 'swiper/react'
 
-import { Navigation, Pagination } from 'swiper/modules'
+import { Autoplay, Navigation, Pagination } from 'swiper/modules'
 
 export default function SwiperCustom() {
   return (
     <>
       <Swiper
-        modules={[Navigation, Pagination]}
+        modules={[Autoplay, Navigation, Pagination]}
         navigation={true}
         pagination={true}
         loop={true}
@@ -17,6 +17,10 @@ export default function SwiperCustom() {
         spaceBetween={0}
         slidesPerView={1}
         paginationClickable={true}
+        autoplay={{
+          delay: 5000,
+          disableOnInteraction: false,
+        }}
       >
         <SwiperSlide>
           <div>

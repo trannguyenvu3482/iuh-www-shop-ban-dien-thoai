@@ -1,9 +1,7 @@
-import { Navigation, Pagination } from 'swiper/modules'
-import { Swiper, SwiperSlide } from 'swiper/react'
 import 'swiper/css'
 import 'swiper/css/navigation'
-import 'swiper/css/pagination'
-import 'swiper/css/scrollbar'
+import { Navigation } from 'swiper/modules'
+import { Swiper, SwiperSlide } from 'swiper/react'
 import CardProduct from '../../../components/Card/CardProduct'
 import { PRODUCT_DUMMY_DATA } from '../../../constants'
 
@@ -17,30 +15,27 @@ function HeadSection() {
       />
       <div className="px-2">
         <Swiper
-          cssMode={true}
+          modules={[Navigation]}
+          className="!w-full"
           navigation={true}
-          pagination={{ clickable: true }}
-          slidesPerView={5}
+          loop={true}
           spaceBetween={10}
+          slidesPerView={5}
           autoHeight={true}
-          modules={[Pagination, Navigation]}
-          style={{ width: '100%' }}
         >
-          <>
-            {PRODUCT_DUMMY_DATA.map((product) => (
-              <SwiperSlide key={product.productId}>
-                <CardProduct
-                  imgURL={product.imgURL}
-                  name={product.name}
-                  price={product.price}
-                  oldPrice={product.oldPrice}
-                  initPayment={product.initPayment}
-                  rating={product.rating}
-                  productId={product.productId}
-                />
-              </SwiperSlide>
-            ))}
-          </>
+          {PRODUCT_DUMMY_DATA.map((product) => (
+            <SwiperSlide key={product.productId}>
+              <CardProduct
+                imgURL={product.imgURL}
+                name={product.name}
+                price={product.price}
+                oldPrice={product.oldPrice}
+                initPayment={product.initPayment}
+                rating={product.rating}
+                productId={product.productId}
+              />
+            </SwiperSlide>
+          ))}
         </Swiper>
       </div>
       <div className="flex justify-center">

@@ -92,25 +92,31 @@ export default function Footer() {
             <img
               src="https://images.dmca.com/Badges/_dmca_premi_badge_2.png?ID=25214b63-d135-4dab-8c7b-c5dfbd1d8dee"
               alt="DMCA Protected"
-              className="w-20 inline-block"
+              className="inline-block w-20"
             />
           </div>
         </div>
       </div>
 
       {/* Hàng dưới */}
-      <div className="bg-gray-200 py-4">
+      <div className="border-t-2 border-gray-300 bg-[#f8f8f8] py-4">
         <div className="mx-auto max-w-[1220px] text-center">
-          <p className="mb-2 text-gray-600">
-            Điện thoại iPhone - iPhone 16 - iPhone 15 - iPhone 15 Pro Max -
-            iPhone 14 - iPhone 13 - iPhone 12
+          <p className="mb-1 text-xs text-gray-600">
+            Điện thoại iPhone - iPhone 16 - iPhone 15 - iPhone 15 Pro - iPhone
+            15 Pro Max - iPhone 14 - iPhone 13 - iPhone 13 Pro Max - iPhone 12
+            Pro Max - iPhone 11
           </p>
-          <p className="mb-2 text-gray-600">
+          <p className="mb-1 text-xs text-gray-600">
             Điện thoại Samsung - Samsung S25 - Samsung S24 - Z Fold 5
           </p>
-          <p className="text-gray-600">
-            Copyright © 2014 XTMobile. Địa chỉ: 666 Lê Hồng Phong, P.10, Q.10,
-            TP.HCM. Điện thoại: 1800.6229
+          <p className="mb-1 mt-6 text-xs text-gray-600">
+            Copyright © 2014 XTmobile. Giấy chứng nhận ĐKKD số 41J8021261 do
+            UBND Quận 10 cấp ngày 08/07/2014. Bản quyền xtmobile.vn
+          </p>
+          <p className="text-xs text-gray-600">
+            Địa chỉ: 666 Lê Hồng Phong, P. 10, Q.10, TP.Hồ Chí Minh. Điện thoại:
+            1800.6229 (Miễn Phí) Email: xtmobile.sg@gmail.com. Chịu trách nhiệm
+            nội dung: Lê Xuân Hoà
           </p>
         </div>
       </div>
