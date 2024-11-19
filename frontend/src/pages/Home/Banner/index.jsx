@@ -6,7 +6,7 @@ import { Swiper, SwiperSlide } from 'swiper/react'
 import SwiperCustom from '../../../components/Swiper'
 function BannerHome() {
   return (
-    <div className="flex-1 px-2 pb-2">
+    <div className="max-w-[1000px] flex-1 px-2 pb-2">
       <SwiperCustom />
       <div className="p-2">
         <Swiper

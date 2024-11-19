@@ -30,8 +30,6 @@ const Header = () => {
             navigation
             loop={true}
             onSlideChange={(swiper) => {
-              console.log(swiper.realIndex)
-
               setSlideIndex(swiper.realIndex)
             }}
             effect="fade"

@@ -5,6 +5,7 @@ export default {
     extend: {
       colors: {
         'primary-red': '#fe0000',
+        'secondary-red': '#FF3300',
         'primary-purple': '#f7f8fd',
       },
       width: {

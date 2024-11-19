@@ -8,7 +8,7 @@
 }
 
 body {
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
 }
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
@@ -20,7 +20,6 @@ body {
 }
 .swiper {
   width: 100%;
-  width: 1000px;
   height: fit-content;
 }
 
