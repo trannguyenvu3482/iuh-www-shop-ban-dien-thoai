@@ -3,6 +3,7 @@ package com.fit.se.app.entity;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "\"OrderStatus\"")
 public class OrderStatus {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

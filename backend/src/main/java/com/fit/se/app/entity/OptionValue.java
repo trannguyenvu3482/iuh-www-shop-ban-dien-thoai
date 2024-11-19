@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import org.hibernate.annotations.Nationalized;
 
 @Entity
-@Table(name = "OptionValue")
+@Table(name = "\"OptionValue\"")
 public class OptionValue {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

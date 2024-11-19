@@ -6,6 +6,7 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Entity
+@Table(name = "\"ProductStatus\"")
 public class ProductStatus {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

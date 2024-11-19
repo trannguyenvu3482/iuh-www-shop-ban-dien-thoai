@@ -7,6 +7,7 @@ import org.hibernate.annotations.Nationalized;
 import java.math.BigDecimal;
 
 @Entity
+@Table(name = "\"StockAndPricing\"")
 public class StockAndPricing {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
