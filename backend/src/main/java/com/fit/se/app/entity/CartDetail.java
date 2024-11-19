@@ -3,19 +3,19 @@ package com.fit.se.app.entity;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "cart_detail")
+@Table(name = "CartDetail")
 public class CartDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
+    @Column(name = "cart_detail_id", nullable = false)
     private Integer id;
 
-    public Integer getId() {
-        return id;
-    }
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "cart_id")
+    private Cart cart;
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_id")
+    private Product product;
 
 }
