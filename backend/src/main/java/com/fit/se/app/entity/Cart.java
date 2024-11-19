@@ -3,7 +3,7 @@ package com.fit.se.app.entity;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "Cart")
+@Table(name = "\"Cart\"")
 public class Cart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
