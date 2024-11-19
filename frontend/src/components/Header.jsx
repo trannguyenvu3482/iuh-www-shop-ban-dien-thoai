@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { FaAngleDown, FaAngleUp } from 'react-icons/fa6'
+import { FaAngleDown, FaAngleUp, FaUser } from 'react-icons/fa6'
 import { IoSearchOutline } from 'react-icons/io5'
 import { Link } from 'react-router-dom'
 import Sticky from 'react-sticky-el'
@@ -145,6 +145,16 @@ const Header = () => {
                     </span>
                   </i>
                   <span className="text-sm">Giỏ hàng</span>
+                </Link>
+              </div>
+
+              <div className="ml-6 flex items-center justify-center text-white">
+                <Link
+                  to="/login"
+                  className="flex h-full items-center justify-center gap-1 rounded-md bg-black bg-opacity-30 p-2 text-sm font-bold text-white transition-all hover:bg-opacity-50"
+                >
+                  <FaUser />
+                  Đăng nhập
                 </Link>
               </div>
             </div>
