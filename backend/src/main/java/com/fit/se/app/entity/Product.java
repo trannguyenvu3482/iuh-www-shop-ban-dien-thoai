@@ -31,7 +31,7 @@ public class Product {
     @Column(name = "discount", precision = 5, scale = 2)
     private BigDecimal discount;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @ColumnDefault("1")
     @JoinColumn(name = "status_id")
     private ProductStatus status;

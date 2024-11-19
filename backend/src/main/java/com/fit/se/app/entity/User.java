@@ -1,6 +1,7 @@
 package com.fit.se.app.entity;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.Nationalized;
 
 import java.util.LinkedHashSet;
@@ -29,6 +30,7 @@ public class User {
     private String address;
 
     @ManyToOne(fetch = FetchType.EAGER)
+    @ColumnDefault("1")
     @JoinColumn(name = "user_type_id")
     private UserType userType;
 

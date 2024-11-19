@@ -16,7 +16,7 @@ public class ProductStatus {
     @Column(name = "status_name", nullable = false, length = 50)
     private String statusName;
 
-    @OneToMany(mappedBy = "status")
+    @OneToMany(mappedBy = "status", fetch = FetchType.LAZY)
     private Set<Product> products = new LinkedHashSet<>();
 
     public Integer getId() {
