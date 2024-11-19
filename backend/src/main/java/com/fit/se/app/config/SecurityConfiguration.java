@@ -1,5 +1,6 @@
 package com.fit.se.app.config;
 
+import com.fit.se.app.service.SecurityService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,15 +30,29 @@ import javax.crypto.spec.SecretKeySpec;
 @Configuration
 @EnableMethodSecurity(securedEnabled = true)
 public class SecurityConfiguration {
+    @Value("${security.jwt.secret-key}")
+    private String jwtKey;
+
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
+    private SecretKey getSecretKey() {
+        byte[] keyBytes = Base64.from(jwtKey).decode();
+        return new SecretKeySpec(keyBytes, SecurityService.JWT_ALGORITHM.getName());
+    }
+
+    @Bean
+    public JwtEncoder jwtEncoder() {
+        return new NimbusJwtEncoder(new ImmutableSecret<>(getSecretKey()));
+    }
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
+                .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(
                         authz -> authz
                                 .requestMatchers("/").permitAll()
