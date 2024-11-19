@@ -17,10 +17,17 @@ public class ProductController {
         this.productService = productService;
     }
 
+    @PostMapping
+    ResponseEntity<Product> createProduct(@RequestBody Product product) {
+        Product createdProduct = productService.saveProduct(product);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdProduct);
+    }
+
     @GetMapping
     ResponseEntity<List<Product>> getProducts() {
         return ResponseEntity.status(HttpStatus.OK).body(productService.getProducts());
     }
+
 
     @GetMapping("/{id}")
     ResponseEntity<Product> getProductById(@PathVariable Integer id) {
@@ -32,12 +39,6 @@ public class ProductController {
     ResponseEntity<Product> updateProduct(@RequestBody Product product) {
         Product updatedProduct = productService.saveProduct(product);
         return ResponseEntity.ok(updatedProduct);
-    }
-
-    @PostMapping
-    ResponseEntity<Product> createProduct(@RequestBody Product product) {
-        Product createdProduct = productService.saveProduct(product);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdProduct);
     }
 
     @DeleteMapping("/{id}")
