@@ -27,13 +27,18 @@ public class FormatRestResponse implements ResponseBodyAdvice<Object> {
 
         restResponse.setStatusCode(status);
 
+        if (body instanceof RestResponse) {
+            return body;
+        }
+
         if (body instanceof String) {
             return body;
         }
 
         if (status >= 400) {
+            restResponse.setMessage("Call API failed");
             restResponse.setError("Error");
-            restResponse.setMessage(body);
+            restResponse.setData(body);
         } else {
             restResponse.setMessage("Call API success");
             restResponse.setData(body);

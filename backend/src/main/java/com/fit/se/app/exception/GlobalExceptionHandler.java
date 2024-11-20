@@ -9,12 +9,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -35,7 +33,7 @@ public class GlobalExceptionHandler {
         RestResponse<Object> response = new RestResponse<>();
         response.setStatusCode(HttpStatus.BAD_REQUEST.value());
         response.setError(e.getMessage());
-        response.setMessage(e.getMessage());
+        response.setMessage("Đã có lỗi xảy ra");
 
         return ResponseEntity.badRequest().body(response);
     }
