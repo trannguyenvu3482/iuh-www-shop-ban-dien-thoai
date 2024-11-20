@@ -1,7 +1,11 @@
 package com.fit.se.app.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
+@Setter
+@Getter
 @Entity
 @Table(name = "\"UserType\"")
 public class UserType {
@@ -12,21 +16,5 @@ public class UserType {
 
     @Column(name = "user_type_name", nullable = false, length = 50)
     private String userTypeName;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getUserTypeName() {
-        return userTypeName;
-    }
-
-    public void setUserTypeName(String userTypeName) {
-        this.userTypeName = userTypeName;
-    }
 
 }
