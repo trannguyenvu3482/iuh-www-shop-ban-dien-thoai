@@ -1,27 +1,19 @@
 package com.fit.se.app.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
+@Setter
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class LoginDTO {
     @NotBlank(message = "Username không được để trống")
-    private String username;
+    String username;
 
     @NotBlank(message = "Password không được để trống")
-    private String password;
+    String password;
 
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
 }
