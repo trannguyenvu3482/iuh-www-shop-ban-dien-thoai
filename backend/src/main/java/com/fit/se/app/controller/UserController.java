@@ -1,8 +1,8 @@
 package com.fit.se.app.controller;
 
+import com.fit.se.app.dto.response.UserDTO;
 import com.fit.se.app.entity.User;
 import com.fit.se.app.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -29,8 +29,22 @@ public class UserController {
     }
 
     @GetMapping
-    ResponseEntity<List<User>> getUsers() {
-        return ResponseEntity.ok(userService.getUsers());
+    ResponseEntity<List<UserDTO>> getUsers() {
+        List<User> users = userService.getUsers();
+        // Convert User to UserDTO
+        List<UserDTO> usersDTO = users.stream().map(user -> {
+            UserDTO userDTO = new UserDTO();
+            userDTO.setId(user.getId());
+            userDTO.setName(user.getName());
+            userDTO.setEmail(user.getEmail());
+            userDTO.setPhoneNumber(user.getPhoneNumber());
+            userDTO.setAddress(user.getAddress());
+            userDTO.setPassword(user.getPassword());
+            userDTO.setUserType(user.getUserType().getUserTypeName());
+            return userDTO;
+        }).toList();
+
+        return ResponseEntity.ok(usersDTO);
     }
 
     @GetMapping("/{id}")
