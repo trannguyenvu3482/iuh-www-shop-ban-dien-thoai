@@ -1,7 +1,7 @@
 package com.fit.se.app.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fit.se.app.entity.RestResponse;
+import com.fit.se.app.dto.response.RestResponse;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

@@ -45,8 +45,7 @@ public class UserService {
             userDTO.setEmail(user.getEmail());
             userDTO.setPhoneNumber(user.getPhoneNumber());
             userDTO.setAddress(user.getAddress());
-            userDTO.setPassword(user.getPassword());
-            userDTO.setUserType(user.getUserType().name());
+            userDTO.setUserType(user.getUserType());
             return userDTO;
         }).toList();
 

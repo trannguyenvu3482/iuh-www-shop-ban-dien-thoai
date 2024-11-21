@@ -1,6 +1,6 @@
 package com.fit.se.app.exception;
 
-import com.fit.se.app.entity.RestResponse;
+import com.fit.se.app.dto.response.RestResponse;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

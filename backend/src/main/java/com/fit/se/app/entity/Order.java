@@ -1,12 +1,17 @@
 package com.fit.se.app.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fit.se.app.common.constant.enums.OrderStatusEnum;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.Instant;
 
-@Entity
-@Table(name = "\"Order\"")
+@Setter
+@Getter
+@Entity(name = "\"Order\"")
 public class Order {
     @Id
     @Column(name = "order_id", nullable = false)
@@ -16,53 +21,35 @@ public class Order {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss a", timezone = "GMT+7")
     @Column(name = "order_date")
-    private LocalDate orderDate;
+    private Instant orderDate;
 
     @Column(name = "shipping_address", nullable = false)
     private String shippingAddress;
 
-    @Column(name = "total_amount", precision = 10, scale = 2)
-    private BigDecimal totalAmount;
+    @Column(name = "total_price", precision = 10, scale = 2)
+    private BigDecimal totalPrice;
 
-    public Integer getId() {
-        return id;
-    }
+    @Column(name = "payment_method", nullable = false)
+    private String paymentMethod;
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+    @Column(columnDefinition = "NVARCHAR(MAX)")
+    private String note;
 
-    public User getUser() {
-        return user;
-    }
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss a", timezone = "GMT+7")
+    @Column(name = "shipping_date")
+    private Instant shippingDate;
 
-    public void setUser(User user) {
-        this.user = user;
-    }
+    @Column(name = "created_at")
+    private Instant createdAt;
 
-    public LocalDate getOrderDate() {
-        return orderDate;
-    }
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss a", timezone = "GMT+7")
+    @Column(name = "updated_at")
+    private Instant updatedAt;
 
-    public void setOrderDate(LocalDate orderDate) {
-        this.orderDate = orderDate;
-    }
-
-    public String getShippingAddress() {
-        return shippingAddress;
-    }
-
-    public void setShippingAddress(String shippingAddress) {
-        this.shippingAddress = shippingAddress;
-    }
-
-    public BigDecimal getTotalAmount() {
-        return totalAmount;
-    }
-
-    public void setTotalAmount(BigDecimal totalAmount) {
-        this.totalAmount = totalAmount;
-    }
+    @Enumerated(EnumType.STRING)
+    @Column(columnDefinition = "VARCHAR(255) DEFAULT 'CREATED'")
+    private OrderStatusEnum status;
 
 }

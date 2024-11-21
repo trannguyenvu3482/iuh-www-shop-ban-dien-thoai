@@ -1,5 +1,6 @@
 package com.fit.se.app.entity;
 
+import com.fit.se.app.common.constant.enums.StatusEnum;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -35,10 +36,9 @@ public class Product {
     @Column(name = "discount", precision = 5, scale = 2)
     private BigDecimal discount;
 
-    @ManyToOne
-    @ColumnDefault("1")
-    @JoinColumn(name = "status_id")
-    private ProductStatus status;
+    @Column(columnDefinition = "VARCHAR(255) DEFAULT 'ACTIVE'")
+    @Enumerated(EnumType.STRING)
+    private StatusEnum status;
 
     @Column(name = "brand", length = 50)
     private String brand;
@@ -48,15 +48,14 @@ public class Product {
     private Category category;
 
     @OneToMany(mappedBy = "product")
-    private Set<ProductImage> productImages = new LinkedHashSet<>();
+    private Set<ProductColors> productColors = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "product")
-    private Set<ProductOption> productOptions = new LinkedHashSet<>();
+    private Set<ProductStorage> productStorages = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "product")
     private Set<Review> reviews = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "product")
-    private Set<StockAndPricing> stockAndPricings = new LinkedHashSet<>();
-
+    private Set<ProductVariants> productVariants = new LinkedHashSet<>();
 }

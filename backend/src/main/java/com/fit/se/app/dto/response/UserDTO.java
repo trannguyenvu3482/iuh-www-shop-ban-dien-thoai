@@ -1,5 +1,6 @@
 package com.fit.se.app.dto.response;
 
+import com.fit.se.app.common.constant.enums.UserTypeEnum;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,7 +12,5 @@ public class UserDTO {
     private String email;
     private String phoneNumber;
     private String address;
-    private String password;
-    private String userType;
-
+    private UserTypeEnum userType;
 }

@@ -5,6 +5,7 @@ import com.fit.se.app.dto.response.ResPaginationDTO;
 import com.fit.se.app.entity.User;
 import com.fit.se.app.service.UserService;
 import com.turkraft.springfilter.boot.Filter;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
@@ -25,7 +26,7 @@ public class UserController {
 
     @PostMapping
     @ApiMessage("Create a new user")
-    ResponseEntity<User> createUser(@RequestBody User user) {
+    ResponseEntity<User> createUser(@Valid @RequestBody User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         User createdUser = userService.saveUser(user);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
