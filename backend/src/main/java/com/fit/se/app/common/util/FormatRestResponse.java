@@ -1,4 +1,4 @@
-package com.fit.se.app.util;
+package com.fit.se.app.common.util;
 
 import com.fit.se.app.entity.RestResponse;
 import jakarta.servlet.http.HttpServletResponse;

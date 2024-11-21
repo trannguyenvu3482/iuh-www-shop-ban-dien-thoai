@@ -38,9 +38,15 @@ public class UserController {
         String sCurrent = currentOptional.orElse("");
         String sPageSize = pageSizeOptional.orElse("");
 
-        int current = Integer.parseInt(sCurrent);
-        int pageSize = Integer.parseInt(sPageSize);
-        Pageable pageable = PageRequest.of(current - 1, pageSize);
+        Pageable pageable;
+        if (sCurrent.isEmpty() || sPageSize.isEmpty()) {
+            pageable = Pageable.unpaged();
+        } else {
+            int current = Integer.parseInt(sCurrent);
+            int pageSize = Integer.parseInt(sPageSize);
+            pageable = PageRequest.of(current - 1, pageSize);
+        }
+
         return ResponseEntity.ok(userService.getUsers(pageable));
     }
 
