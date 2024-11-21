@@ -1,9 +1,11 @@
 package com.fit.se.app.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fit.se.app.common.constant.GenderEnum;
+import com.fit.se.app.common.constant.UserTypeEnum;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.Nationalized;
 
 import java.time.Instant;
@@ -34,16 +36,22 @@ public class User {
     @Column(name = "address")
     private String address;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @ColumnDefault("1")
-    @JoinColumn(name = "user_type_id")
-    private UserType userType;
+    @Column(columnDefinition = "VARCHAR(255) DEFAULT 'USER'")
+    @Enumerated(EnumType.STRING)
+    private UserTypeEnum userType;
 
     @Column(name = "password", length = 100)
     private String password;
 
+    @Enumerated(EnumType.STRING)
+    private GenderEnum gender;
+
+    private String refreshToken;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss a", timezone = "GMT+7")
     private Instant createdAt;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss a", timezone = "GMT+7")
     private Instant updatedAt;
 
     @OneToMany(mappedBy = "user")
@@ -58,4 +66,9 @@ public class User {
     @OneToMany(mappedBy = "user")
     private Set<Review> reviews = new LinkedHashSet<>();
 
+    @PrePersist
+    public void prePersist() {
+        createdAt = Instant.now();
+        updatedAt = Instant.now();
+    }
 }

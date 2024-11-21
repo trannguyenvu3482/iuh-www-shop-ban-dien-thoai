@@ -1,6 +1,6 @@
 package com.fit.se.app.service;
 
-import com.fit.se.app.common.constants.VnPayConstant;
+import com.fit.se.app.common.constant.VnPayConstant;
 import com.fit.se.app.common.util.VnPayUtil;
 import com.fit.se.app.dto.request.OrderStatusRequestDTO;
 import jakarta.servlet.http.HttpServletRequest;

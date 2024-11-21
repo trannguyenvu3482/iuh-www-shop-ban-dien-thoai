@@ -1,6 +1,6 @@
 package com.fit.se.app.common.util;
 
-import com.fit.se.app.common.constants.VnPayConstant;
+import com.fit.se.app.common.constant.VnPayConstant;
 import jakarta.servlet.http.HttpServletRequest;
 
 import javax.crypto.Mac;
