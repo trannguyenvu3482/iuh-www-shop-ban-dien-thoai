@@ -1,5 +1,6 @@
-package com.fit.se.app.util;
+package com.fit.se.app.common.util;
 
+import com.fit.se.app.common.annotation.ApiMessage;
 import com.fit.se.app.entity.RestResponse;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.core.MethodParameter;
@@ -36,12 +37,11 @@ public class FormatRestResponse implements ResponseBodyAdvice<Object> {
         }
 
         if (status >= 400) {
-            restResponse.setMessage("Call API failed");
-            restResponse.setError("Error");
-            restResponse.setData(body);
+            return body;
         } else {
-            restResponse.setMessage("Call API success");
             restResponse.setData(body);
+            ApiMessage apiMessage = returnType.getMethodAnnotation(ApiMessage.class);
+            restResponse.setMessage(apiMessage != null ? apiMessage.value() : "Success");
         }
 
         return restResponse;

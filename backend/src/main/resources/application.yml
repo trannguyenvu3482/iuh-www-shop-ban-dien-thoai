@@ -6,9 +6,13 @@ security:
 server:
   port: 8080
   servlet:
-    context-path: /api
+    context-path: /api/v1
 
 spring:
+  data:
+    web:
+      pageable:
+        one-indexed-parameters: true # Start pagination page from 1
   datasource:
     url: "jdbc:sqlserver://localhost:1433;databaseName=quanlydt;encrypt=false"
     username: "sa"
