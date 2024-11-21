@@ -52,4 +52,14 @@ public class Order {
     @Column(columnDefinition = "VARCHAR(255) DEFAULT 'CREATED'")
     private OrderStatusEnum status;
 
+    @PrePersist
+    public void prePersist() {
+        createdAt = Instant.now();
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        updatedAt = Instant.now();
+    }
+
 }

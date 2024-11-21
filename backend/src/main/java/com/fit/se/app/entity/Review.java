@@ -26,7 +26,7 @@ public class Review {
     private User user;
 
     @Column(name = "rating", nullable = false)
-    private Integer rating;
+    private Integer rating = 0;
 
     @Nationalized
     @Column(name = "comment", length = 100)
@@ -40,4 +40,13 @@ public class Review {
     @Column(name = "updated_at")
     private Instant updatedAt;
 
+    @PrePersist
+    public void prePersist() {
+        createdAt = Instant.now();
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        updatedAt = Instant.now();
+    }
 }

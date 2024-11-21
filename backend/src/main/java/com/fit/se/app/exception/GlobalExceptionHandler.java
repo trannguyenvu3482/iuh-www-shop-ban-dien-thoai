@@ -11,6 +11,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import java.util.List;
 
@@ -36,6 +37,16 @@ public class GlobalExceptionHandler {
         response.setMessage("Đã có lỗi xảy ra");
 
         return ResponseEntity.badRequest().body(response);
+    }
+
+    @ExceptionHandler(value = NoResourceFoundException.class)
+    ResponseEntity<RestResponse<Object>> handleNoResourceFoundException(NoResourceFoundException e) {
+        RestResponse<Object> response = new RestResponse<>();
+        response.setStatusCode(HttpStatus.NOT_FOUND.value());
+        response.setError(e.getMessage());
+        response.setMessage("404 Not Found. Không tìm thấy tài nguyên");
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
 
     @ExceptionHandler(value = MethodArgumentNotValidException.class)

@@ -2,6 +2,7 @@ package com.fit.se.app.controller;
 
 import com.fit.se.app.common.annotation.ApiMessage;
 import com.fit.se.app.dto.response.ResPaginationDTO;
+import com.fit.se.app.dto.response.UserDTO;
 import com.fit.se.app.entity.User;
 import com.fit.se.app.service.UserService;
 import com.turkraft.springfilter.boot.Filter;
@@ -26,9 +27,9 @@ public class UserController {
 
     @PostMapping
     @ApiMessage("Create a new user")
-    ResponseEntity<User> createUser(@Valid @RequestBody User user) {
+    ResponseEntity<UserDTO> createUser(@Valid @RequestBody User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        User createdUser = userService.saveUser(user);
+        UserDTO createdUser = userService.saveUser(user);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
     }
 
@@ -43,15 +44,15 @@ public class UserController {
 
     @GetMapping("/{id}")
     @ApiMessage("Fetch a user by id")
-    ResponseEntity<User> getUserById(@PathVariable Integer id) {
-        User user = userService.getUserById(id);
+    ResponseEntity<UserDTO> getUserById(@PathVariable Integer id) {
+        UserDTO user = userService.getUserById(id);
         return user != null ? ResponseEntity.ok(user) : ResponseEntity.notFound().build();
     }
 
     @PutMapping
     @ApiMessage("Update a user")
-    ResponseEntity<User> updateUser(@RequestBody User user) {
-        User updatedUser = userService.saveUser(user);
+    ResponseEntity<UserDTO> updateUser(@RequestBody User user) {
+        UserDTO updatedUser = userService.saveUser(user);
         return ResponseEntity.ok(updatedUser);
     }
 

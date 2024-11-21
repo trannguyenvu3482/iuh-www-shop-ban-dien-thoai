@@ -10,7 +10,6 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.Nationalized;
 
 import java.time.Instant;
@@ -32,11 +31,11 @@ public class User {
     @NotBlank(message = "Tên không được để trống")
     private String name;
 
-    @Column(name = "email", nullable = false, length = 100)
+    @Column(name = "email", nullable = false, length = 100, unique = true)
     @NotBlank(message = "Email không được để trống")
     private String email;
 
-    @Column(name = "phone_number", length = 20)
+    @Column(name = "phone_number", length = 20, unique = true)
     @NotBlank(message = "Số điện thoại không được để trống")
     @Pattern(regexp = "^(0|\\+84)\\d{9,10}$", message = "Số điện thoại không hợp lệ")
     private String phoneNumber;
@@ -45,9 +44,8 @@ public class User {
     @Column(name = "address")
     private String address;
 
-    @Column(columnDefinition = "VARCHAR(255) DEFAULT 'USER'")
     @Enumerated(EnumType.STRING)
-    private UserTypeEnum userType;
+    private UserTypeEnum userType = UserTypeEnum.USER;
 
     @Column(name = "password", length = 100)
     @NotBlank(message = "Password không được để trống")
@@ -58,11 +56,10 @@ public class User {
     private GenderEnum gender;
 
     @Enumerated(EnumType.STRING)
-    private StatusEnum status;
+    private StatusEnum status = StatusEnum.ACTIVE;
 
-    @ColumnDefault("0")
     @Column(name = "loyalty_points")
-    private Integer loyaltyPoints;
+    private Integer loyaltyPoints = 0;
 
     @Column(name = "refresh_token", length = 100)
     private String refreshToken;
@@ -84,6 +81,10 @@ public class User {
     @PrePersist
     public void prePersist() {
         createdAt = Instant.now();
+    }
+
+    @PreUpdate
+    public void preUpdate() {
         updatedAt = Instant.now();
     }
 }

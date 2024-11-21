@@ -22,6 +22,6 @@ public class OrderDetail {
     @JoinColumn(name = "product_id")
     private Product product;
 
-    private Integer quantity;
-    private BigDecimal price;
+    private Integer quantity = 0;
+    private BigDecimal price = BigDecimal.ZERO;
 }

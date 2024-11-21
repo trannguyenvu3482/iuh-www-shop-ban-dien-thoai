@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.math.BigDecimal;
+
 @Setter
 @Getter
 @Entity
@@ -19,6 +21,6 @@ public class Cart {
     private User user;
 
     @Column(name = "total_price", nullable = false)
-    private Double totalPrice;
+    private BigDecimal totalPrice = BigDecimal.ZERO;
 
 }

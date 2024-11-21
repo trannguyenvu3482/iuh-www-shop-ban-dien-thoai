@@ -20,8 +20,8 @@ public class CartDetail {
     @JoinColumn(name = "product_id")
     private Product product;
 
-    private Integer quantity;
+    private Integer quantity = 1;
 
-    private BigDecimal price;
+    private BigDecimal price = BigDecimal.ZERO;
 
 }

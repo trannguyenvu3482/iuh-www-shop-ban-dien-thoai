@@ -3,7 +3,6 @@ package com.fit.se.app.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.ColumnDefault;
 
 import java.math.BigDecimal;
 
@@ -29,8 +28,7 @@ public class ProductVariants {
     private ProductStorage storage;
 
     @Column(name = "price", nullable = false, precision = 10, scale = 2)
-    private BigDecimal price;
+    private BigDecimal price = BigDecimal.ZERO;
 
-    @ColumnDefault("0")
-    private Integer stock;
+    private Integer stock = 0;
 }
