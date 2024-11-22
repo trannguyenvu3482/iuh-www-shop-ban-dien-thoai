@@ -1,12 +1,16 @@
 package com.fit.se.app.controller;
 
+import com.fit.se.app.common.annotation.ApiMessage;
+import com.fit.se.app.dto.response.ProductDTO;
+import com.fit.se.app.dto.response.ResPaginationDTO;
 import com.fit.se.app.entity.Product;
 import com.fit.se.app.service.ProductService;
+import com.turkraft.springfilter.boot.Filter;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/products")
@@ -18,33 +22,38 @@ public class ProductController {
     }
 
     @PostMapping
+    @ApiMessage("Create a product")
     ResponseEntity<Product> createProduct(@RequestBody Product product) {
         Product createdProduct = productService.saveProduct(product);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdProduct);
     }
 
     @GetMapping
-    ResponseEntity<List<Product>> getProducts() {
-        return ResponseEntity.status(HttpStatus.OK).body(productService.getProducts());
+    @ApiMessage("Get all products")
+    ResponseEntity<ResPaginationDTO> getProducts(@Filter Specification<Product> spec, Pageable pageable) {
+        return ResponseEntity.ok(productService.getProducts(spec, pageable));
     }
 
 
     @GetMapping("/{id}")
-    ResponseEntity<Product> getProductById(@PathVariable Integer id) {
-        Product product = productService.getProductById(id);
+    @ApiMessage("Get a product by id")
+    ResponseEntity<ProductDTO> getProductById(@PathVariable Integer id) throws Exception {
+        ProductDTO product = productService.getProductById(id);
         return product != null ? ResponseEntity.ok(product) : ResponseEntity.notFound().build();
     }
 
     @PutMapping
+    @ApiMessage("Update a product")
     ResponseEntity<Product> updateProduct(@RequestBody Product product) {
         Product updatedProduct = productService.saveProduct(product);
         return ResponseEntity.ok(updatedProduct);
     }
 
     @DeleteMapping("/{id}")
+    @ApiMessage("Delete a product by id")
     ResponseEntity<Void> deleteProduct(@PathVariable Integer id) {
         productService.deleteProduct(id);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+        return ResponseEntity.noContent().build();
     }
 
 }

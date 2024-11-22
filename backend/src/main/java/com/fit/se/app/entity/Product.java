@@ -5,6 +5,7 @@ import com.fit.se.app.common.constant.enums.StatusEnum;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.Nationalized;
 
@@ -12,6 +13,8 @@ import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.LinkedHashSet;
 import java.util.Set;
+
+import static com.fit.se.app.common.util.StringUtil.slugify;
 
 @Setter
 @Getter
@@ -43,24 +46,33 @@ public class Product {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
+    @ToString.Exclude
     private Category category;
 
     @Nationalized
     @Column(name = "thumbnail_url")
     private String thumbnailUrl;
 
+    @Nationalized
+    @Column(name = "slug", length = 100)
+    private String slug;
+
     private Double rating = 0.0;
 
     @OneToMany(mappedBy = "product")
+    @ToString.Exclude
     private Set<ProductColors> productColors = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "product")
+    @ToString.Exclude
     private Set<ProductStorage> productStorages = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "product")
+    @ToString.Exclude
     private Set<Review> reviews = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "product")
+    @ToString.Exclude
     private Set<ProductVariants> productVariants = new LinkedHashSet<>();
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss a", timezone = "GMT+7")
@@ -76,12 +88,18 @@ public class Product {
 
     @PrePersist
     public void prePersist() {
+        slug = slugify(name);
+
         createdAt = Instant.now();
         updatedAt = Instant.now();
     }
 
     @PreUpdate
     public void preUpdate() {
+        slug = slugify(name);
+
         updatedAt = Instant.now();
     }
+
+
 }
