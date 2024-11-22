@@ -20,10 +20,6 @@ public class UserDetailsService implements org.springframework.security.core.use
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         com.fit.se.app.entity.User user = userService.getUserByEmail(username);
 
-        if (user == null) {
-            throw new UsernameNotFoundException("Không tìm thấy người dùng với email: " + username);
-        }
-
         return new User(
                 user.getEmail(),
                 user.getPassword(),

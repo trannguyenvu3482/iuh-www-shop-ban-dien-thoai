@@ -9,6 +9,7 @@ import com.fit.se.app.repository.UserRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -35,20 +36,21 @@ public class UserService {
         return userMapper.toUserDTO(userOptional.orElse(null));
     }
 
-    public User getUserByEmail(String email) {
-        return userRepository.findByEmail(email);
+    public User getUserByEmail(String email) throws UsernameNotFoundException {
+        User user = userRepository.findByEmail(email);
+
+        if (user == null) {
+            throw new UsernameNotFoundException("Không tìm thấy người dùng với email: " + email);
+        } else {
+            return user;
+        }
+
     }
 
     public ResPaginationDTO getUsers(Specification<User> spec, Pageable pageable) {
         Page<User> pageUsers = userRepository.findAll(spec, pageable);
 
-        List<UserDTO> users = pageUsers.getContent().stream().map(u ->
-                {
-                    UserDTO userDTO = userMapper.toUserDTO(u);
-                    System.out.println(userDTO);
-                    return userDTO;
-                }
-        ).toList();
+        List<UserDTO> users = userMapper.toUserDTOs(pageUsers.getContent());
 
         ResPaginationDTO resPaginationDTO = new ResPaginationDTO();
         Metadata metadata = new Metadata();
