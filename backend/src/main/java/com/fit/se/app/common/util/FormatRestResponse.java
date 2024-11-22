@@ -1,7 +1,7 @@
 package com.fit.se.app.common.util;
 
 import com.fit.se.app.common.annotation.ApiMessage;
-import com.fit.se.app.entity.RestResponse;
+import com.fit.se.app.dto.response.RestResponse;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;

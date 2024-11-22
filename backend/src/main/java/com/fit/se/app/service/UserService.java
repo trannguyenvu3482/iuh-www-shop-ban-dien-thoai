@@ -4,6 +4,7 @@ import com.fit.se.app.dto.response.Metadata;
 import com.fit.se.app.dto.response.ResPaginationDTO;
 import com.fit.se.app.dto.response.UserDTO;
 import com.fit.se.app.entity.User;
+import com.fit.se.app.mapper.UserMapper;
 import com.fit.se.app.repository.UserRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,39 +17,38 @@ import java.util.Optional;
 @Service
 public class UserService {
     private final UserRepository userRepository;
+    private final UserMapper userMapper;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, UserMapper userMapper) {
         this.userRepository = userRepository;
+        this.userMapper = userMapper;
     }
 
-    public User saveUser(User user) {
-        return userRepository.save(user);
+    public UserDTO saveUser(User user) {
+        User createdUser = userRepository.save(user);
+
+        return userMapper.toUserDTO(createdUser);
     }
 
-    public User getUserById(Integer id) {
-        return userRepository.findById(id).orElse(null);
+    public UserDTO getUserById(Integer id) {
+        Optional<User> userOptional = userRepository.findById(id);
+        return userMapper.toUserDTO(userOptional.orElse(null));
     }
 
     public User getUserByEmail(String email) {
         return userRepository.findByEmail(email);
     }
 
-
     public ResPaginationDTO getUsers(Specification<User> spec, Pageable pageable) {
         Page<User> pageUsers = userRepository.findAll(spec, pageable);
 
-        List<UserDTO> users = pageUsers.getContent().stream().map(user -> {
-            System.out.println(user);
-            UserDTO userDTO = new UserDTO();
-            userDTO.setId(user.getId());
-            userDTO.setName(user.getName());
-            userDTO.setEmail(user.getEmail());
-            userDTO.setPhoneNumber(user.getPhoneNumber());
-            userDTO.setAddress(user.getAddress());
-            userDTO.setPassword(user.getPassword());
-            userDTO.setUserType(user.getUserType().name());
-            return userDTO;
-        }).toList();
+        List<UserDTO> users = pageUsers.getContent().stream().map(u ->
+                {
+                    UserDTO userDTO = userMapper.toUserDTO(u);
+                    System.out.println(userDTO);
+                    return userDTO;
+                }
+        ).toList();
 
         ResPaginationDTO resPaginationDTO = new ResPaginationDTO();
         Metadata metadata = new Metadata();
