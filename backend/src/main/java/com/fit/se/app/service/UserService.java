@@ -32,7 +32,7 @@ public class UserService {
 
     public UserDTO getUserById(Integer id) {
         Optional<User> userOptional = userRepository.findById(id);
-        return userOptional.map(userMapper::toUserDTO).orElse(null);
+        return userMapper.toUserDTO(userOptional.orElse(null));
     }
 
     public User getUserByEmail(String email) {
@@ -42,7 +42,13 @@ public class UserService {
     public ResPaginationDTO getUsers(Specification<User> spec, Pageable pageable) {
         Page<User> pageUsers = userRepository.findAll(spec, pageable);
 
-        List<UserDTO> users = pageUsers.getContent().stream().map(userMapper::toUserDTO).toList();
+        List<UserDTO> users = pageUsers.getContent().stream().map(u ->
+                {
+                    UserDTO userDTO = userMapper.toUserDTO(u);
+                    System.out.println(userDTO);
+                    return userDTO;
+                }
+        ).toList();
 
         ResPaginationDTO resPaginationDTO = new ResPaginationDTO();
         Metadata metadata = new Metadata();

@@ -14,7 +14,7 @@ public class ProductStorage {
     private Integer id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id")
+    @JoinColumn(name = "product_id", unique = false)
     private Product product;
 
     @Column(name = "storage", nullable = false)

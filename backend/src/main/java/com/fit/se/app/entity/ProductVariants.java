@@ -16,15 +16,15 @@ public class ProductVariants {
     private Integer id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id")
+    @JoinColumn(name = "product_id", unique = false)
     private Product product;
 
     @OneToOne
-    @JoinColumn(name = "color_id")
+    @JoinColumn(name = "color_id", unique = false)
     private ProductColors color;
 
     @OneToOne
-    @JoinColumn(name = "storage_id")
+    @JoinColumn(name = "storage_id", unique = false)
     private ProductStorage storage;
 
     @Column(name = "price", nullable = false, precision = 10, scale = 2)

@@ -1,14 +1,25 @@
 package com.fit.se.app.dto.response;
 
-import lombok.*;
-import lombok.experimental.FieldDefaults;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Setter
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE)
 public class ResLoginDTO {
-    String accessToken;
+    private String accessToken;
+    private UserLogin user;
 
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class UserLogin {
+        private Integer id;
+        private String email;
+        private String name;
+    }
 }

@@ -55,9 +55,6 @@ public class User {
     @NotNull(message = "Giới tính không được để trống")
     private GenderEnum gender;
 
-    @Enumerated(EnumType.STRING)
-    private StatusEnum status = StatusEnum.ACTIVE;
-
     @Column(name = "loyalty_points")
     private Integer loyaltyPoints = 0;
 
@@ -78,9 +75,13 @@ public class User {
     @OneToMany(mappedBy = "user")
     private Set<Review> reviews = new LinkedHashSet<>();
 
+    @Enumerated(EnumType.STRING)
+    private StatusEnum status = StatusEnum.ACTIVE;
+
     @PrePersist
     public void prePersist() {
         createdAt = Instant.now();
+        updatedAt = Instant.now();
     }
 
     @PreUpdate

@@ -16,7 +16,7 @@ public class ProductColors {
     private Integer id;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "product_id", nullable = false)
+    @JoinColumn(name = "product_id", nullable = false, unique = false)
     private Product product;
 
     @Nationalized
