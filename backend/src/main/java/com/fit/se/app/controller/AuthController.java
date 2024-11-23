@@ -49,7 +49,7 @@ public class AuthController {
         resLoginDTO.setUser(userLogin);
 
         // Create token
-        String access_token = securityService.createAccessToken(authentication, resLoginDTO.getUser());
+        String access_token = securityService.createAccessToken(authentication.getName(), resLoginDTO.getUser());
         resLoginDTO.setAccessToken(access_token);
 
         // Create refresh token
@@ -82,12 +82,43 @@ public class AuthController {
 
     @GetMapping("/refresh-token")
     @ApiMessage("Get user token successfully")
-    public ResponseEntity<ResLoginDTO> refreshToken() {
+    public ResponseEntity<ResLoginDTO> refreshToken(@CookieValue(value = "refresh_token", defaultValue = "") String refreshToken) throws Exception {
+        if (refreshToken.isEmpty()) {
+            throw new Exception("Bạn không có refresh_token ở cookies");
+        }
+
         // Get refresh token from cookies
-        @CookieValue(value = "refresh_token") String refreshToken = "";
         Jwt decodedToken = this.securityService.checkValidAccessToken(refreshToken);
+        String email = decodedToken.getSubject();
 
-        // Get user by refresh token
+        // Check user
+        User user = userService.getUserByRefreshTokenAndEmail(refreshToken, email);
+        if (user == null) {
+            throw new Exception("Refresh token không hợp lệ");
+        }
 
+        // Create token
+        ResLoginDTO resLoginDTO = new ResLoginDTO();
+        User currentUser = userService.getUserByEmail(email);
+
+        ResLoginDTO.UserLogin userLogin = new ResLoginDTO.UserLogin(currentUser.getId(), currentUser.getEmail(), currentUser.getName());
+        resLoginDTO.setUser(userLogin);
+
+        String access_token = securityService.createAccessToken(email, resLoginDTO.getUser());
+        resLoginDTO.setAccessToken(access_token);
+
+        // Create refresh token
+        String newRefreshToken = securityService.createRefreshToken(email, resLoginDTO);
+        userService.updateUserToken(newRefreshToken, email);
+
+        // Set cookie
+        ResponseCookie resCookie = ResponseCookie.from("refresh_token", newRefreshToken)
+                .httpOnly(true)
+                .path("/")
+                .maxAge(Integer.parseInt(refreshTokenExpiration))
+                .build();
+        return ResponseEntity.ok()
+                .header(HttpHeaders.SET_COOKIE, resCookie.toString())
+                .body(resLoginDTO);
     }
 }

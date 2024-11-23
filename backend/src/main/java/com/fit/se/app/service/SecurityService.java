@@ -37,7 +37,7 @@ public class SecurityService {
     private String refreshTokenExpiration;
 
 
-    public String createAccessToken(Authentication authentication, ResLoginDTO.UserLogin resLoginDTO) {
+    public String createAccessToken(String email, ResLoginDTO.UserLogin resLoginDTO) {
         Instant now = Instant.now();
         Instant validUntil = now.plusSeconds(Long.parseLong(accessTokenExpiration));
 
@@ -49,7 +49,7 @@ public class SecurityService {
                 .builder()
                 .issuedAt(now)
                 .expiresAt(validUntil)
-                .subject(authentication.getName())
+                .subject(email)
                 .claim("user", resLoginDTO)
                 .claim("permission", listAuthorities)
                 .build();
