@@ -58,7 +58,8 @@ public class User {
     @Column(name = "loyalty_points")
     private Integer loyaltyPoints = 0;
 
-    @Column(name = "refresh_token", length = 100)
+    @Column(name = "refresh_token")
+    @Lob
     private String refreshToken;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss a", timezone = "GMT+7")

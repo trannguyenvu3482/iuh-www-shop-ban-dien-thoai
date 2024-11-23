@@ -85,4 +85,10 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
+    public void updateUserToken(String token, String email) {
+        User user = this.userRepository.findByEmail(email);
+
+        user.setRefreshToken(token);
+        this.userRepository.save(user);
+    }
 }
