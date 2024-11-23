@@ -28,7 +28,6 @@ public class GlobalExceptionHandler {
             IllegalArgumentException.class,
             IllegalStateException.class,
             UsernameNotFoundException.class,
-            BadCredentialsException.class
     })
     ResponseEntity<RestResponse<Object>> handleException(Exception e) {
         RestResponse<Object> response = new RestResponse<>();
@@ -47,6 +46,16 @@ public class GlobalExceptionHandler {
         response.setMessage("404 Not Found. Không tìm thấy tài nguyên");
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+    }
+
+    @ExceptionHandler(value = BadCredentialsException.class)
+    ResponseEntity<RestResponse<Object>> handleBadCredentialsException(BadCredentialsException e) {
+        RestResponse<Object> response = new RestResponse<>();
+        response.setStatusCode(HttpStatus.UNAUTHORIZED.value());
+        response.setError(e.getMessage());
+        response.setMessage("Sai tên đăng nhập hoặc mật khẩu");
+
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
     }
 
     @ExceptionHandler(value = MethodArgumentNotValidException.class)

@@ -67,7 +67,7 @@ public class SecurityConfiguration {
     public JwtAuthenticationConverter jwtAuthenticationConverter() {
         JwtGrantedAuthoritiesConverter grantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
         grantedAuthoritiesConverter.setAuthorityPrefix("");
-        grantedAuthoritiesConverter.setAuthoritiesClaimName("fit-se");
+        grantedAuthoritiesConverter.setAuthoritiesClaimName("permission");
 
         JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();
         jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(grantedAuthoritiesConverter);
@@ -81,7 +81,7 @@ public class SecurityConfiguration {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(
                         authz -> authz
-                                .requestMatchers("/", "/login", "/create-order/**").permitAll()
+                                .requestMatchers("/", "/login", "/refresh-token", "/create-order/**").permitAll()
                                 .requestMatchers("/users/**").permitAll()
                                 .anyRequest().authenticated())
                 .oauth2ResourceServer(oauth2 -> oauth2
