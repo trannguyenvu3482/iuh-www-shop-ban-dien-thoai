@@ -26,3 +26,7 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.SQLServerDialect
+springdoc:
+  swagger-ui:
+    disable-swagger-default-url: true
+    path: /docs.html
