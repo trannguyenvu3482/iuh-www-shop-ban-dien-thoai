@@ -1,26 +1,60 @@
 import { Form, Formik } from 'formik'
 import { useSnackbar } from 'notistack'
 import React from 'react'
+import { FaChevronLeft, FaEnvelope, FaLock } from 'react-icons/fa6'
 import { Link, useNavigate } from 'react-router-dom'
 import Logo from '../../../assets/img/logo.png'
 import TextInput from '../../../components/TextInput'
+import { login } from '../../../service/authentication'
+import { useUserStore } from '../../../zustand/userStore'
 import { LoginSchema } from '../context'
-
 const SignIn = () => {
   const navigate = useNavigate()
   const { enqueueSnackbar, closeSnackbar } = useSnackbar()
+  const { setUser, setAccessToken, setIsAuthenticated } = useUserStore()
+
+  const handleLogin = async (values) => {
+    const data = await login(values.email, values.password)
+
+    if (data.statusCode === 401) {
+      enqueueSnackbar(data.message, {
+        variant: 'error',
+        autoHideDuration: 3000,
+        preventDuplicate: true,
+      })
+    } else {
+      setUser(data.user)
+      setAccessToken(data.accessToken)
+      setIsAuthenticated(true)
+
+      enqueueSnackbar('Đăng nhập thành công, đang chuyển hướng đến trang chủ', {
+        variant: 'success',
+        autoHideDuration: 3000,
+        preventDuplicate: true,
+      })
+      setTimeout(() => {
+        navigate('/')
+      }, 3000)
+    }
+  }
 
   return (
-    <div className="pt:mt-0 mx-auto flex flex-col items-center justify-center bg-[url('https://plus.unsplash.com/premium_photo-1701167435570-8c3239951f74?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')] px-6 pt-8 md:h-screen">
-      <div className="flex w-full max-w-2xl flex-col rounded-lg bg-white p-10 shadow dark:bg-gray-800">
+    <div className="pt:mt-0 mx-auto flex flex-col items-end justify-center bg-[url('/authbg.jpg')] px-6 pt-8 md:h-screen">
+      <a
+        href="/"
+        className="absolute left-8 top-8 flex items-center justify-center gap-1 rounded-full bg-white p-4 text-xl text-black transition-all hover:opacity-90"
+      >
+        <FaChevronLeft />
+      </a>
+      <div className="mr-20 flex w-full max-w-lg flex-col rounded-lg bg-white p-10 shadow dark:bg-gray-800">
         <a
           href="/"
-          className="flex items-center justify-center text-2xl font-semibold dark:text-white"
+          className="flex items-center justify-center text-2xl font-semibold hover:opacity-90 dark:text-white"
         >
           <img src={Logo} className="mr-4 h-11" alt="FlowBite Logo" />
         </a>
-        <h2 className="mb-8 mt-2 text-center text-lg text-gray-200 opacity-60">
-          Đăng nhập vào tài khoản của bạn để bắt đầu mua hàng
+        <h2 className="mb-8 mt-1 text-center text-lg text-gray-200 opacity-60">
+          Chào mừng bạn quay trở lại!
         </h2>
         <Formik
           initialValues={{
@@ -29,8 +63,7 @@ const SignIn = () => {
           }}
           validationSchema={LoginSchema}
           onSubmit={(values) => {
-            console.log(values)
-            navigate('/')
+            handleLogin(values)
           }}
         >
           {({ errors, touched, handleChange, handleBlur }) => (
@@ -40,6 +73,7 @@ const SignIn = () => {
                 name="email"
                 onChange={handleChange}
                 onBlur={handleBlur}
+                iconLeft={<FaEnvelope />}
                 error={errors.email && touched.email ? errors.email : ''}
               />
               <TextInput
@@ -48,6 +82,7 @@ const SignIn = () => {
                 type="password"
                 onChange={handleChange}
                 onBlur={handleBlur}
+                iconLeft={<FaLock />}
                 error={
                   errors.password && touched.password ? errors.password : ''
                 }

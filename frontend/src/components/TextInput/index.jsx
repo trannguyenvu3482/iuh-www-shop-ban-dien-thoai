@@ -5,6 +5,7 @@ const TextInput = ({
   error = '',
   inputStyle = '',
   containerStyle = '',
+  iconLeft,
   ...props
 }) => {
   return (
@@ -15,10 +16,17 @@ const TextInput = ({
       >
         {label}
       </label>
-      <input
-        className={`${inputStyle} focus:ring-primary-500 focus:border-primary-500 dark:focus:ring-primary-500 dark:focus:border-primary-500 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 outline-none sm:text-sm dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400`}
-        {...props}
-      />
+      <div className="flex">
+        {iconLeft && (
+          <span className="rounded-e-0 inline-flex items-center rounded-s-md border border-e-0 border-gray-300 bg-gray-300 px-3 text-sm text-gray-900">
+            <span className="text-gray-600">{iconLeft}</span>
+          </span>
+        )}
+        <input
+          className={`${inputStyle} block w-full min-w-0 flex-1 ${iconLeft ? 'rounded-e-lg' : 'rounded-lg'} border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500`}
+          {...props}
+        />
+      </div>
       {error && <p className="mt-2 text-sm text-red-600">{error}</p>}
     </div>
   )

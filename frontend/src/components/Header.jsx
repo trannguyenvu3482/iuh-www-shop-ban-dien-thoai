@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { FaAngleDown, FaAngleUp, FaUser } from 'react-icons/fa6'
-import { IoSearchOutline } from 'react-icons/io5'
+import { IoLogIn, IoSearchOutline } from 'react-icons/io5'
 import { Link } from 'react-router-dom'
 import Sticky from 'react-sticky-el'
 import 'swiper/css'
@@ -46,7 +46,7 @@ const Header = () => {
           </Swiper>
         </div>
       </div>
-      <div className="z-10 bg-primary-red">
+      <div className={`z-10 bg-primary-red ${!isSticky && 'flex'}`}>
         <div
           className={`z-10 mx-auto ${isSticky ? '' : 'max-w-[1200px]'} bg-primary-red pb-2`}
         >
@@ -128,7 +128,7 @@ const Header = () => {
                 </div>
               </div>
 
-              <div className="cart relative ml-6">
+              {/* <div className="cart relative ml-6">
                 <Link
                   to="/"
                   className="border-radius-5 flex h-full w-[100px] items-center justify-end rounded-lg bg-[#333] bg-opacity-35 pr-2 text-white transition-all hover:bg-white hover:bg-opacity-20 hover:text-black"
@@ -146,17 +146,87 @@ const Header = () => {
                   </i>
                   <span className="text-sm">Giỏ hàng</span>
                 </Link>
-              </div>
+              </div> */}
 
               <div className="ml-6 flex items-center justify-center text-white">
                 <Link
                   to="/login"
-                  className="flex h-full items-center justify-center gap-1 rounded-md bg-black bg-opacity-30 p-2 text-sm font-bold text-white transition-all hover:bg-opacity-50"
+                  className="flex h-full items-center justify-center gap-2 rounded-md bg-black bg-opacity-30 px-3 py-2 text-sm font-bold text-white transition-all hover:bg-opacity-50"
                 >
-                  <FaUser />
+                  <IoLogIn className="h-5 w-5" />
                   Đăng nhập
                 </Link>
               </div>
+              <div className="ml-2 flex items-center justify-center text-white">
+                <Link
+                  to="/signup"
+                  className="flex h-full items-center justify-center gap-2 rounded-md bg-black bg-opacity-30 px-3 py-2 text-sm font-bold text-white transition-all hover:bg-opacity-50"
+                >
+                  <FaUser />
+                  Đăng ký
+                </Link>
+              </div>
+
+              {/* <div className="group z-20 ml-6 flex items-center justify-center text-white">
+                <img
+                  id="avatarButton"
+                  type="button"
+                  data-dropdown-toggle="userDropdown2"
+                  data-dropdown-placement="bottom-start"
+                  className="h-10 w-10 cursor-pointer rounded-full bg-white"
+                  src="https://robohash.org/1?size=50x50"
+                  alt="User dropdown"
+                />
+
+                <div
+                  id="userDropdown"
+                  className="absolute -right-16 top-14 z-20 hidden w-44 divide-y divide-gray-100 rounded-lg bg-white shadow group-hover:block dark:divide-gray-600 dark:bg-gray-700"
+                >
+                  <div className="px-4 py-3 text-sm text-gray-900 dark:text-white">
+                    <div>Trần Nguyên Vũ</div>
+                    <div className="truncate font-medium">
+                      trannguyenvu3482@gmail.com
+                    </div>
+                  </div>
+                  <ul
+                    className="py-2 text-sm text-gray-700 dark:text-gray-200"
+                    aria-labelledby="avatarButton"
+                  >
+                    <li>
+                      <a
+                        href="#"
+                        className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                      >
+                        Lịch sử đơn hàng
+                      </a>
+                    </li>
+                    <li>
+                      <a
+                        href="#"
+                        className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                      >
+                        Cài đặt
+                      </a>
+                    </li>
+                    <li>
+                      <a
+                        href="#"
+                        className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                      >
+                        Trợ giúp
+                      </a>
+                    </li>
+                  </ul>
+                  <div className="py-1">
+                    <a
+                      href="#"
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-600 dark:hover:text-white"
+                    >
+                      Đăng xuất
+                    </a>
+                  </div>
+                </div>
+              </div> */}
             </div>
           </Sticky>
           <div className="flex gap-3">
