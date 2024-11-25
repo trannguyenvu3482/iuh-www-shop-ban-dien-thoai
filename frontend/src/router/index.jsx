@@ -2,7 +2,10 @@
 import { lazy } from 'react'
 import { createBrowserRouter } from 'react-router-dom'
 import App from '../App'
+import AdminLayout from '../layout/AdminLayout'
 import Admin from '../pages/Admin'
+import Products from '../pages/Admin/Products'
+import AddProduct from '../pages/Admin/Products/AddProducts'
 import Login from '../pages/Authentication/Login'
 import SignUp from '../pages/Authentication/SignUp'
 import Error from '../pages/Error'
@@ -31,9 +34,23 @@ const router = createBrowserRouter([
     path: '/admin',
     element: (
       <PrivateRoute>
-        <Admin />
+        <AdminLayout />
       </PrivateRoute>
     ),
+    children: [
+      {
+        path: '/admin',
+        element: <Admin />,
+      },
+      {
+        path: '/admin/products',
+        element: <Products />,
+      },
+      {
+        path: '/admin/products/add',
+        element: <AddProduct />,
+      },
+    ],
   },
   {
     path: '/login',
