@@ -15,7 +15,7 @@ import java.time.Instant;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ReviewDTO implements Serializable {
+public class ResponseReviewDTO implements Serializable {
     Integer id;
     ReviewUserDTO user;
     Integer rating;

@@ -1,8 +1,7 @@
 package com.fit.se.app.service;
 
-import com.fit.se.app.dto.response.Metadata;
-import com.fit.se.app.dto.response.ProductDTO;
-import com.fit.se.app.dto.response.ResPaginationDTO;
+import com.fit.se.app.dto.response.ResponsePaginationDTO;
+import com.fit.se.app.dto.response.ResponseProductDetailDTO;
 import com.fit.se.app.entity.Product;
 import com.fit.se.app.mapper.ProductMapper;
 import com.fit.se.app.repository.ProductRepository;
@@ -27,7 +26,7 @@ public class ProductService {
         return productRepository.save(product);
     }
 
-    public ProductDTO getProductById(Integer id) throws Exception {
+    public ResponseProductDetailDTO getProductById(Integer id) throws Exception {
         Product product = productRepository.findById(id).orElse(null);
 
         if (product == null) {
@@ -37,23 +36,33 @@ public class ProductService {
         }
     }
 
-    public ResPaginationDTO getProducts(Specification<Product> spec, Pageable pageable) {
+    public ResponseProductDetailDTO getProductBySlug(String slug) throws Exception {
+        Product product = productRepository.findBySlug(slug);
+
+        if (product == null) {
+            throw new Exception("Không tìm thấy sản phẩm có slug: " + slug);
+        } else {
+            return productMapper.toProductDTO(product);
+        }
+    }
+
+    public ResponsePaginationDTO getProducts(Specification<Product> spec, Pageable pageable) {
         Page<Product> pageProducts = productRepository.findAll(spec, pageable);
 
-        List<ProductDTO> products = productMapper.toProductDTOs(pageProducts.getContent());
+        List<ResponseProductDetailDTO> products = productMapper.toProductDTOs(pageProducts.getContent());
 
-        ResPaginationDTO resPaginationDTO = new ResPaginationDTO();
-        Metadata metadata = new Metadata();
+        ResponsePaginationDTO responsePaginationDTO = new ResponsePaginationDTO();
+        ResponsePaginationDTO.Metadata metadata = new ResponsePaginationDTO.Metadata();
 
         metadata.setPage(pageable.getPageNumber() + 1);
         metadata.setPageSize(pageable.getPageSize());
         metadata.setTotalPages(pageProducts.getTotalPages());
         metadata.setTotalItems(pageProducts.getTotalElements());
 
-        resPaginationDTO.setMetadata(metadata);
-        resPaginationDTO.setResult(products);
+        responsePaginationDTO.setMetadata(metadata);
+        responsePaginationDTO.setResult(products);
 
-        return resPaginationDTO;
+        return responsePaginationDTO;
     }
 
     public void deleteProduct(Integer id) {

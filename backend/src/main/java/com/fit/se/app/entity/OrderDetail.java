@@ -22,6 +22,10 @@ public class OrderDetail {
     @JoinColumn(name = "product_id")
     private Product product;
 
+    @OneToOne(optional = false, orphanRemoval = true)
+    @JoinColumn(name = "product_variants_id", nullable = false)
+    private ProductVariants productVariants;
+
     private Integer quantity = 0;
     private BigDecimal price = BigDecimal.ZERO;
 }

@@ -1,8 +1,8 @@
 package com.fit.se.app.controller;
 
 import com.fit.se.app.common.annotation.ApiMessage;
-import com.fit.se.app.dto.response.ResPaginationDTO;
-import com.fit.se.app.dto.response.UserDTO;
+import com.fit.se.app.dto.response.ResponsePaginationDTO;
+import com.fit.se.app.dto.response.ResponseUserDTO;
 import com.fit.se.app.entity.User;
 import com.fit.se.app.service.UserService;
 import com.turkraft.springfilter.boot.Filter;
@@ -27,15 +27,15 @@ public class UserController {
 
     @PostMapping
     @ApiMessage("Create a new user")
-    ResponseEntity<UserDTO> createUser(@Valid @RequestBody User user) {
+    ResponseEntity<ResponseUserDTO> createUser(@Valid @RequestBody User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        UserDTO createdUser = userService.saveUser(user);
+        ResponseUserDTO createdUser = userService.saveUser(user);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
     }
 
     @GetMapping
     @ApiMessage("Fetch all users")
-    ResponseEntity<ResPaginationDTO> getUsers(
+    ResponseEntity<ResponsePaginationDTO> getUsers(
             @Filter Specification<User> spec,
             Pageable pageable
     ) {
@@ -44,15 +44,15 @@ public class UserController {
 
     @GetMapping("/{id}")
     @ApiMessage("Fetch a user by id")
-    ResponseEntity<UserDTO> getUserById(@PathVariable Integer id) {
-        UserDTO user = userService.getUserById(id);
+    ResponseEntity<ResponseUserDTO> getUserById(@PathVariable Integer id) {
+        ResponseUserDTO user = userService.getUserById(id);
         return user != null ? ResponseEntity.ok(user) : ResponseEntity.notFound().build();
     }
 
     @PutMapping
     @ApiMessage("Update a user")
-    ResponseEntity<UserDTO> updateUser(@RequestBody User user) {
-        UserDTO updatedUser = userService.saveUser(user);
+    ResponseEntity<ResponseUserDTO> updateUser(@RequestBody User user) {
+        ResponseUserDTO updatedUser = userService.saveUser(user);
         return ResponseEntity.ok(updatedUser);
     }
 

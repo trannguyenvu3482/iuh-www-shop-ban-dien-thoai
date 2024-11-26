@@ -1,6 +1,6 @@
 package com.fit.se.app.service;
 
-import com.fit.se.app.dto.response.ResLoginDTO;
+import com.fit.se.app.dto.response.ResponseLoginDTO;
 import com.nimbusds.jose.util.Base64;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
@@ -37,7 +37,7 @@ public class SecurityService {
     private String refreshTokenExpiration;
 
 
-    public String createAccessToken(String email, ResLoginDTO.UserLogin resLoginDTO) {
+    public String createAccessToken(String email, ResponseLoginDTO.UserLogin resLoginDTO) {
         Instant now = Instant.now();
         Instant validUntil = now.plusSeconds(Long.parseLong(accessTokenExpiration));
 
@@ -58,7 +58,7 @@ public class SecurityService {
         return jwtEncoder.encode(JwtEncoderParameters.from(header, claims)).getTokenValue();
     }
 
-    public String createRefreshToken(String email, ResLoginDTO resLoginDTO) {
+    public String createRefreshToken(String email, ResponseLoginDTO responseLoginDTO) {
         Instant now = Instant.now();
         Instant validUntil = now.plusSeconds(Long.parseLong(refreshTokenExpiration));
 
@@ -67,7 +67,7 @@ public class SecurityService {
                 .issuedAt(now)
                 .expiresAt(validUntil)
                 .subject(email)
-                .claim("user", resLoginDTO.getUser()).build();
+                .claim("user", responseLoginDTO.getUser()).build();
 
         JwsHeader header = JwsHeader.with(JWT_ALGORITHM).build();
         return jwtEncoder.encode(JwtEncoderParameters.from(header, claims)).getTokenValue();

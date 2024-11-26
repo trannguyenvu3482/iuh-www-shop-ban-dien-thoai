@@ -67,7 +67,7 @@ public class Product {
     @ToString.Exclude
     private Set<ProductStorage> productStorages = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "product")
+    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
     @ToString.Exclude
     private Set<Review> reviews = new LinkedHashSet<>();
 

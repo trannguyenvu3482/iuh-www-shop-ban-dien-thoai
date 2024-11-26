@@ -8,7 +8,19 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ResPaginationDTO {
+public class ResponsePaginationDTO {
     Metadata metadata;
     Object result;
+
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
+
+    public static class Metadata {
+        int page;
+        int pageSize;
+        int totalPages;
+        long totalItems;
+    }
 }

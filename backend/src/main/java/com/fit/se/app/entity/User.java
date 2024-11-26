@@ -5,6 +5,7 @@ import com.fit.se.app.common.constant.enums.GenderEnum;
 import com.fit.se.app.common.constant.enums.StatusEnum;
 import com.fit.se.app.common.constant.enums.UserTypeEnum;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -33,6 +34,7 @@ public class User {
 
     @Column(name = "email", nullable = false, length = 100, unique = true)
     @NotBlank(message = "Email không được để trống")
+    @Email(message = "Email không đúng định dạng")
     private String email;
 
     @Column(name = "phone_number", length = 20, unique = true)
