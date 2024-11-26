@@ -1,6 +1,7 @@
 package com.fit.se.app.service;
 
 import com.fit.se.app.dto.response.ResponsePaginationDTO;
+import com.fit.se.app.dto.response.ResponseProductDTO;
 import com.fit.se.app.dto.response.ResponseProductDetailDTO;
 import com.fit.se.app.entity.Product;
 import com.fit.se.app.mapper.ProductMapper;
@@ -32,7 +33,7 @@ public class ProductService {
         if (product == null) {
             throw new Exception("Không tìm thấy sản phẩm có id: " + id);
         } else {
-            return productMapper.toProductDTO(product);
+            return productMapper.toProductDetailDTO(product);
         }
     }
 
@@ -42,14 +43,14 @@ public class ProductService {
         if (product == null) {
             throw new Exception("Không tìm thấy sản phẩm có slug: " + slug);
         } else {
-            return productMapper.toProductDTO(product);
+            return productMapper.toProductDetailDTO(product);
         }
     }
 
     public ResponsePaginationDTO getProducts(Specification<Product> spec, Pageable pageable) {
         Page<Product> pageProducts = productRepository.findAll(spec, pageable);
 
-        List<ResponseProductDetailDTO> products = productMapper.toProductDTOs(pageProducts.getContent());
+        List<ResponseProductDTO> products = productMapper.toProductDTOs(pageProducts.getContent());
 
         ResponsePaginationDTO responsePaginationDTO = new ResponsePaginationDTO();
         ResponsePaginationDTO.Metadata metadata = new ResponsePaginationDTO.Metadata();
