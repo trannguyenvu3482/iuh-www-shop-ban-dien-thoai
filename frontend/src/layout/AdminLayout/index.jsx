@@ -55,8 +55,7 @@ const AdminLayout = () => {
         <Route path="/inbox" element={<Inbox />} />
       </Routes> */}
         <Outlet />
-        <Footer />
-      </Box>
+        </Box>
     </Box>
   )
 }

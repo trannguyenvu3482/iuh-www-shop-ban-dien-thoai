@@ -1,16 +1,18 @@
-import axios from "../axios";
+import instance from '../axios'
 
+const BASE_URL = '/auth'
 const login = async (email, password) => {
-  try {
-    const { data } = await axios.post("/login", {
-      username: email,
-      password: password,
-    });
+  return await instance.post(`${BASE_URL}/login`, {
+    username: email,
+    password: password,
+  })
+}
 
-    return data;
-  } catch (error) {
-    return error.response.data;
-  }
-};
+const logout = async () => {
+  return await instance.get(`${BASE_URL}/logout`)
+}
+const getAccount = async () => {
+  return await instance.get(`${BASE_URL}/account`)
+}
 
-export { login };
+export { login, logout, getAccount }

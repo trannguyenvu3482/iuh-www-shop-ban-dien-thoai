@@ -10,6 +10,8 @@ import Login from '../pages/Authentication/Login'
 import SignUp from '../pages/Authentication/SignUp'
 import Error from '../pages/Error'
 import PrivateRoute from './PrivateRoute'
+import Categories from '../pages/Admin/Categories'
+import AddCategory from '../pages/Admin/Categories/AddCategory'
 
 const Home = lazy(() => import('../pages/Home'))
 const CartPage = lazy(() => import('../pages/Cart'))
@@ -55,6 +57,14 @@ const router = createBrowserRouter([
       {
         path: '/admin/products/add',
         element: <AddProduct />,
+      },
+      {
+        path: '/admin/categories',
+        element: <Categories />,
+      },
+      {
+        path: '/admin/categories/add',
+        element: <AddCategory />,
       },
     ],
   },

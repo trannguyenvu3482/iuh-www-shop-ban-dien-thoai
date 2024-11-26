@@ -16,7 +16,7 @@ const Admin = () => {
   return (
     <Box sx={{ pt: '80px', pb: '20px' }}>
       <Typography variant="h6" sx={{ marginBottom: '14px' }}>
-        Dashboard
+        Bảng điều khiển
       </Typography>
       <ComponentWrapper>
         <Stats />
