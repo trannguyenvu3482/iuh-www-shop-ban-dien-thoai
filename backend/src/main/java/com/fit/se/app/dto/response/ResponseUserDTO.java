@@ -1,6 +1,6 @@
 package com.fit.se.app.dto.response;
 
-import com.fit.se.app.common.constant.enums.GenderEnum;
+import com.fit.se.app.common.constant.enums.StatusEnum;
 import com.fit.se.app.common.constant.enums.UserTypeEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,8 +20,9 @@ public class ResponseUserDTO {
     private String phoneNumber;
     private String address;
     private UserTypeEnum userType;
-    private GenderEnum gender;
     private Integer loyaltyPoints;
     private Instant createdAt;
     private Instant updatedAt;
+    private String avatarUrl;
+    private StatusEnum status;
 }

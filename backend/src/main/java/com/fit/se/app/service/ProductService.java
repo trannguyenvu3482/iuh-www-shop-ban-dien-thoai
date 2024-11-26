@@ -1,5 +1,6 @@
 package com.fit.se.app.service;
 
+import com.fit.se.app.common.constant.enums.StatusEnum;
 import com.fit.se.app.dto.response.ResponsePaginationDTO;
 import com.fit.se.app.dto.response.ResponseProductDTO;
 import com.fit.se.app.dto.response.ResponseProductDetailDTO;
@@ -47,8 +48,52 @@ public class ProductService {
         }
     }
 
+    public ResponsePaginationDTO getProducts(Specification<Product> spec, Pageable pageable, boolean isAdmin) {
+        Specification<Product> activeSpec = (root, query, criteriaBuilder) ->
+                criteriaBuilder.equal(root.get("status"), StatusEnum.ACTIVE);
+        spec = spec.and(activeSpec);
+        Page<Product> pageProducts = productRepository.findAll(activeSpec, pageable);
+
+        List<ResponseProductDTO> products = productMapper.toProductDTOs(pageProducts.getContent());
+
+        ResponsePaginationDTO responsePaginationDTO = new ResponsePaginationDTO();
+        ResponsePaginationDTO.Metadata metadata = new ResponsePaginationDTO.Metadata();
+
+        metadata.setPage(pageable.getPageNumber() + 1);
+        metadata.setPageSize(pageable.getPageSize());
+        metadata.setTotalPages(pageProducts.getTotalPages());
+        metadata.setTotalItems(pageProducts.getTotalElements());
+
+        responsePaginationDTO.setMetadata(metadata);
+        responsePaginationDTO.setResult(products);
+
+        return responsePaginationDTO;
+    }
+
     public ResponsePaginationDTO getProducts(Specification<Product> spec, Pageable pageable) {
         Page<Product> pageProducts = productRepository.findAll(spec, pageable);
+
+        List<ResponseProductDTO> products = productMapper.toProductDTOs(pageProducts.getContent());
+
+        ResponsePaginationDTO responsePaginationDTO = new ResponsePaginationDTO();
+        ResponsePaginationDTO.Metadata metadata = new ResponsePaginationDTO.Metadata();
+
+        metadata.setPage(pageable.getPageNumber() + 1);
+        metadata.setPageSize(pageable.getPageSize());
+        metadata.setTotalPages(pageProducts.getTotalPages());
+        metadata.setTotalItems(pageProducts.getTotalElements());
+
+        responsePaginationDTO.setMetadata(metadata);
+        responsePaginationDTO.setResult(products);
+
+        return responsePaginationDTO;
+    }
+
+    public ResponsePaginationDTO getActiveProducts(Specification<Product> spec, Pageable pageable) {
+        Specification<Product> activeSpec = (root, query, criteriaBuilder) ->
+                criteriaBuilder.equal(root.get("status"), StatusEnum.ACTIVE);
+        spec = spec.and(activeSpec);
+        Page<Product> pageProducts = productRepository.findAll(activeSpec, pageable);
 
         List<ResponseProductDTO> products = productMapper.toProductDTOs(pageProducts.getContent());
 

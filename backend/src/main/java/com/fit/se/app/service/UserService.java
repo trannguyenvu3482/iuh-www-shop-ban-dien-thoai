@@ -25,6 +25,14 @@ public class UserService {
     }
 
     public ResponseUserDTO saveUser(User user) {
+        if (userRepository.findByEmail(user.getEmail()) != null) {
+            throw new IllegalArgumentException("Email đã tồn tại");
+        }
+
+        if (userRepository.findByPhoneNumber(user.getPhoneNumber()) != null) {
+            throw new IllegalArgumentException("Số điện thoại đã tồn tại");
+        }
+
         User createdUser = userRepository.save(user);
 
         return userMapper.toUserDTO(createdUser);

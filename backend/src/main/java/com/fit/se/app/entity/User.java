@@ -1,13 +1,11 @@
 package com.fit.se.app.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fit.se.app.common.constant.enums.GenderEnum;
 import com.fit.se.app.common.constant.enums.StatusEnum;
 import com.fit.se.app.common.constant.enums.UserTypeEnum;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
 import lombok.Setter;
@@ -53,12 +51,10 @@ public class User {
     @NotBlank(message = "Password không được để trống")
     private String password;
 
-    @Enumerated(EnumType.STRING)
-    @NotNull(message = "Giới tính không được để trống")
-    private GenderEnum gender;
-
     @Column(name = "loyalty_points")
     private Integer loyaltyPoints = 0;
+
+    private String avatarUrl;
 
     @Column(name = "refresh_token")
     @Lob
