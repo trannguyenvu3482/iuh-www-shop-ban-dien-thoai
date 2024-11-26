@@ -4,6 +4,7 @@ import ColorSection from './ColorSection'
 import { FaStar } from 'react-icons/fa'
 import SlideProduct from './SlideProduct'
 import Description from './Description'
+import { useNavigate } from 'react-router-dom'
 
 const capacities = [
   { label: '128GB', price: '24.499.000đ' },
@@ -43,6 +44,7 @@ const ProductDetail = () => {
   const handleSelectColor = (color) => {
     setSelectedColor(color)
   }
+  const navigate = useNavigate()
 
   return (
     <div className="bg-slate-100">
@@ -76,7 +78,7 @@ const ProductDetail = () => {
                 </div>
               </div>
               <div className="flex justify-between">
-                <div className="text-secondary-red text-3xl font-bold">
+                <div className="text-3xl font-bold text-secondary-red">
                   24.499.000 đ
                 </div>
                 <div className="text-sm font-bold text-gray-600">
@@ -102,7 +104,10 @@ const ProductDetail = () => {
             />
             {/* Button */}
             <div className="mt-4">
-              <button className="hover:bg-secondary-red w-full rounded-lg bg-primary-red px-5 py-2 text-center text-lg font-bold text-white">
+              <button
+                onClick={() => navigate('/cart')}
+                className="w-full rounded-lg bg-primary-red px-5 py-2 text-center text-lg font-bold text-white hover:bg-secondary-red"
+              >
                 MUA NGAY
                 <span className="block text-center text-sm font-normal">
                   Giao hàng tận nơi hoặc nhận cửa hàng

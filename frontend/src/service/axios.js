@@ -1,30 +1,30 @@
-import axios from "axios";
+import axios from 'axios'
 
 const instance = axios.create({
-  baseURL: "http://localhost:8080/api/v1",
+  baseURL: 'http://localhost:8080/api/v1',
   headers: {
-    "Content-Type": "application/json",
+    'Content-Type': 'application/json',
   },
-});
+})
 
 instance.interceptors.request.use(
   (config) => {
-    console.log();
+    console.log()
 
-    return config;
+    return config
   },
   (error) => {
-    return Promise.reject(error);
-  }
-);
+    return Promise.reject(error)
+  },
+)
 
 instance.interceptors.response.use(
   (response) => {
-    return response;
+    return response.data
   },
   (error) => {
-    return Promise.reject(error);
-  }
-);
+    return Promise.reject(error)
+  },
+)
 
-export default instance;
+export default instance
