@@ -8,7 +8,7 @@ import org.hibernate.annotations.Nationalized;
 @Setter
 @Getter
 @Entity
-@Table(name = "\"ProductColors\"")
+@Table(name = "ProductColors")
 public class ProductColors {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

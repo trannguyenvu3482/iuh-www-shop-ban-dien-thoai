@@ -1,5 +1,5 @@
 /* eslint-disable react-refresh/only-export-components */
-import { lazy } from 'react'
+import { lazy, Suspense } from 'react'
 import { createBrowserRouter } from 'react-router-dom'
 import App from '../App'
 import AdminLayout from '../layout/AdminLayout'
@@ -33,15 +33,27 @@ const router = createBrowserRouter([
       {
         index: true,
         path: '/',
-        element: <Home />,
+        element: (
+          <Suspense fallback={<div>Loading...</div>}>
+            <Home />
+          </Suspense>
+        ),
       },
       {
         path: '/product/:id',
-        element: <ProductDetail />,
+        element: (
+          <Suspense fallback={<div>Loading...</div>}>
+            <ProductDetail />
+          </Suspense>
+        ),
       },
       {
         path: '/cart',
-        element: <CartPage />,
+        element: (
+          <Suspense fallback={<div>Loading...</div>}>
+            <CartPage />
+          </Suspense>
+        ),
       },
     ],
   },

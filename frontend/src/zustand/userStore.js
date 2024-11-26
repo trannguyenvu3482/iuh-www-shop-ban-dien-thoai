@@ -1,25 +1,25 @@
-import { create } from 'zustand'
-import { createJSONStorage, persist } from 'zustand/middleware'
+import { create } from "zustand";
+import { createJSONStorage, persist } from "zustand/middleware";
 
 export const useUserStore = create(
   persist(
-    (set, get) => ({
-      user: {},
-      accessToken: '',
+    (set) => ({
+      user: null,
+      accessToken: null,
       isAuthenticated: false,
       setUser: (user) => {
-        set({ user })
+        set({ user });
       },
       setAccessToken: (accessToken) => {
-        set({ accessToken })
+        set({ accessToken });
       },
       setIsAuthenticated: (isAuthenticated) => {
-        set({ isAuthenticated })
+        set({ isAuthenticated });
       },
     }),
     {
-      name: 'user-store',
+      name: "user-store",
       storage: createJSONStorage(() => sessionStorage),
-    },
-  ),
-)
+    }
+  )
+);

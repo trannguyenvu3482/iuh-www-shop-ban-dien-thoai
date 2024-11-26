@@ -7,13 +7,15 @@ import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Nationalized;
 
 import java.math.BigDecimal;
 import java.time.Instant;
 
 @Setter
 @Getter
-@Entity(name = "\"Order\"")
+@Entity
+@Table(name = "Order")
 public class Order {
     @Id
     @Column(name = "order_id", nullable = false)
@@ -38,7 +40,9 @@ public class Order {
     @Column(name = "payment_method", nullable = false)
     private String paymentMethod;
 
-    @Column(columnDefinition = "NVARCHAR(MAX)")
+    @Nationalized
+//    @Lob
+    @Column(columnDefinition = "text") // PostgreSQL
     private String note;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss a", timezone = "GMT+7")
@@ -53,8 +57,7 @@ public class Order {
     private Instant updatedAt;
 
     @Enumerated(EnumType.STRING)
-    @Column(columnDefinition = "VARCHAR(255) DEFAULT 'CREATED'")
-    private OrderStatusEnum status;
+    private OrderStatusEnum status = OrderStatusEnum.CREATED;
 
     @PrePersist
     public void prePersist() {

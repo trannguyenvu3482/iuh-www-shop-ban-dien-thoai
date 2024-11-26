@@ -1,13 +1,13 @@
-import { useState } from 'react'
 import { Navigate } from 'react-router-dom'
+import { useUserStore } from '../zustand/userStore'
 
-const PrivateRoute = ({ user, children }) => {
+const PrivateRoute = ({ children }) => {
   // TODO: CHANGE THIS LATER
-  const [isLoggedIn, setIsLoggedIn] = useState(true)
+  const { user, isAuthenticated } = useUserStore()
 
   console.log(children)
 
-  if (!isLoggedIn) {
+  if (!isAuthenticated) {
     return <Navigate to="/" />
   }
   return children

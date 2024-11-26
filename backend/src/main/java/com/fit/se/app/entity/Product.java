@@ -20,6 +20,7 @@ import static com.fit.se.app.common.util.StringUtil.slugify;
 @Setter
 @Getter
 @Entity
+@Table(name = "Product")
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,8 +33,8 @@ public class Product {
     private String name;
 
     @Nationalized
-    @Lob
-    @Column(name = "description")
+    @Column(columnDefinition = "text") // PostgreSQL
+//    @Column(columnDefinition = "NTEXT") // SQL Server
     @NotBlank(message = "Mô tả sản phẩm không được để trống")
     private String description;
 

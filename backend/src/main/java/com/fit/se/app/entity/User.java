@@ -18,7 +18,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
-@Table(name = "\"User\"")
+@Table(name = "User")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -56,8 +56,9 @@ public class User {
 
     private String avatarUrl;
 
-    @Column(name = "refresh_token")
-    @Lob
+    //    @Column(name = "refresh_token")
+//    @Lob // Sql Server
+    @Column(name = "refresh_token", columnDefinition = "text") // PostgreSQL
     private String refreshToken;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss a", timezone = "GMT+7")
