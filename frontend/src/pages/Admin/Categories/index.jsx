@@ -4,10 +4,8 @@ import { FiPlus } from 'react-icons/fi'
 import { Link } from 'react-router-dom'
 import Table from '../../../components/Admin/Table'
 
-import { products } from '../../../constants/products'
-
-const Products = () => {
-  const productsColumns = useMemo(
+const Categories = () => {
+  const CategoriesColumns = useMemo(
     () => [
       {
         accessorKey: 'product_name',
@@ -64,7 +62,7 @@ const Products = () => {
         }}
       >
         <Typography variant="h6">Sản Phẩm</Typography>
-        <Link to="/admin/products/add" style={{ textDecoration: 'none' }}>
+        <Link to="/admin/Categories/add" style={{ textDecoration: 'none' }}>
           <Button
             variant="contained"
             color="primary"
@@ -76,9 +74,9 @@ const Products = () => {
         </Link>
       </Box>
       <Table
-        data={products}
-        fields={productsColumns}
-        numberOfRows={products.length}
+        data={[]}
+        fields={CategoriesColumns}
+        numberOfRows={[].length}
         enableTopToolBar={false}
         enableBottomToolBar={false}
         enablePagination={true}
@@ -87,10 +85,10 @@ const Products = () => {
         enableEditing={false}
         enableColumnDragging={false}
         showPreview={false}
-        routeLink="products"
+        routeLink="Categories"
       />
     </Box>
   )
 }
 
-export default Products
+export default Categories

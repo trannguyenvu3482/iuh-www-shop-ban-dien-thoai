@@ -1,6 +1,5 @@
 import styled from '@emotion/styled'
 import { Box, Grid2, IconButton, Paper, Typography } from '@mui/material'
-import React from 'react'
 import {
   lineChartData,
   lineChartOptions,
@@ -40,7 +39,7 @@ const Stats = () => {
                   {icon}
                 </IconButton>
                 <Typography variant="h4" sx={{ my: 2 }}>
-                  {`${isMoney ? '$' + amount : amount}`}
+                  {`${isMoney ? amount + 'đ' : amount + 'đ'}`}
                 </Typography>
                 <Typography sx={{ opacity: 0.7 }}>{title}</Typography>
               </Box>

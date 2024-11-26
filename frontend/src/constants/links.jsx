@@ -27,9 +27,19 @@ export const links = [
         name: 'Thêm sản phẩm mới',
         url: '/admin/products/add',
       },
+    ],
+  },
+  {
+    name: 'Danh mục',
+    icon: <FiShoppingBag />,
+    subLinks: [
       {
-        name: 'Danh mục sản phẩm',
-        url: '/admin/products/categories',
+        name: 'Tất cả danh mục',
+        url: '/admin/categories',
+      },
+      {
+        name: 'Thêm danh mục',
+        url: '/admin/categories/add',
       },
     ],
   },

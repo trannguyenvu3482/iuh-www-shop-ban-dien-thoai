@@ -32,9 +32,6 @@ const SignIn = () => {
         autoHideDuration: 3000,
         preventDuplicate: true,
       })
-      setTimeout(() => {
-        navigate('/')
-      }, 3000)
     }
   }
 

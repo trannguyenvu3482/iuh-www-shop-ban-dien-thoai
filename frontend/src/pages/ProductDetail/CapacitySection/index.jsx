@@ -1,28 +1,43 @@
+import { useState } from 'react'
+import ColorSection from '../ColorSection'
+
 function CapacitySection({
   capacities,
   handleSelectCapacity,
   selectedCapacity,
 }) {
+  const [selectedColor, setSelectedColor] = useState('')
+  const handleSelectColor = (color) => {
+    setSelectedColor(color)
+  }
+
   return (
-    <div className="mt-8 mb-6">
-      <div className="flex space-x-4">
-        {capacities.map((capacity) => (
-          <button
-            key={capacity.label}
-            onClick={() => handleSelectCapacity(capacity.label)}
-            className={`rounded-lg border px-4 py-2 text-sm font-medium ${
-              selectedCapacity === capacity.label
-                ? 'text-priborder-primary-red border-primary-red bg-red-100'
-                : 'border-gray-300 bg-white text-gray-700 '
-            }`}
-          >
-            <span>{capacity.label}</span>
-            <br />
-            <span className="text-xs font-semibold ">{capacity.price}</span>
-          </button>
-        ))}
+    <>
+      <div className="mb-6 mt-8">
+        <div className="flex space-x-4">
+          {capacities?.map((capacity) => (
+            <button
+              key={capacity.id}
+              onClick={() => handleSelectCapacity(capacity.id)}
+              className={`rounded-lg border px-4 py-2 text-sm font-medium ${
+                selectedCapacity === capacity.id
+                  ? 'text-priborder-primary-red border-primary-red bg-red-100'
+                  : 'border-gray-300 bg-white text-gray-700'
+              }`}
+            >
+              <span>{capacity.storage}</span>
+              <br />
+            </button>
+          ))}
+        </div>
       </div>
-    </div>
+      {/* Color */}
+      <ColorSection
+        handleSelectColor={handleSelectColor}
+        selectedColor={selectedColor}
+        colors={capacities?.find((cap) => cap.id === selectedCapacity)?.colors}
+      />{' '}
+    </>
   )
 }
 

@@ -2,10 +2,10 @@
 import { Button, IconButton, Tooltip } from '@mui/material'
 import { Box } from '@mui/system'
 import { MaterialReactTable } from 'material-react-table'
-import React, { useCallback, useMemo, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { FiEdit, FiEye, FiTrash } from 'react-icons/fi'
 import { Link } from 'react-router-dom'
-
+import { MRT_Localization_VI } from 'material-react-table/locales/vi'
 export const Table = ({
   data,
   fields,
@@ -21,7 +21,7 @@ export const Table = ({
 
   const handleDeleteRow = useCallback(
     (row) => {
-      if (!confirm('Are you sure you want to delete')) {
+      if (!confirm('Bạn có chắc chắn muốn xóa dòng này')) {
         return
       }
       data.splice(row.index, 1)
@@ -36,6 +36,7 @@ export const Table = ({
       data={tableData.slice(0, numberOfRows)}
       getRowId={(row) => row.id}
       positionActionsColumn="last"
+      localization={MRT_Localization_VI}
       renderRowActions={({ row, table }) => (
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
           {showPreview && routeLink && (

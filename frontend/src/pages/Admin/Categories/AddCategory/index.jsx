@@ -14,7 +14,7 @@ import { useRef, useState } from 'react'
 import { BiImageAdd } from 'react-icons/bi'
 import { categories } from '../../../../constants/categories'
 
-const AddProduct = () => {
+const AddCategory = () => {
   const [category, setCategory] = useState('')
   const imageInput = useRef(null)
   const [image, setImage] = useState('')
@@ -164,4 +164,4 @@ const AddProduct = () => {
   )
 }
 
-export default AddProduct
+export default AddCategory
