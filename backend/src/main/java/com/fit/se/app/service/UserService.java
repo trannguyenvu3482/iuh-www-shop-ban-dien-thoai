@@ -1,8 +1,7 @@
 package com.fit.se.app.service;
 
-import com.fit.se.app.dto.response.Metadata;
-import com.fit.se.app.dto.response.ResPaginationDTO;
-import com.fit.se.app.dto.response.UserDTO;
+import com.fit.se.app.dto.response.ResponsePaginationDTO;
+import com.fit.se.app.dto.response.ResponseUserDTO;
 import com.fit.se.app.entity.User;
 import com.fit.se.app.mapper.UserMapper;
 import com.fit.se.app.repository.UserRepository;
@@ -25,13 +24,13 @@ public class UserService {
         this.userMapper = userMapper;
     }
 
-    public UserDTO saveUser(User user) {
+    public ResponseUserDTO saveUser(User user) {
         User createdUser = userRepository.save(user);
 
         return userMapper.toUserDTO(createdUser);
     }
 
-    public UserDTO getUserById(Integer id) {
+    public ResponseUserDTO getUserById(Integer id) {
         Optional<User> userOptional = userRepository.findById(id);
         return userMapper.toUserDTO(userOptional.orElse(null));
     }
@@ -47,23 +46,23 @@ public class UserService {
 
     }
 
-    public ResPaginationDTO getUsers(Specification<User> spec, Pageable pageable) {
+    public ResponsePaginationDTO getUsers(Specification<User> spec, Pageable pageable) {
         Page<User> pageUsers = userRepository.findAll(spec, pageable);
 
-        List<UserDTO> users = userMapper.toUserDTOs(pageUsers.getContent());
+        List<ResponseUserDTO> users = userMapper.toUserDTOs(pageUsers.getContent());
 
-        ResPaginationDTO resPaginationDTO = new ResPaginationDTO();
-        Metadata metadata = new Metadata();
+        ResponsePaginationDTO responsePaginationDTO = new ResponsePaginationDTO();
+        ResponsePaginationDTO.Metadata metadata = new ResponsePaginationDTO.Metadata();
 
         metadata.setPage(pageable.getPageNumber() + 1);
         metadata.setPageSize(pageable.getPageSize());
         metadata.setTotalPages(pageUsers.getTotalPages());
         metadata.setTotalItems(pageUsers.getTotalElements());
 
-        resPaginationDTO.setMetadata(metadata);
-        resPaginationDTO.setResult(users);
+        responsePaginationDTO.setMetadata(metadata);
+        responsePaginationDTO.setResult(users);
 
-        return resPaginationDTO;
+        return responsePaginationDTO;
     }
 
     public User updateUser(User user) {

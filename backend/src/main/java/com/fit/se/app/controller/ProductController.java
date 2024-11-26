@@ -1,8 +1,8 @@
 package com.fit.se.app.controller;
 
 import com.fit.se.app.common.annotation.ApiMessage;
-import com.fit.se.app.dto.response.ProductDTO;
-import com.fit.se.app.dto.response.ResPaginationDTO;
+import com.fit.se.app.dto.response.ResponsePaginationDTO;
+import com.fit.se.app.dto.response.ResponseProductDetailDTO;
 import com.fit.se.app.entity.Product;
 import com.fit.se.app.service.ProductService;
 import com.turkraft.springfilter.boot.Filter;
@@ -30,15 +30,22 @@ public class ProductController {
 
     @GetMapping
     @ApiMessage("Get all products")
-    ResponseEntity<ResPaginationDTO> getProducts(@Filter Specification<Product> spec, Pageable pageable) {
+    ResponseEntity<ResponsePaginationDTO> getProducts(@Filter Specification<Product> spec, Pageable pageable) {
         return ResponseEntity.ok(productService.getProducts(spec, pageable));
     }
 
 
     @GetMapping("/{id}")
     @ApiMessage("Get a product by id")
-    ResponseEntity<ProductDTO> getProductById(@PathVariable Integer id) throws Exception {
-        ProductDTO product = productService.getProductById(id);
+    ResponseEntity<ResponseProductDetailDTO> getProductById(@PathVariable Integer id) throws Exception {
+        ResponseProductDetailDTO product = productService.getProductById(id);
+        return product != null ? ResponseEntity.ok(product) : ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/slug/{slug}")
+    @ApiMessage("Get a product by slug")
+    ResponseEntity<ResponseProductDetailDTO> getProductBySlug(@PathVariable String slug) throws Exception {
+        ResponseProductDetailDTO product = productService.getProductBySlug(slug);
         return product != null ? ResponseEntity.ok(product) : ResponseEntity.notFound().build();
     }
 

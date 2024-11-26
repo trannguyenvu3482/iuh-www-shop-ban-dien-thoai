@@ -13,7 +13,7 @@ import java.time.Instant;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserDTO {
+public class ResponseUserDTO {
     private Integer id;
     private String name;
     private String email;

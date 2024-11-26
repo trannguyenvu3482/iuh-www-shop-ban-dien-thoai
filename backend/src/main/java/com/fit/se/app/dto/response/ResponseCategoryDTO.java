@@ -8,16 +8,16 @@ import java.io.Serializable;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CategoryDTO implements Serializable {
+public class ResponseCategoryDTO implements Serializable {
     Integer id;
     String name;
     String slug;
     // Setter for parent if needed
     @Setter
-    private CategoryDTO parent;  // This is a self-referential field
+    private ResponseCategoryDTO parent;  // This is a self-referential field
 
     // Getter for 'parent' to avoid infinite recursion
-    public CategoryDTO getParent() {
+    public ResponseCategoryDTO getParent() {
         if (this.parent == null) {
             return null;  // Stop recursion if parent is null
         }

@@ -1,8 +1,8 @@
 package com.fit.se.app.controller;
 
 import com.fit.se.app.common.annotation.ApiMessage;
-import com.fit.se.app.dto.request.LoginDTO;
-import com.fit.se.app.dto.response.ResLoginDTO;
+import com.fit.se.app.dto.request.RequestLoginDTO;
+import com.fit.se.app.dto.response.ResponseLoginDTO;
 import com.fit.se.app.entity.User;
 import com.fit.se.app.service.SecurityService;
 import com.fit.se.app.service.UserService;
@@ -19,6 +19,7 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequestMapping("/auth")
 public class AuthController {
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final SecurityService securityService;
@@ -35,26 +36,26 @@ public class AuthController {
 
     @PostMapping("/login")
     @ApiMessage("Login successfully")
-    public ResponseEntity<ResLoginDTO> login(@Valid @RequestBody LoginDTO loginDTO) {
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginDTO.getUsername(), loginDTO.getPassword());
+    public ResponseEntity<ResponseLoginDTO> login(@Valid @RequestBody RequestLoginDTO requestLoginDTO) {
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(requestLoginDTO.getUsername(), requestLoginDTO.getPassword());
 
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        ResLoginDTO resLoginDTO = new ResLoginDTO();
-        User currentUser = userService.getUserByEmail(loginDTO.getUsername());
+        ResponseLoginDTO responseLoginDTO = new ResponseLoginDTO();
+        User currentUser = userService.getUserByEmail(requestLoginDTO.getUsername());
 
-        ResLoginDTO.UserLogin userLogin = new ResLoginDTO.UserLogin(currentUser.getId(), currentUser.getEmail(), currentUser.getName());
-        resLoginDTO.setUser(userLogin);
+        ResponseLoginDTO.UserLogin userLogin = new ResponseLoginDTO.UserLogin(currentUser.getId(), currentUser.getEmail(), currentUser.getName());
+        responseLoginDTO.setUser(userLogin);
 
         // Create token
-        String access_token = securityService.createAccessToken(authentication.getName(), resLoginDTO.getUser());
-        resLoginDTO.setAccessToken(access_token);
+        String access_token = securityService.createAccessToken(authentication.getName(), responseLoginDTO.getUser());
+        responseLoginDTO.setAccessToken(access_token);
 
         // Create refresh token
-        String refresh_token = securityService.createRefreshToken(loginDTO.getUsername(), resLoginDTO);
-        userService.updateUserToken(refresh_token, loginDTO.getUsername());
+        String refresh_token = securityService.createRefreshToken(requestLoginDTO.getUsername(), responseLoginDTO);
+        userService.updateUserToken(refresh_token, requestLoginDTO.getUsername());
 
         // Set cookie
         ResponseCookie resCookie = ResponseCookie.from("refresh_token", refresh_token)
@@ -64,25 +65,33 @@ public class AuthController {
                 .build();
         return ResponseEntity.ok()
                 .header(HttpHeaders.SET_COOKIE, resCookie.toString())
-                .body(resLoginDTO);
+                .body(responseLoginDTO);
     }
 
     @GetMapping("/account")
     @ApiMessage("Get account successfully")
-    public ResponseEntity<ResLoginDTO.UserLogin> getAccount() {
+    public ResponseEntity<ResponseLoginDTO.UserGetAccount> getAccount() {
         String email = SecurityService.getCurrentUserLogin().isPresent() ? SecurityService.getCurrentUserLogin().get() : "";
 
-        ResLoginDTO resLoginDTO = new ResLoginDTO();
+        ResponseLoginDTO responseLoginDTO = new ResponseLoginDTO();
         User currentUser = userService.getUserByEmail(email);
 
-        ResLoginDTO.UserLogin userLogin = new ResLoginDTO.UserLogin(currentUser.getId(), currentUser.getEmail(), currentUser.getName());
+        ResponseLoginDTO.UserLogin userLogin = new ResponseLoginDTO.UserLogin();
+        ResponseLoginDTO.UserGetAccount userGetAccount = new ResponseLoginDTO.UserGetAccount();
 
-        return ResponseEntity.ok(userLogin);
+        if (currentUser != null) {
+            userLogin.setId(currentUser.getId());
+            userLogin.setEmail(currentUser.getEmail());
+            userLogin.setName(currentUser.getName());
+            userGetAccount.setUser(userLogin);
+
+        }
+        return ResponseEntity.ok(userGetAccount);
     }
 
     @GetMapping("/refresh-token")
     @ApiMessage("Get user token successfully")
-    public ResponseEntity<ResLoginDTO> refreshToken(@CookieValue(value = "refresh_token", defaultValue = "") String refreshToken) throws Exception {
+    public ResponseEntity<ResponseLoginDTO> refreshToken(@CookieValue(value = "refresh_token", defaultValue = "") String refreshToken) throws Exception {
         if (refreshToken.isEmpty()) {
             throw new Exception("Bạn không có refresh_token ở cookies");
         }
@@ -98,17 +107,17 @@ public class AuthController {
         }
 
         // Create token
-        ResLoginDTO resLoginDTO = new ResLoginDTO();
+        ResponseLoginDTO responseLoginDTO = new ResponseLoginDTO();
         User currentUser = userService.getUserByEmail(email);
 
-        ResLoginDTO.UserLogin userLogin = new ResLoginDTO.UserLogin(currentUser.getId(), currentUser.getEmail(), currentUser.getName());
-        resLoginDTO.setUser(userLogin);
+        ResponseLoginDTO.UserLogin userLogin = new ResponseLoginDTO.UserLogin(currentUser.getId(), currentUser.getEmail(), currentUser.getName());
+        responseLoginDTO.setUser(userLogin);
 
-        String access_token = securityService.createAccessToken(email, resLoginDTO.getUser());
-        resLoginDTO.setAccessToken(access_token);
+        String access_token = securityService.createAccessToken(email, responseLoginDTO.getUser());
+        responseLoginDTO.setAccessToken(access_token);
 
         // Create refresh token
-        String newRefreshToken = securityService.createRefreshToken(email, resLoginDTO);
+        String newRefreshToken = securityService.createRefreshToken(email, responseLoginDTO);
         userService.updateUserToken(newRefreshToken, email);
 
         // Set cookie
@@ -119,6 +128,25 @@ public class AuthController {
                 .build();
         return ResponseEntity.ok()
                 .header(HttpHeaders.SET_COOKIE, resCookie.toString())
-                .body(resLoginDTO);
+                .body(responseLoginDTO);
+    }
+
+    @GetMapping("/logout")
+    @ApiMessage("Logout successfully")
+    public ResponseEntity<Void> logout() throws Exception {
+        String email = SecurityService.getCurrentUserLogin().isPresent() ? SecurityService.getCurrentUserLogin().get() : "";
+
+        if (email.isEmpty()) {
+            throw new Exception("Access token không hợp lệ");
+        }
+
+        userService.updateUserToken(null, email);
+
+        ResponseCookie resCookie = ResponseCookie.from("refresh_token", "")
+                .httpOnly(true)
+                .path("/")
+                .maxAge(0)
+                .build();
+        return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, resCookie.toString()).body(null);
     }
 }

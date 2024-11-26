@@ -1,5 +1,6 @@
 package com.fit.se.app.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,7 +10,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ResLoginDTO {
+public class ResponseLoginDTO {
+    @JsonProperty("access_token")
     private String accessToken;
     private UserLogin user;
 
@@ -21,5 +23,13 @@ public class ResLoginDTO {
         private Integer id;
         private String email;
         private String name;
+    }
+
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class UserGetAccount {
+        private UserLogin user;
     }
 }

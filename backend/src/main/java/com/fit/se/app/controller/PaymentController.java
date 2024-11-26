@@ -1,7 +1,7 @@
 package com.fit.se.app.controller;
 
-import com.fit.se.app.dto.request.OrderRequestDTO;
-import com.fit.se.app.dto.request.OrderStatusRequestDTO;
+import com.fit.se.app.dto.request.RequestOrderDTO;
+import com.fit.se.app.dto.request.RequestOrderStatusDTO;
 import com.fit.se.app.service.PaymentService;
 import com.fit.se.app.service.PaymentStatusService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -23,9 +23,9 @@ public class PaymentController {
     }
 
     @PostMapping("/create-order")
-    public ResponseEntity<Map<String, Object>> createOrderPayment(HttpServletRequest request, @RequestBody OrderRequestDTO orderRequestDTO) throws IOException {
+    public ResponseEntity<Map<String, Object>> createOrderPayment(HttpServletRequest request, @RequestBody RequestOrderDTO requestOrderDTO) throws IOException {
 
-        Map<String, Object> result = this.paymentService.createOrder(request, orderRequestDTO);
+        Map<String, Object> result = this.paymentService.createOrder(request, requestOrderDTO);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
@@ -36,7 +36,7 @@ public class PaymentController {
     }
 
     @PostMapping("/create-order/get-status")
-    public ResponseEntity<Map<String, Object>> getStatus(HttpServletRequest request, @RequestBody OrderStatusRequestDTO statusRequestDTO) throws IOException {
+    public ResponseEntity<Map<String, Object>> getStatus(HttpServletRequest request, @RequestBody RequestOrderStatusDTO statusRequestDTO) throws IOException {
 
         Map<String, Object> result = this.paymentStatusService.getStatus(request, statusRequestDTO);
         return new ResponseEntity<>(result, HttpStatus.OK);

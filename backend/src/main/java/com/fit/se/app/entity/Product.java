@@ -3,6 +3,7 @@ package com.fit.se.app.entity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fit.se.app.common.constant.enums.StatusEnum;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -27,11 +28,13 @@ public class Product {
 
     @Nationalized
     @Column(name = "name", nullable = false, length = 100)
+    @NotBlank(message = "Tên sản phẩm không được để trống")
     private String name;
 
     @Nationalized
     @Lob
     @Column(name = "description")
+    @NotBlank(message = "Mô tả sản phẩm không được để trống")
     private String description;
 
     @Column(name = "base_price", nullable = false, precision = 10, scale = 2)
@@ -67,7 +70,7 @@ public class Product {
     @ToString.Exclude
     private Set<ProductStorage> productStorages = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "product")
+    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
     @ToString.Exclude
     private Set<Review> reviews = new LinkedHashSet<>();
 

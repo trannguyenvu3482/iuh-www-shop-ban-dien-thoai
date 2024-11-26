@@ -9,7 +9,7 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class LoginDTO {
+public class RequestLoginDTO {
     @NotBlank(message = "Username không được để trống")
     String username;
 
