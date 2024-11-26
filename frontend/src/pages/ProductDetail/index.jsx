@@ -1,41 +1,89 @@
 import { useState } from 'react'
-import CapacitySection from './CapacitySection'
-import { FaStar } from 'react-icons/fa'
-import SlideProduct from './SlideProduct'
-import Description from './Description'
-import { useNavigate } from 'react-router-dom'
+import { FaChevronRight, FaStar } from 'react-icons/fa'
+import { Link, useNavigate } from 'react-router-dom'
 import { useProductById } from '../../hooks/useProduct'
 import { formatVND } from '../../utils/format'
+import CapacitySection from './CapacitySection'
+import Description from './Description'
+import SlideProduct from './SlideProduct'
 
 const ProductDetail = () => {
-  const [selectedCapacity, setSelectedCapacity] = useState()
+  const navigate = useNavigate()
   const product = useProductById()
-  console.log('🚀 ~ ProductDetail ~ product:', product)
+  const [selectedCapacity, setSelectedCapacity] = useState()
+  const [selectedColor, setSelectedColor] = useState('')
+
+  const handleSelectColor = (color) => {
+    setSelectedColor(color)
+  }
 
   const handleSelectCapacity = (capacity) => {
     setSelectedCapacity(capacity)
   }
 
-  const navigate = useNavigate()
+  const selectedColorObject = product?.variants
+    .find((item) => item.id === selectedCapacity)
+    ?.colors.find((color) => color.id === selectedColor)
+
+  const uniqueImageUrls = Array.from(
+    new Set(
+      product?.variants?.flatMap((item) =>
+        item.colors.map((color) => color.imageUrl),
+      ),
+    ),
+  )
+
+  const reverseHierarchy = (category) => {
+    const breadcrumbs = []
+    let current = category
+
+    while (current) {
+      breadcrumbs.unshift(current)
+      current = current.parent
+    }
+
+    return breadcrumbs
+  }
+
+  const breadcrumbs = reverseHierarchy(product?.category)
 
   return (
     <div className="bg-slate-100">
+      <div className="mx-auto flex w-full max-w-[1220px] items-center bg-gray-500 p-2">
+        {breadcrumbs.map((category, index) => (
+          <div key={index} className="flex items-center gap-2 text-white">
+            <Link to={`/category/${category.id}`} className="text-white">
+              {category.name}
+            </Link>
+            <FaChevronRight className="text-white" />
+          </div>
+        ))}
+        <span className="text-white">{product?.name}</span>
+      </div>
       <div className="mx-auto flex max-w-[1220px] gap-4 py-4">
         <div className="w-[50%] flex-1 rounded-md bg-white">
           <SlideProduct
-            imgs={[
-              {
-                image_url: product?.thumbnailUrl,
-              },
-            ]}
+            // imgs={[
+            //   {
+            //     image_url: product?.thumbnailUrl,
+            //   },
+            // ]}
+            imgs={
+              !selectedCapacity || !selectedColor
+                ? uniqueImageUrls
+                : [selectedColorObject?.imageUrl]
+            }
           />
           {/* End */}
           <Description />
         </div>
         <div className="flex-1 rounded-md bg-white px-2 py-2">
           <div className="rounded-md border-2 border-gray-100 p-2">
-            <h2 className="mb-2 text-[22px] font-bold text-gray-800">
+            <h2 className="text-[22px] font-bold text-gray-800">
               {product?.name}
+            </h2>
+            <h2 className="mb-2 text-sm text-gray-500">
+              Nhãn hàng: {product?.brand}
             </h2>
             <p>
               <div className="mb-2 flex items-center space-x-2">
@@ -56,8 +104,11 @@ const ProductDetail = () => {
                 </div>
               </div>
               <div className="flex justify-between">
-                <div className="text-3xl font-bold text-secondary-red">
-                  {formatVND(product?.basePrice + 0)}đ
+                <div className="text-3xl font-bold text-primary-red">
+                  {!selectedCapacity || !selectedColor
+                    ? formatVND(product?.basePrice + 0)
+                    : formatVND(selectedColorObject?.price + 0)}
+                  đ
                 </div>
                 <div className="text-sm font-bold text-gray-600">
                   Giảm giá:
@@ -73,6 +124,8 @@ const ProductDetail = () => {
                 handleSelectCapacity={handleSelectCapacity}
                 capacities={product?.variants}
                 selectedCapacity={selectedCapacity}
+                selectedColor={selectedColor}
+                handleSelectColor={handleSelectColor}
               />
             </>
             {/* Button */}

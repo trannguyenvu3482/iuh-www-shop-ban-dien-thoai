@@ -1,4 +1,3 @@
-import { useEffect } from 'react'
 import { formatVND } from '../../../utils/format'
 
 function ColorSection({ handleSelectColor, selectedColor, colors }) {
