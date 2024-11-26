@@ -9,9 +9,11 @@ import AddProduct from '../pages/Admin/Products/AddProducts'
 import Login from '../pages/Authentication/Login'
 import SignUp from '../pages/Authentication/SignUp'
 import Error from '../pages/Error'
-import ProductDetail from '../pages/ProductDetail'
 import PrivateRoute from './PrivateRoute'
+
 const Home = lazy(() => import('../pages/Home'))
+const CartPage = lazy(() => import('../pages/Cart'))
+const ProductDetail = lazy(() => import('../pages/ProductDetail'))
 
 const router = createBrowserRouter([
   {
@@ -27,6 +29,10 @@ const router = createBrowserRouter([
       {
         path: '/product/:id',
         element: <ProductDetail />,
+      },
+      {
+        path: '/cart',
+        element: <CartPage />,
       },
     ],
   },
