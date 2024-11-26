@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 @Setter
 @Getter
 @Entity
-@Table(name = "\"Cart\"")
+@Table(name = "Cart")
 public class Cart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

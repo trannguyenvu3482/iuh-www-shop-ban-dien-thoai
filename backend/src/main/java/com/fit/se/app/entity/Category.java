@@ -14,6 +14,7 @@ import static com.fit.se.app.common.util.StringUtil.slugify;
 @Setter
 @Getter
 @Entity
+@Table(name = "Category")
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

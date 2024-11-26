@@ -13,11 +13,16 @@ import header2 from '../assets/img/header/header-2.jpg'
 import logo from '../assets/img/logo.png'
 import webicons from '../assets/img/webicons.png'
 import { hotProducts, storesAddress } from '../constants'
+import { useUserStore } from '../zustand/userStore'
 
 const Header = () => {
   const [slideIndex, setSlideIndex] = useState(0)
   const [showShowroom, setShowShowroom] = useState(false)
   const [isSticky, setIsSticky] = useState(false)
+  const { user, isAuthenticated } = useUserStore()
+
+  console.log(user)
+
   return (
     <header>
       <div className={`${slideIndex === 0 ? 'bg-[#b82900]' : 'bg-black'}`}>
@@ -126,105 +131,108 @@ const Header = () => {
                 </div>
               </div>
 
-              {/* <div className="cart relative ml-6">
-                <Link
-                  to="/"
-                  className="border-radius-5 flex h-full w-[100px] items-center justify-end rounded-lg bg-[#333] bg-opacity-35 pr-2 text-white transition-all hover:bg-white hover:bg-opacity-20 hover:text-black"
-                >
-                  <i
-                    style={{
-                      backgroundImage: `url(${webicons})`,
-                      backgroundPosition: '-66px -18px',
-                    }}
-                    className="absolute left-[14px] top-[8px] block h-[20px] w-[17px]"
-                  >
-                    <span className="absolute left-[9px] top-[12px] flex h-4 w-4 items-center justify-center rounded-full bg-[#c60004] text-xs">
-                      5
-                    </span>
-                  </i>
-                  <span className="text-sm">Giỏ hàng</span>
-                </Link>
-              </div> */}
+              {isAuthenticated ? (
+                <>
+                  <div className="cart relative ml-6">
+                    <Link
+                      to="/cart"
+                      className="border-radius-5 flex h-full w-[100px] items-center justify-end rounded-lg bg-[#333] bg-opacity-35 pr-2 text-white transition-all hover:bg-white hover:bg-opacity-20 hover:text-black"
+                    >
+                      <i
+                        style={{
+                          backgroundImage: `url(${webicons})`,
+                          backgroundPosition: '-66px -18px',
+                        }}
+                        className="absolute left-[14px] top-[8px] block h-[20px] w-[17px]"
+                      >
+                        <span className="absolute left-[9px] top-[12px] flex h-4 w-4 items-center justify-center rounded-full bg-[#c60004] text-xs">
+                          5
+                        </span>
+                      </i>
+                      <span className="text-sm">Giỏ hàng</span>
+                    </Link>
+                  </div>
+                  <div className="group relative z-20 ml-6 flex items-center justify-center text-white">
+                    <img
+                      id="avatarButton"
+                      type="button"
+                      data-dropdown-toggle="userDropdown2"
+                      data-dropdown-placement="bottom-start"
+                      className="h-10 w-10 cursor-pointer rounded-full bg-white"
+                      src="https://robohash.org/1?size=50x50"
+                      alt="User dropdown"
+                    />
 
-              <div className="ml-6 flex items-center justify-center text-white">
-                <Link
-                  to="/login"
-                  className="flex h-full items-center justify-center gap-2 rounded-md bg-black bg-opacity-30 px-3 py-2 text-sm font-bold text-white transition-all hover:bg-opacity-50"
-                >
-                  <IoLogIn className="h-5 w-5" />
-                  Đăng nhập
-                </Link>
-              </div>
-              <div className="ml-2 flex items-center justify-center text-white">
-                <Link
-                  to="/signup"
-                  className="flex h-full items-center justify-center gap-2 rounded-md bg-black bg-opacity-30 px-3 py-2 text-sm font-bold text-white transition-all hover:bg-opacity-50"
-                >
-                  <FaUser />
-                  Đăng ký
-                </Link>
-              </div>
-
-              {/* <div className="group z-20 ml-6 flex items-center justify-center text-white">
-                <img
-                  id="avatarButton"
-                  type="button"
-                  data-dropdown-toggle="userDropdown2"
-                  data-dropdown-placement="bottom-start"
-                  className="h-10 w-10 cursor-pointer rounded-full bg-white"
-                  src="https://robohash.org/1?size=50x50"
-                  alt="User dropdown"
-                />
-
-                <div
-                  id="userDropdown"
-                  className="absolute -right-16 top-14 z-20 hidden w-44 divide-y divide-gray-100 rounded-lg bg-white shadow group-hover:block dark:divide-gray-600 dark:bg-gray-700"
-                >
-                  <div className="px-4 py-3 text-sm text-gray-900 dark:text-white">
-                    <div>Trần Nguyên Vũ</div>
-                    <div className="truncate font-medium">
-                      trannguyenvu3482@gmail.com
+                    <div
+                      id="userDropdown"
+                      className="absolute -right-4 top-14 z-20 hidden w-44 divide-y divide-gray-100 rounded-lg bg-white shadow group-hover:block dark:divide-gray-600 dark:bg-gray-700"
+                    >
+                      <div className="px-4 py-3 text-sm text-gray-900 dark:text-white">
+                        <div>{user.name}</div>
+                        <div className="truncate font-medium">{user.email}</div>
+                      </div>
+                      <ul
+                        className="py-2 text-sm text-gray-700 dark:text-gray-200"
+                        aria-labelledby="avatarButton"
+                      >
+                        <li>
+                          <a
+                            href="#"
+                            className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                          >
+                            Lịch sử đơn hàng
+                          </a>
+                        </li>
+                        <li>
+                          <a
+                            href="#"
+                            className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                          >
+                            Cài đặt
+                          </a>
+                        </li>
+                        <li>
+                          <a
+                            href="#"
+                            className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                          >
+                            Trợ giúp
+                          </a>
+                        </li>
+                      </ul>
+                      <div className="py-1">
+                        <button
+                          onClick={() => alert('LOG OUT')}
+                          className="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-600 dark:hover:text-white"
+                        >
+                          Đăng xuất
+                        </button>
+                      </div>
                     </div>
                   </div>
-                  <ul
-                    className="py-2 text-sm text-gray-700 dark:text-gray-200"
-                    aria-labelledby="avatarButton"
-                  >
-                    <li>
-                      <a
-                        href="#"
-                        className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                      >
-                        Lịch sử đơn hàng
-                      </a>
-                    </li>
-                    <li>
-                      <a
-                        href="#"
-                        className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                      >
-                        Cài đặt
-                      </a>
-                    </li>
-                    <li>
-                      <a
-                        href="#"
-                        className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                      >
-                        Trợ giúp
-                      </a>
-                    </li>
-                  </ul>
-                  <div className="py-1">
-                    <a
-                      href="#"
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-600 dark:hover:text-white"
+                </>
+              ) : (
+                <>
+                  <div className="ml-6 flex items-center justify-center text-white">
+                    <Link
+                      to="/login"
+                      className="flex h-full items-center justify-center gap-2 rounded-md bg-black bg-opacity-30 px-3 py-2 text-sm font-bold text-white transition-all hover:bg-opacity-50"
                     >
-                      Đăng xuất
-                    </a>
+                      <IoLogIn className="h-5 w-5" />
+                      Đăng nhập
+                    </Link>
                   </div>
-                </div>
-              </div> */}
+                  <div className="ml-2 flex items-center justify-center text-white">
+                    <Link
+                      to="/signup"
+                      className="flex h-full items-center justify-center gap-2 rounded-md bg-black bg-opacity-30 px-3 py-2 text-sm font-bold text-white transition-all hover:bg-opacity-50"
+                    >
+                      <FaUser />
+                      Đăng ký
+                    </Link>
+                  </div>
+                </>
+              )}
             </div>
           </Sticky>
           <div className="flex gap-3">
