@@ -3,6 +3,8 @@ package com.fit.se.app.entity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fit.se.app.common.constant.enums.OrderStatusEnum;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.FutureOrPresent;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -23,6 +25,8 @@ public class Order {
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss a", timezone = "GMT+7")
     @Column(name = "order_date")
+    @NotBlank(message = "Ngày đặt không được để trống")
+    @FutureOrPresent(message = "Ngày đặt phải là ngày hiện tại hoặc sau ngày hiện tại")
     private Instant orderDate;
 
     @Column(name = "shipping_address", nullable = false)

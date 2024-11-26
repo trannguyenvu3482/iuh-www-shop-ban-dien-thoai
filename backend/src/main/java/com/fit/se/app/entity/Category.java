@@ -1,6 +1,7 @@
 package com.fit.se.app.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Nationalized;
@@ -21,10 +22,12 @@ public class Category {
 
     @Nationalized
     @Column(name = "name", nullable = false, length = 100)
+    @NotBlank(message = "Tên loại không được để trống")
     private String name;
 
     @Nationalized
     @Column(name = "slug", length = 100)
+    @NotBlank(message = "Slug không được để trống")
     private String slug;
 
     @ManyToOne(fetch = FetchType.LAZY)

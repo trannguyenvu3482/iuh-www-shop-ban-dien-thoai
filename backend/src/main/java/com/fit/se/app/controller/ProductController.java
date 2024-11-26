@@ -31,7 +31,7 @@ public class ProductController {
     @GetMapping
     @ApiMessage("Get all products")
     ResponseEntity<ResponsePaginationDTO> getProducts(@Filter Specification<Product> spec, Pageable pageable) {
-        return ResponseEntity.ok(productService.getProducts(spec, pageable));
+        return ResponseEntity.ok(productService.getActiveProducts(spec, pageable));
     }
 
 
