@@ -11,7 +11,8 @@ import AddProduct from '../pages/Admin/Products/AddProducts'
 import Login from '../pages/Authentication/Login'
 import SignUp from '../pages/Authentication/SignUp'
 import Error from '../pages/Error'
-import PrivateRoute from './PrivateRoute'
+import PrivateAdminRoute from './PrivateAdminRoute'
+import PrivateUserRoute from './PrivateUserRoute'
 
 const Home = lazy(() => import('../pages/Home'))
 const CartPage = lazy(() => import('../pages/Cart'))
@@ -50,9 +51,11 @@ const router = createBrowserRouter([
       {
         path: '/cart',
         element: (
-          <Suspense fallback={<div>Loading...</div>}>
-            <CartPage />
-          </Suspense>
+          <PrivateUserRoute>
+            <Suspense fallback={<div>Loading...</div>}>
+              <CartPage />
+            </Suspense>
+          </PrivateUserRoute>
         ),
       },
     ],
@@ -60,9 +63,9 @@ const router = createBrowserRouter([
   {
     path: '/admin',
     element: (
-      <PrivateRoute>
+      <PrivateAdminRoute>
         <AdminLayout />
-      </PrivateRoute>
+      </PrivateAdminRoute>
     ),
     children: [
       {

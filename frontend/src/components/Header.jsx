@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { FaAngleDown, FaAngleUp, FaUser } from 'react-icons/fa6'
-import { IoLogIn, IoSearchOutline } from 'react-icons/io5'
+import { IoLogIn } from 'react-icons/io5'
 import { Link } from 'react-router-dom'
 import Sticky from 'react-sticky-el'
 import 'swiper/css'
@@ -13,15 +13,31 @@ import header2 from '../assets/img/header/header-2.jpg'
 import logo from '../assets/img/logo.png'
 import webicons from '../assets/img/webicons.png'
 import { hotProducts, storesAddress } from '../constants'
+import { useDebounce } from '../hooks/useDebounce'
+import { getProductsByNameRelative } from '../service/apiProduct'
 import { useUserStore } from '../zustand/userStore'
+import SearchBar from './SearchBar'
 
 const Header = () => {
   const [slideIndex, setSlideIndex] = useState(0)
   const [showShowroom, setShowShowroom] = useState(false)
   const [isSticky, setIsSticky] = useState(false)
+  const [searchValue, setSearchValue] = useState('')
+  const debouncedSearchValue = useDebounce(searchValue, 2000)
+  const [listProducts, setListProducts] = useState([])
   const { user, isAuthenticated } = useUserStore()
 
-  console.log(user)
+  useEffect(() => {
+    const getProducts = async () => {
+      if (!debouncedSearchValue || debouncedSearchValue === '') return
+
+      const { data } = await getProductsByNameRelative(debouncedSearchValue)
+      console.log(data)
+      setListProducts(data.result)
+    }
+
+    getProducts()
+  }, [debouncedSearchValue])
 
   return (
     <header>
@@ -83,16 +99,12 @@ const Header = () => {
                   <span className="text-xs font-normal">Tổng đài miễn phí</span>
                 </span>
               </div>
-              <div className="search ml-6 flex h-[40px] w-[440px] rounded-md bg-white pl-2 focus-within:border focus-within:border-black">
-                <button>
-                  <IoSearchOutline className="h-7 w-7" />
-                </button>
-                <input
-                  className="ml-2 mr-2 w-full rounded-md border-none text-xs outline-none placeholder:text-gray-500"
-                  type="text"
-                  placeholder="Bạn muốn tìm gì ?"
-                />
-              </div>
+              <SearchBar
+                searchValue={searchValue}
+                setSearchValue={setSearchValue}
+                listProducts={listProducts}
+                setListProducts={setListProducts}
+              />
 
               <div className="stores relative z-10 ml-6">
                 <span className="box-showroom border-radius-5 flex w-[130px] flex-col rounded-lg bg-[#333] bg-opacity-35 px-2 py-1 text-white">
