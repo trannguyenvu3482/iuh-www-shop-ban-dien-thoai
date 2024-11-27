@@ -1,9 +1,12 @@
 package com.fit.se.app.controller;
 
 import com.fit.se.app.common.annotation.ApiMessage;
+import com.fit.se.app.common.constant.enums.UserTypeEnum;
 import com.fit.se.app.dto.response.ResponsePaginationDTO;
 import com.fit.se.app.dto.response.ResponseUserDTO;
+import com.fit.se.app.entity.Cart;
 import com.fit.se.app.entity.User;
+import com.fit.se.app.service.CartService;
 import com.fit.se.app.service.CloudinaryService;
 import com.fit.se.app.service.UserService;
 import com.turkraft.springfilter.boot.Filter;
@@ -22,11 +25,13 @@ public class UserController {
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
     private final CloudinaryService cloudinaryService;
+    private final CartService cartService;
 
-    public UserController(UserService userService, PasswordEncoder passwordEncoder, CloudinaryService cloudinaryService) {
+    public UserController(UserService userService, PasswordEncoder passwordEncoder, CloudinaryService cloudinaryService, CartService cartService) {
         this.userService = userService;
         this.passwordEncoder = passwordEncoder;
         this.cloudinaryService = cloudinaryService;
+        this.cartService = cartService;
     }
 
     @PostMapping
@@ -34,6 +39,13 @@ public class UserController {
     ResponseEntity<ResponseUserDTO> createUser(@Valid @RequestBody User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         ResponseUserDTO createdUser = userService.saveUser(user);
+
+        if (user.getUserType() != UserTypeEnum.ADMIN) {
+            Cart cart = new Cart();
+            cart.setUser(user);
+            cartService.createCart(cart);
+        }
+
         return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
     }
 

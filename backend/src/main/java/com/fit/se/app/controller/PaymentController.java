@@ -33,7 +33,7 @@ public class PaymentController {
     @GetMapping("/create-order/callback")
     public ResponseEntity<Map<String, Object>> doCallBack(@RequestParam Map<String, Object> callBackInfo) {
         System.out.println(callBackInfo);
-        return new ResponseEntity<>(callBackInfo, HttpStatus.OK);
+        return ResponseEntity.ok(callBackInfo);
     }
 
     @PostMapping("/create-order/get-status")
