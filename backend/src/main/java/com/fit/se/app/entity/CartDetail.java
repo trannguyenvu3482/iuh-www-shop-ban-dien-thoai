@@ -2,10 +2,14 @@ package com.fit.se.app.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "CartDetail")
 public class CartDetail {
@@ -22,12 +26,27 @@ public class CartDetail {
     @JoinColumn(name = "product_id")
     private Product product;
 
-    @NotBlank(message = "Số lượng không được để trống")
+    @OneToOne
+    @JoinColumn(name = "product_variant_id")
+    private ProductVariants productVariant;
+
     @Min(value = 1, message = "Số lượng phải lớn hơn 0")
+    @Setter(AccessLevel.NONE)
     private Integer quantity = 1;
 
-    @NotBlank(message = "Giá tiền không được để trống")
     @Min(value = 1, message = "Giá tiền phải lớn hơn 0")
     private BigDecimal price = BigDecimal.ZERO;
 
+    public CartDetail(Cart cart, Product product) {
+        this.cart = cart;
+        this.product = product;
+    }
+
+    public CartDetail() {
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
+        this.price = this.product.getBasePrice().multiply(BigDecimal.valueOf(quantity));
+    }
 }
