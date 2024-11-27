@@ -1,24 +1,20 @@
-import instance from './axios'
+import instance from "./axios/instance";
 const API_URL =
-  'https://vietnam-administrative-division-json-server-swart.vercel.app'
+  "https://vietnam-administrative-division-json-server-swart.vercel.app";
 
 const apiGetProvinces = async () => {
-  return await instance.get(`${API_URL}/province`)
-}
+  return await instance.get(`${API_URL}/province`);
+};
 
 const apiGetDistrict = async (idProvince) => {
-    return await instance.get(
-    `${API_URL}/district/?idProvince=${idProvince}`
-  )
-}
+  return await instance.get(`${API_URL}/district/?idProvince=${idProvince}`);
+};
 
 const apiGetCommune = async (idDistrict) => {
-  return  await instance.get(
-    `${API_URL}/commune/?idDistrict=${idDistrict}`
-  )
-}
+  return await instance.get(`${API_URL}/commune/?idDistrict=${idDistrict}`);
+};
 export const provinceService = {
-apiGetProvinces,
+  apiGetProvinces,
   apiGetDistrict,
   apiGetCommune,
-}
+};

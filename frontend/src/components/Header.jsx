@@ -25,7 +25,9 @@ const Header = () => {
   const [searchValue, setSearchValue] = useState('')
   const debouncedSearchValue = useDebounce(searchValue, 2000)
   const [listProducts, setListProducts] = useState([])
-  const { user, isAuthenticated } = useUserStore()
+  const { user, isAuthenticated, accessToken } = useUserStore()
+
+  console.log(accessToken)
 
   useEffect(() => {
     const getProducts = async () => {

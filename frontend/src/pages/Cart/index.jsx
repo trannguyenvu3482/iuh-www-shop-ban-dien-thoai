@@ -1,5 +1,5 @@
 import { Formik } from 'formik'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { MdOutlineAccountBalanceWallet } from 'react-icons/md'
 import CardItem from '../../components/Card/CardItem'
 import { Dropdown } from '../../components/Select'
@@ -11,6 +11,7 @@ import {
   useFetchDistrict,
   useProvince,
 } from '../../hooks/useProvince'
+import { getUsers } from '../../service/apiUser'
 
 const convertProvince = (provinces) => {
   if (!provinces || provinces === undefined || provinces === null) return []
@@ -80,6 +81,20 @@ function CartPage() {
   const provinces = useProvince()
   const districts = useFetchDistrict(provinceId)
   const communes = useFetchCommunes(districtId)
+
+  useEffect(() => {
+    try {
+      const fetchData = async () => {
+        const { data } = await getUsers()
+
+        console.log(data)
+      }
+
+      fetchData()
+    } catch (error) {
+      console.error('Error fetching data:', error)
+    }
+  }, [])
 
   const handleSelectProvince = (e) => {
     setProvinceId(e.target.value)

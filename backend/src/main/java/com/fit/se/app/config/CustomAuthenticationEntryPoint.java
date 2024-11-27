@@ -5,7 +5,6 @@ import com.fit.se.app.dto.response.RestResponse;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.oauth2.server.resource.web.BearerTokenAuthenticationEntryPoint;
 import org.springframework.security.web.AuthenticationEntryPoint;
@@ -31,9 +30,9 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
         response.setContentType("application/json;charset=UTF-8");
 
         RestResponse<Object> res = new RestResponse<Object>();
-        res.setStatusCode(HttpStatus.UNAUTHORIZED.value());
+        res.setStatusCode(-1);
         res.setError(authException.getCause().getMessage());
-        res.setMessage("Token không hợp lệ");
+        res.setMessage("Token đã hết hạn");
 
         mapper.writeValue(response.getWriter(), res);
     }

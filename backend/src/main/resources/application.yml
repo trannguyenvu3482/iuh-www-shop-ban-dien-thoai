@@ -1,7 +1,7 @@
 security:
   jwt:
     secret-key: ${JWT_SECRET_KEY}
-    expiration-time: 3600 # Access Token: 1 hour
+    expiration-time: 1 # Access Token: 1 hour
     refresh-expiration-time: 8640000 # Refresh Token: 100 days
 server:
   port: 8080

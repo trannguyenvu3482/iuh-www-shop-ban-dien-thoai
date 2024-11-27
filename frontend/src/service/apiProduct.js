@@ -1,5 +1,4 @@
-import instance from "./axios";
-
+import instance from "./axios/instance";
 const BASE_URL = "/products";
 
 export const getProductById = async (id) => {
