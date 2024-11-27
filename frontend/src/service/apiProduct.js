@@ -1,11 +1,10 @@
-import instance from "./axios";
-
+import instance from "./axios/instance";
 const BASE_URL = "/products";
 
 export const getProductById = async (id) => {
   return await instance.get(`${BASE_URL}/${id}`);
 };
-export const getProdyctBySlug = async (slug) => {
+export const getProductBySlug = async (slug) => {
   return await instance.get(`${BASE_URL}/slug/${slug}`);
 };
 
@@ -17,4 +16,12 @@ export const getProductVariant = async (productId, capacityId, colorId) => {
   return await instance.get(
     `/products/variant/${productId}/${capacityId}/${colorId}`
   );
+};
+
+export const getProductsByNameRelative = async (name) => {
+  return await instance.get(`/products`, {
+    params: {
+      filter: `name~~'${name}'`,
+    },
+  });
 };

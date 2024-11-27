@@ -53,7 +53,7 @@ const SignIn = () => {
   }
 
   return (
-    <div className="pt:mt-0 mx-auto flex flex-col items-end justify-center bg-[url('/authbg.jpg')] px-6 pt-8 md:h-screen">
+    <div className="pt:mt-0 mx-auto flex flex-col items-end justify-center bg-[url('/authbg.jpg')] bg-cover bg-center bg-no-repeat px-6 pt-8 md:h-screen">
       <a
         href="/"
         className="absolute left-8 top-8 flex items-center justify-center gap-1 rounded-full bg-white p-4 text-xl text-black transition-all hover:opacity-90"
@@ -83,6 +83,7 @@ const SignIn = () => {
           {({ errors, touched, handleChange, handleBlur }) => (
             <Form>
               <TextInput
+                labelStyle="text-white"
                 label="Email của bạn"
                 name="email"
                 onChange={handleChange}
@@ -91,6 +92,7 @@ const SignIn = () => {
                 error={errors.email && touched.email ? errors.email : ''}
               />
               <TextInput
+                labelStyle="text-white"
                 label="Mật khẩu của bạn"
                 name="password"
                 type="password"

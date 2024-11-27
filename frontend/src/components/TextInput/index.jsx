@@ -5,6 +5,7 @@ const TextInput = ({
   error = '',
   inputStyle = '',
   containerStyle = '',
+  labelStyle = '',
   iconLeft,
   ...props
 }) => {
@@ -12,7 +13,7 @@ const TextInput = ({
     <div className={`${containerStyle} mb-4`}>
       <label
         htmlFor="email"
-        className={`mb-2 block text-sm font-medium text-gray-900 dark:text-white`}
+        className={`${labelStyle} mb-2 block text-sm font-medium text-gray-900`}
       >
         {label}
       </label>

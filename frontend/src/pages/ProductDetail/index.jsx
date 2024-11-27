@@ -1,13 +1,17 @@
+import { enqueueSnackbar } from 'notistack'
 import { useState } from 'react'
-import { FaHome, FaStar } from 'react-icons/fa'
+import { FaStar } from 'react-icons/fa'
+import { IoClose } from 'react-icons/io5'
 import Modal from 'react-modal'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
+import Breadcrumbs from '../../components/Breadcrumbs'
 import { useProductById } from '../../hooks/useProduct'
 import { formatVND } from '../../utils/format'
 import { useUserStore } from '../../zustand/userStore'
 import CapacitySection from './CapacitySection'
 import Description from './Description'
 import SlideProduct from './SlideProduct'
+
 const ProductDetail = () => {
   const navigate = useNavigate()
 
@@ -15,7 +19,7 @@ const ProductDetail = () => {
   const [selectedCapacity, setSelectedCapacity] = useState()
   const [selectedColor, setSelectedColor] = useState('')
   const [openNotLoggedInModal, setOpenNotLoggedInModal] = useState(false)
-  const { user } = useUserStore()
+  const { user, isAuthenticated } = useUserStore()
 
   const handleSelectColor = (color) => {
     setSelectedColor(color)
@@ -37,89 +41,29 @@ const ProductDetail = () => {
     ),
   )
 
-  const reverseHierarchyCategory = (category) => {
-    const breadcrumbs = []
-    let current = category
+  const handleAddToCart = () => {
+    // if (!isAuthenticated) {
+    //   setOpenNotLoggedInModal(true)
+    //   return
+    // }
 
-    while (current) {
-      breadcrumbs.unshift(current)
-      current = current.parent
+    if (!selectedCapacity || !selectedColor) {
+      enqueueSnackbar('Vui lòng chọn một loại bộ nhớ và một màu để mua hàng', {
+        variant: 'error',
+        autoHideDuration: 3000,
+        preventDuplicate: true,
+      })
+      return
     }
 
-    return breadcrumbs
-  }
-
-  const breadcrumbs = reverseHierarchyCategory(product?.category)
-
-  const handleAddToCart = () => {
     console.log('>>> product', product)
-
     console.log(product.id, selectedCapacity, selectedColor)
   }
 
   return (
     <>
       <div className="bg-slate-100">
-        <nav
-          aria-label="Breadcrumb"
-          className="mx-auto flex max-w-[1220px] border-b border-gray-100 bg-white"
-        >
-          <ol
-            role="list"
-            className="mx-auto flex w-full max-w-screen-xl space-x-2 px-4"
-          >
-            <li className="flex">
-              <div className="flex items-center">
-                <a href="/" className="text-gray-400 hover:text-gray-500">
-                  <FaHome aria-hidden="true" className="size-5 shrink-0" />
-                  <span className="sr-only">Home</span>
-                </a>
-              </div>
-            </li>
-            {breadcrumbs.map((page) => (
-              <li key={page.name} className="flex">
-                <div className="flex items-center">
-                  <svg
-                    fill="currentColor"
-                    viewBox="0 0 24 44"
-                    preserveAspectRatio="none"
-                    aria-hidden="true"
-                    className="h-full w-6 shrink-0 text-gray-200"
-                  >
-                    <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z" />
-                  </svg>
-                  <Link
-                    to={`/category/${page.id}`}
-                    aria-current={page.current ? 'page' : undefined}
-                    className="ml-4 text-sm font-medium text-gray-500 hover:text-gray-700"
-                  >
-                    {page.name}
-                  </Link>
-                </div>
-              </li>
-            ))}
-            <li className="flex">
-              <div className="flex items-center">
-                <svg
-                  fill="currentColor"
-                  viewBox="0 0 24 44"
-                  preserveAspectRatio="none"
-                  aria-hidden="true"
-                  className="h-full w-6 shrink-0 text-gray-200"
-                >
-                  <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z" />
-                </svg>
-                <Link
-                  to="#"
-                  aria-current="page"
-                  className="ml-4 text-sm font-medium text-gray-500 hover:text-gray-700"
-                >
-                  {product?.name}
-                </Link>
-              </div>
-            </li>
-          </ol>
-        </nav>
+        <Breadcrumbs currentName={product?.name} category={product?.category} />
         <div className="mx-auto flex max-w-[1220px] gap-4 pb-4 pt-2">
           <div className="w-[50%] flex-1 rounded-b-md bg-white">
             <SlideProduct
@@ -242,20 +186,70 @@ const ProductDetail = () => {
         </div>
       </div>
       <Modal
+        style={{
+          overlay: {
+            zIndex: 100,
+            backgroundColor: 'rgba(70, 70, 70, 0.5)',
+          },
+          content: {
+            top: '50%',
+            left: '50%',
+            right: 'auto',
+            bottom: 'auto',
+            marginRight: '-50%',
+            transform: 'translate(-50%, -50%)',
+            backgroundColor: '#fff',
+            padding: 10,
+            borderRadius: 10,
+          },
+        }}
         isOpen={openNotLoggedInModal}
         onRequestClose={() => setOpenNotLoggedInModal(false)}
         contentLabel="Example Modal"
       >
-        <h2 ref={(_subtitle) => (subtitle = _subtitle)}>Hello</h2>
-        <button onClick={() => setOpenNotLoggedInModal(false)}>close</button>
-        <div>I am a modal</div>
-        <form>
-          <input />
-          <button>tab navigation</button>
-          <button>stays</button>
-          <button>inside</button>
-          <button>the modal</button>
-        </form>
+        <div className="relative h-full w-full rounded-lg bg-white">
+          <button
+            type="button"
+            className="absolute end-2.5 top-3 ms-auto inline-flex items-center justify-center rounded-lg bg-transparent text-sm text-gray-400 hover:text-gray-300"
+            onClick={() => setOpenNotLoggedInModal(false)}
+          >
+            <IoClose className="h-6 w-6" />
+          </button>
+          <div className="p-4 text-center md:p-5">
+            <svg
+              className="mx-auto mb-4 h-12 w-12 text-gray-400 dark:text-gray-200"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 20 20"
+            >
+              <path
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+              />
+            </svg>
+            <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+              Bạn cần đăng nhập để mua sản phẩm này
+            </h3>
+            <button
+              type="button"
+              className="inline-flex items-center rounded-lg bg-red-600 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300"
+              onClick={() => navigate('/login')}
+            >
+              Đăng nhập
+            </button>
+            <button
+              type="button"
+              className="ms-3 rounded-lg border border-gray-200 bg-white px-5 py-2.5 text-sm font-medium text-gray-900 hover:bg-gray-100 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100"
+              onClick={() => setOpenNotLoggedInModal(false)}
+            >
+              Hủy bỏ
+            </button>
+          </div>
+        </div>
       </Modal>
     </>
   )
