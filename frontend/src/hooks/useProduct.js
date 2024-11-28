@@ -10,23 +10,12 @@ export const useProductById = () => {
 
   useEffect(() => {
     const handleFetch = async () => {
-<<<<<<< HEAD
-      const fetcher = await getProductById(id)
-      setProduct(fetcher)
-    }
-    handleFetch()
-    return handleFetch()
-  }, [id])
-  return product
-}
-=======
       try {
         const fetcher = await getProductById(id);
-
         console.log(fetcher);
-
         setProduct(fetcher.data);
       } catch (error) {
+        console.log("🚀 ~ handleFetch ~ error:", error)
         navigate("/404");
       }
     };
@@ -34,6 +23,5 @@ export const useProductById = () => {
   }, [id]);
   return product;
 };
->>>>>>> 1abc7964cbd592c42898254f51603c6cab4b5ff3
 
 //TODO: ---------------------------------------------CLIENT---------------------------------------------
