@@ -28,10 +28,11 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
                          AuthenticationException authException) throws IOException, ServletException {
         this.delegate.commence(request, response, authException);
         response.setContentType("application/json;charset=UTF-8");
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 
         RestResponse<Object> res = new RestResponse<Object>();
         res.setStatusCode(-1);
-        res.setError(authException.getCause().getMessage());
+        res.setError(authException.getMessage());
         res.setMessage("Token đã hết hạn");
 
         mapper.writeValue(response.getWriter(), res);

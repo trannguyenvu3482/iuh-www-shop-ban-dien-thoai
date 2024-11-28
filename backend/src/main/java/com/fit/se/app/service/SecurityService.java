@@ -1,7 +1,9 @@
 package com.fit.se.app.service;
 
 import com.fit.se.app.dto.response.ResponseLoginDTO;
+import com.fit.se.app.exception.InvalidTokenException;
 import com.nimbusds.jose.util.Base64;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
@@ -17,6 +19,7 @@ import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Service
 public class SecurityService {
     private final JwtEncoder jwtEncoder;
@@ -118,9 +121,13 @@ public class SecurityService {
                 .macAlgorithm(JWT_ALGORITHM).build();
 
         try {
+            if (token == null || token.trim().isBlank()) {
+                throw new InvalidTokenException();
+            }
+
             return jwtDecoder.decode(token);
         } catch (Exception e) {
-            System.out.println("Refresh token error: " + e.getMessage());
+            log.info("Refresh token error: {}", e.getMessage());
             throw e;
         }
     }
