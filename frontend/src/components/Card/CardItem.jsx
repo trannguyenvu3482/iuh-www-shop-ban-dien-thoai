@@ -2,13 +2,14 @@ import { useState } from 'react'
 import { FaRegTrashAlt } from 'react-icons/fa'
 import InputQuantity from '../InputQuantity'
 
-function CardItem() {
+function CardItem({ item }) {
   const [count, setCount] = useState(1)
   const toggleCounting = (count) => {
     setCount(count)
   }
+
   return (
-    <div className="mx-2 mb-4 flex items-center justify-between border-b-[1px] border-gray-200 px-2 pb-2">
+    <div className="mx-2 flex items-center justify-between border-b-[1px] border-gray-200 px-2 py-2">
       <div className="flex items-center gap-4">
         <img
           className="ml-4 h-16 w-16 rounded-md border border-gray-200 p-1"
@@ -19,15 +20,15 @@ function CardItem() {
           <h3 className="text-sm font-semibold text-gray-800">
             iPhone 16 Pro 128GB (VN/A)
           </h3>
-          <h6 className="text-xs font-normal text-blue-600">
+          <h6 className="mt-1 text-xs font-normal text-blue-600">
             Dung lượng:
-            <span className="ml-[2px] text-sm font-bold text-blue-600">
+            <span className="ml-[2px] text-xs font-bold text-blue-600">
               128GB
             </span>
           </h6>
           <h6 className="text-xs font-normal text-blue-600">
             Màu sắc:
-            <span className="ml-[2px] text-sm font-bold text-blue-600">Đỏ</span>
+            <span className="ml-[2px] text-xs font-bold text-blue-600">Đỏ</span>
           </h6>
         </div>
       </div>

@@ -6,7 +6,7 @@ import { Dropdown } from '../../components/Select'
 import TextInput from '../../components/TextInput'
 import CartValidationSchema from './context'
 
-import { FaCoins } from 'react-icons/fa'
+import { FaCoins, FaSearch } from 'react-icons/fa'
 import { FaTicket } from 'react-icons/fa6'
 import {
   useFetchCommunes,
@@ -84,14 +84,13 @@ function CartPage() {
   const [districtId, setDistrictId] = useState('001')
   const [communeId, setCommuneId] = useState('')
   const [paymentMethod, setPaymentMethod] = useState('vnpay')
+  const [code, setCode] = useState('')
   const provinces = useProvince()
   const districts = useFetchDistrict(provinceId)
   const communes = useFetchCommunes(districtId)
   const {
     user: { id: userId },
   } = useUserStore()
-
-  console.log(user?.name)
 
   useEffect(() => {
     try {
@@ -143,11 +142,11 @@ function CartPage() {
 
   return (
     <div className="flex h-full w-full items-center justify-center bg-gray-100">
-      <div className="my-10 flex max-w-[1100px] flex-col px-2">
-        <div className="grid w-full grid-cols-[3fr_2fr] gap-4">
+      <div className="my-10 flex w-[1200px] flex-col px-2">
+        <div className="grid w-full grid-cols-[2fr_1fr] gap-4">
           {/* Left Side */}
-          <div className="rounded-2xl bg-white">
-            <div className="pr-4">
+          <div className="rounded-2xl bg-white p-2">
+            <div className="">
               <div className="mb-4 flex w-full justify-between px-4 pb-2 pt-6">
                 <span className="font-bold uppercase text-gray-800">
                   Giỏ hàng của bạn
@@ -162,17 +161,10 @@ function CartPage() {
               {/*Card Item*/}
               <div className="max-h-[700px] overflow-y-auto">
                 <div>
-                  {[1, 2].map((item) => (
-                    <CardItem key={item} />
+                  {cart?.cartDetails?.map((item) => (
+                    <CardItem key={item} item={item} />
                   ))}
                 </div>
-              </div>
-              {/*Total*/}
-              <div className="flex w-full items-center justify-between px-6">
-                <span className="text-md cursor-pointer font-bold text-gray-600">
-                  Tạm tính
-                </span>
-                <span className="font-[500] uppercase">55.798.000đ</span>
               </div>
             </div>
             {/*Form*/}
@@ -330,13 +322,21 @@ function CartPage() {
           {/* Right Side */}
           <div className="flex h-[400px] w-full flex-col justify-between rounded-2xl">
             <div className="flex-1 rounded-t-2xl bg-white p-6 pb-0">
-              <TextInput
-                name="code"
-                required
-                placeholder="Nhập mã giảm giá nếu có"
-                iconLeft={<FaTicket className="h-4 w-4 text-red-600" />}
-              />
-              <div className="flex flex-col gap-2">
+              <div className="flex items-end gap-2">
+                <TextInput
+                  name="code"
+                  containerStyle="mb-0 flex-1"
+                  placeholder="Nhập mã giảm giá nếu có"
+                  iconLeft={<FaTicket className="h-4 w-4 text-red-600" />}
+                  maxLength={10}
+                  onChange={(e) => setCode(e.target.value)}
+                  value={code}
+                />
+                <button className="flex h-[42px] w-[42px] items-center justify-center rounded-lg bg-red-600 text-white hover:bg-red-800 focus:outline-none focus:ring-2 focus:ring-red-300">
+                  <FaSearch />
+                </button>
+              </div>
+              <div className="mt-3 flex flex-col gap-2">
                 <p className="text-textOnWhitePrimary font-semibold">
                   Thông tin đơn hàng
                 </p>
