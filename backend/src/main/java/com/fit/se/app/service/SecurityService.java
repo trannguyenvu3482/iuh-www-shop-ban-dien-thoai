@@ -1,6 +1,7 @@
 package com.fit.se.app.service;
 
 import com.fit.se.app.dto.response.ResponseLoginDTO;
+import com.fit.se.app.exception.InvalidTokenException;
 import com.nimbusds.jose.util.Base64;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -120,6 +121,10 @@ public class SecurityService {
                 .macAlgorithm(JWT_ALGORITHM).build();
 
         try {
+            if (token == null || token.trim().isBlank()) {
+                throw new InvalidTokenException();
+            }
+
             return jwtDecoder.decode(token);
         } catch (Exception e) {
             log.info("Refresh token error: {}", e.getMessage());
