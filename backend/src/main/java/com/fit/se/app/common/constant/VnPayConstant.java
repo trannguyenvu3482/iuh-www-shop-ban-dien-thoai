@@ -2,6 +2,7 @@ package com.fit.se.app.common.constant;
 
 public class VnPayConstant {
 
+
     public static final String VNP_PAY_URL = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
     public static final String VNP_RETURN_URL = "http://localhost:8080/api/v1/create-order/callback";
     public static final String VNP_TMN_CODE = "141VZC3J";

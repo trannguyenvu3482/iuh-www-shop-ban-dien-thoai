@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react'
+import { useRef, useState } from 'react'
 import { Autoplay, Navigation } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'
 
@@ -31,7 +31,7 @@ function SlideProduct({ imgs }) {
             <SwiperSlide key={index}>
               <img
                 className="mx-auto h-[400px] w-[400px] self-center rounded-lg"
-                src={img.image_url}
+                src={img}
                 alt={`Slide ${index}`}
               />
             </SwiperSlide>
@@ -53,7 +53,7 @@ function SlideProduct({ imgs }) {
             >
               <img
                 className="mx-auto h-16 w-14 self-center rounded-lg"
-                src={img.image_url}
+                src={img}
                 alt={`Thumbnail ${index}`}
               />
             </button>

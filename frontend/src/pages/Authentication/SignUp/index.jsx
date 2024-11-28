@@ -81,6 +81,7 @@ const SignUp = () => {
             <Form>
               <div className="flex justify-between">
                 <TextInput
+                  labelStyle="text-white"
                   label="Họ và tên"
                   name="name"
                   onChange={handleChange}
@@ -159,6 +160,7 @@ const SignUp = () => {
                 </div>
               </div>
               <TextInput
+                labelStyle="text-white"
                 label="Email của bạn"
                 name="email"
                 onChange={handleChange}
@@ -167,6 +169,7 @@ const SignUp = () => {
                 iconLeft={<FaEnvelope />}
               />
               <TextInput
+                labelStyle="text-white"
                 label="Mật khẩu của bạn"
                 name="password"
                 type="password"
@@ -178,6 +181,7 @@ const SignUp = () => {
                 iconLeft={<FaLock />}
               />
               <TextInput
+                labelStyle="text-white"
                 label="Nhập lại mật khẩu của bạn"
                 name="passwordRepeat"
                 type="password"
@@ -191,6 +195,7 @@ const SignUp = () => {
                 iconLeft={<FaLock />}
               />
               <TextInput
+                labelStyle="text-white"
                 label="Số điện thoại"
                 name="phoneNumber"
                 onChange={handleChange}

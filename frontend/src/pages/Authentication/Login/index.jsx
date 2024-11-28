@@ -5,7 +5,7 @@ import { FaChevronLeft, FaEnvelope, FaLock } from 'react-icons/fa6'
 import { Link, useNavigate } from 'react-router-dom'
 import Logo from '../../../assets/img/logo.png'
 import TextInput from '../../../components/TextInput'
-import { login } from '../../../service/authentication'
+import { login } from '../../../service/apiAuthentication'
 import { useUserStore } from '../../../zustand/userStore'
 import { LoginSchema } from '../context'
 const SignIn = () => {
@@ -14,21 +14,38 @@ const SignIn = () => {
   const { setUser, setAccessToken, setIsAuthenticated } = useUserStore()
 
   const handleLogin = async (values) => {
-    const data = await login(values.email, values.password)
+    try {
+      const { data } = await login(values.email, values.password)
 
-    if (data.statusCode === 401) {
-      enqueueSnackbar(data.message, {
+      console.log(data)
+
+      if (data.statusCode === 401) {
+        enqueueSnackbar(data.message, {
+          variant: 'error',
+          autoHideDuration: 3000,
+          preventDuplicate: true,
+        })
+      } else {
+        setUser(data.user)
+        setAccessToken(data.access_token)
+        setIsAuthenticated(true)
+
+        enqueueSnackbar(
+          'Đăng nhập thành công, đang chuyển hướng đến trang chủ',
+          {
+            variant: 'success',
+            autoHideDuration: 3000,
+            preventDuplicate: true,
+          },
+        )
+
+        setTimeout(() => {
+          navigate('/')
+        }, 3000)
+      }
+    } catch (error) {
+      enqueueSnackbar(error.response.data.message, {
         variant: 'error',
-        autoHideDuration: 3000,
-        preventDuplicate: true,
-      })
-    } else {
-      setUser(data.user)
-      setAccessToken(data.accessToken)
-      setIsAuthenticated(true)
-
-      enqueueSnackbar('Đăng nhập thành công, đang chuyển hướng đến trang chủ', {
-        variant: 'success',
         autoHideDuration: 3000,
         preventDuplicate: true,
       })
@@ -36,7 +53,7 @@ const SignIn = () => {
   }
 
   return (
-    <div className="pt:mt-0 mx-auto flex flex-col items-end justify-center bg-[url('/authbg.jpg')] px-6 pt-8 md:h-screen">
+    <div className="pt:mt-0 mx-auto flex flex-col items-end justify-center bg-[url('/authbg.jpg')] bg-cover bg-center bg-no-repeat px-6 pt-8 md:h-screen">
       <a
         href="/"
         className="absolute left-8 top-8 flex items-center justify-center gap-1 rounded-full bg-white p-4 text-xl text-black transition-all hover:opacity-90"
@@ -66,6 +83,7 @@ const SignIn = () => {
           {({ errors, touched, handleChange, handleBlur }) => (
             <Form>
               <TextInput
+                labelStyle="text-white"
                 label="Email của bạn"
                 name="email"
                 onChange={handleChange}
@@ -74,6 +92,7 @@ const SignIn = () => {
                 error={errors.email && touched.email ? errors.email : ''}
               />
               <TextInput
+                labelStyle="text-white"
                 label="Mật khẩu của bạn"
                 name="password"
                 type="password"

@@ -1,19 +1,21 @@
 /* eslint-disable react-refresh/only-export-components */
-import { lazy } from 'react'
+import { lazy, Suspense } from 'react'
 import { createBrowserRouter } from 'react-router-dom'
 import App from '../App'
 import AdminLayout from '../layout/AdminLayout'
 import Admin from '../pages/Admin'
+import Categories from '../pages/Admin/Categories'
+import AddCategory from '../pages/Admin/Categories/AddCategory'
 import Products from '../pages/Admin/Products'
 import AddProduct from '../pages/Admin/Products/AddProducts'
 import Login from '../pages/Authentication/Login'
 import SignUp from '../pages/Authentication/SignUp'
 import Error from '../pages/Error'
-import PrivateRoute from './PrivateRoute'
-import Categories from '../pages/Admin/Categories'
-import AddCategory from '../pages/Admin/Categories/AddCategory'
+
 import Users from '../pages/Admin/User'
 import AddUser from '../pages/Admin/User/AddUser'
+import PrivateAdminRoute from './PrivateAdminRoute'
+import PrivateUserRoute from './PrivateUserRoute'
 
 const Home = lazy(() => import('../pages/Home'))
 const CartPage = lazy(() => import('../pages/Cart'))
@@ -21,31 +23,52 @@ const ProductDetail = lazy(() => import('../pages/ProductDetail'))
 
 const router = createBrowserRouter([
   {
+    path: '*',
+    element: <Error />,
+  },
+  {
+    path: '404',
+    element: <Error />,
+  },
+  {
     path: '/',
     element: <App />,
-    errorElement: <Error />,
     children: [
       {
         index: true,
         path: '/',
-        element: <Home />,
+        element: (
+          <Suspense fallback={<div>Loading...</div>}>
+            <Home />
+          </Suspense>
+        ),
       },
       {
         path: '/product/:id',
-        element: <ProductDetail />,
+        element: (
+          <Suspense fallback={<div>Loading...</div>}>
+            <ProductDetail />
+          </Suspense>
+        ),
       },
       {
         path: '/cart',
-        element: <CartPage />,
+        element: (
+          <PrivateUserRoute>
+            <Suspense fallback={<div>Loading...</div>}>
+              <CartPage />
+            </Suspense>
+          </PrivateUserRoute>
+        ),
       },
     ],
   },
   {
     path: '/admin',
     element: (
-      <PrivateRoute>
+      <PrivateAdminRoute>
         <AdminLayout />
-      </PrivateRoute>
+      </PrivateAdminRoute>
     ),
     children: [
       {

@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.util.Map;
 
 @RestController
+@RequestMapping("/api/v1/payment")
 public class PaymentController {
     private final PaymentService paymentService;
     private final PaymentStatusService paymentStatusService;
@@ -32,7 +33,7 @@ public class PaymentController {
     @GetMapping("/create-order/callback")
     public ResponseEntity<Map<String, Object>> doCallBack(@RequestParam Map<String, Object> callBackInfo) {
         System.out.println(callBackInfo);
-        return new ResponseEntity<>(callBackInfo, HttpStatus.OK);
+        return ResponseEntity.ok(callBackInfo);
     }
 
     @PostMapping("/create-order/get-status")

@@ -1,16 +1,12 @@
-import { useState } from 'react'
 import ColorSection from '../ColorSection'
 
 function CapacitySection({
   capacities,
   handleSelectCapacity,
   selectedCapacity,
+  selectedColor,
+  handleSelectColor,
 }) {
-  const [selectedColor, setSelectedColor] = useState('')
-  const handleSelectColor = (color) => {
-    setSelectedColor(color)
-  }
-
   return (
     <>
       <div className="mb-6 mt-8">

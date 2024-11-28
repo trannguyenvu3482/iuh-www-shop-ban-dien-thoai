@@ -93,7 +93,7 @@ public class ProductService {
         Specification<Product> activeSpec = (root, query, criteriaBuilder) ->
                 criteriaBuilder.equal(root.get("status"), StatusEnum.ACTIVE);
         spec = spec.and(activeSpec);
-        Page<Product> pageProducts = productRepository.findAll(activeSpec, pageable);
+        Page<Product> pageProducts = productRepository.findAll(spec, pageable);
 
         List<ResponseProductDTO> products = productMapper.toProductDTOs(pageProducts.getContent());
 

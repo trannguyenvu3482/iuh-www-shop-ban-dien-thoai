@@ -9,6 +9,9 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 @Entity
+@Table(name = "ProductVariants", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"product_id", "color_id", "storage_id"})
+})
 public class ProductVariants {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,15 +19,15 @@ public class ProductVariants {
     private Integer id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id", unique = false)
+    @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 
-    @OneToOne
-    @JoinColumn(name = "color_id", unique = false)
+    @ManyToOne
+    @JoinColumn(name = "color_id", nullable = false, unique = false)
     private ProductColors color;
 
-    @OneToOne
-    @JoinColumn(name = "storage_id", unique = false)
+    @ManyToOne
+    @JoinColumn(name = "storage_id", nullable = false, unique = false)
     private ProductStorage storage;
 
     @Column(name = "price", nullable = false, precision = 10, scale = 2)
