@@ -11,7 +11,7 @@ function SlideProduct({ imgs }) {
       <Swiper
         modules={[Autoplay, Navigation]}
         navigation={true}
-        loop={true}
+        loop={imgs.length > 1 ? true : false}
         className="mx-auto h-fit rounded-xl"
         spaceBetween={0}
         slidesPerView={1}

@@ -1,22 +1,24 @@
 import ColorSection from '../ColorSection'
 
 function CapacitySection({
-  capacities,
+  variants,
   handleSelectCapacity,
   selectedCapacity,
-  selectedColor,
-  handleSelectColor,
+  selectedVariant,
+  handleSelectVariant,
 }) {
+  console.log(selectedCapacity)
+
   return (
     <>
       <div className="mb-6 mt-8">
         <div className="flex space-x-4">
-          {capacities?.map((capacity) => (
+          {variants?.map((capacity, index) => (
             <button
-              key={capacity.id}
-              onClick={() => handleSelectCapacity(capacity.id)}
+              key={`product-${index}`}
+              onClick={() => handleSelectCapacity(index)}
               className={`rounded-lg border px-4 py-2 text-sm font-medium ${
-                selectedCapacity === capacity.id
+                selectedCapacity === index
                   ? 'text-priborder-primary-red border-primary-red bg-red-100'
                   : 'border-gray-300 bg-white text-gray-700'
               }`}
@@ -29,9 +31,11 @@ function CapacitySection({
       </div>
       {/* Color */}
       <ColorSection
-        handleSelectColor={handleSelectColor}
-        selectedColor={selectedColor}
-        colors={capacities?.find((cap) => cap.id === selectedCapacity)?.colors}
+        handleSelectVariant={handleSelectVariant}
+        selectedVariant={selectedVariant}
+        colors={
+          selectedCapacity !== -1 ? variants[selectedCapacity]?.colors : []
+        }
       />{' '}
     </>
   )

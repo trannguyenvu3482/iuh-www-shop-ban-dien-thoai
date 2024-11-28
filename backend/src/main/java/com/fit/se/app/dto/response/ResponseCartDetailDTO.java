@@ -20,11 +20,16 @@ public class ResponseCartDetailDTO {
     private Integer quantity;
     private BigDecimal price;
 
+    public Integer getProductId() {
+        return product.getId();
+    }
+
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
     public static class ProductDto {
         private Integer id;
+        private String name;
     }
 
     @Data
