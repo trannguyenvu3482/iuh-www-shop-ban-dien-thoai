@@ -9,9 +9,10 @@ export const useProductById = () => {
   useEffect(() => {
     const handleFetch = async () => {
       const fetcher = await getProductById(id)
-      setProduct(fetcher.data)
+      setProduct(fetcher)
     }
     handleFetch()
+    return handleFetch()
   }, [id])
   return product
 }

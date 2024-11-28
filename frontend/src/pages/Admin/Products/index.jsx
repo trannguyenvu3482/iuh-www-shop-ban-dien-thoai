@@ -5,12 +5,19 @@ import { Link } from 'react-router-dom'
 import Table from '../../../components/Admin/Table'
 
 import { products } from '../../../constants/products'
+const getStatusColor = (status) => {
+  if (status === 'ACTIVE') {
+    return { text: 'Còn hàng', color: '#388b84' }
+  } else {
+    return { text: 'Hết hàng', color: '#fd4332' }
+  }
+}
 
 const Products = () => {
   const productsColumns = useMemo(
     () => [
       {
-        accessorKey: 'product_name',
+        accessorKey: 'thumbnailUrl',
         header: 'Sản Phẩm',
         Cell: ({ cell }) => (
           <div>
@@ -18,41 +25,35 @@ const Products = () => {
           </div>
         ),
       },
-
       {
-        accessorKey: 'category',
+        accessorKey: 'category.name',
         header: 'Danh Mục',
+        Cell: ({ cell }) => <span>{cell.getValue()}</span>,
       },
       {
         accessorKey: 'quantity',
         header: 'Số Lượng',
+        Cell: ({ cell }) => <span>{cell.getValue()}</span>,
       },
       {
-        accessorKey: 'price',
+        accessorKey: 'basePrice',
         header: 'Giá',
         Cell: ({ cell }) => <span>{cell.getValue()}</span>,
       },
       {
-        accessorKey: 'instock',
+        accessorKey: 'status', // Cột Trạng Thái
         header: 'Trạng Thái',
-        Cell: ({ cell, row }) => (
-          <div>
-            {row.original.instock && (
-              <span style={{ color: '#388b84', textTransform: 'capitalize' }}>
-                Còn hàng
-              </span>
-            )}
-            {!row.original.instock && (
-              <span style={{ color: '#fd4332', textTransform: 'capitalize' }}>
-                Hết hàng
-              </span>
-            )}
-          </div>
-        ),
+        Cell: ({ cell, row }) => {
+          const { text, color } = getStatusColor(row.original.status)
+          return (
+            <span style={{ color, textTransform: 'capitalize' }}>{text}</span>
+          )
+        },
       },
     ],
     [],
   )
+
   return (
     <Box sx={{ pt: '80px', pb: '20px' }}>
       <Box

@@ -44,9 +44,18 @@ export const links = [
     ],
   },
   {
-    name: 'Khách hàng',
+    name: 'Người dùng',
     icon: <FiUsers />,
-    url: '/admin/customers',
+    subLinks: [
+      {
+        name: 'Tất cả người dùng',
+        url: '/admin/users',
+      },
+      {
+        name: 'Thêm người dùng',
+        url: '/admin/users/add',
+      },
+    ],
   },
   {
     name: 'Thống kê',

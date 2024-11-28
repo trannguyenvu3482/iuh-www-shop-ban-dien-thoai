@@ -53,16 +53,6 @@ const Navbar = ({ sideBarWidth, handleDrawerToggle }) => {
                 <FiMenu />
               </IconButton>
             </Tooltip>
-
-            <Typography
-              variant="h5"
-              sx={{
-                display: { xs: 'none', sm: 'block' },
-                fontWeight: '500',
-              }}
-            >
-              Quản lý cửa hàng
-            </Typography>
           </Box>
           <Stack direction="row" spacing={1} alignItems="center">
             <Tooltip title="Notifications" arrow>

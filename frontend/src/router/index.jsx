@@ -12,6 +12,8 @@ import Error from '../pages/Error'
 import PrivateRoute from './PrivateRoute'
 import Categories from '../pages/Admin/Categories'
 import AddCategory from '../pages/Admin/Categories/AddCategory'
+import Users from '../pages/Admin/User'
+import AddUser from '../pages/Admin/User/AddUser'
 
 const Home = lazy(() => import('../pages/Home'))
 const CartPage = lazy(() => import('../pages/Cart'))
@@ -65,6 +67,14 @@ const router = createBrowserRouter([
       {
         path: '/admin/categories/add',
         element: <AddCategory />,
+      },
+      {
+        path: '/admin/users',
+        element: <Users />,
+      },
+      {
+        path: '/admin/users/add',
+        element: <AddUser />,
       },
     ],
   },
