@@ -16,22 +16,30 @@ const ProductDetail = () => {
   const navigate = useNavigate()
 
   const product = useProductById()
-  const [selectedCapacity, setSelectedCapacity] = useState()
-  const [selectedColor, setSelectedColor] = useState('')
+  const [selectedCapacity, setSelectedCapacity] = useState(-1)
+  const [selectedVariant, setSelectedVariant] = useState(-1)
   const [openNotLoggedInModal, setOpenNotLoggedInModal] = useState(false)
   const { user, isAuthenticated } = useUserStore()
 
-  const handleSelectColor = (color) => {
-    setSelectedColor(color)
+  console.log(product)
+
+  console.log('selected capacity: ', selectedCapacity)
+  console.log('selected variant: ', selectedVariant)
+
+  console.log('Colors: ', product?.variants[selectedCapacity]?.colors)
+
+  const selectedColorObject = product?.variants[selectedCapacity]?.colors.find(
+    (color) => color.variantId === selectedVariant,
+  )
+
+  const handleSelectCapacity = (index) => {
+    if (selectedCapacity !== index) {
+      setSelectedVariant(-1)
+    }
+    setSelectedCapacity(index)
   }
 
-  const handleSelectCapacity = (capacity) => {
-    setSelectedCapacity(capacity)
-  }
-
-  const selectedColorObject = product?.variants
-    .find((item) => item.id === selectedCapacity)
-    ?.colors.find((color) => color.id === selectedColor)
+  console.log('selected color object: ', selectedColorObject)
 
   const uniqueImageUrls = Array.from(
     new Set(
@@ -42,12 +50,12 @@ const ProductDetail = () => {
   )
 
   const handleAddToCart = () => {
-    // if (!isAuthenticated) {
-    //   setOpenNotLoggedInModal(true)
-    //   return
-    // }
+    if (!isAuthenticated) {
+      setOpenNotLoggedInModal(true)
+      return
+    }
 
-    if (!selectedCapacity || !selectedColor) {
+    if (selectedCapacity === -1 || selectedVariant === -1) {
       enqueueSnackbar('Vui lòng chọn một loại bộ nhớ và một màu để mua hàng', {
         variant: 'error',
         autoHideDuration: 3000,
@@ -57,13 +65,16 @@ const ProductDetail = () => {
     }
 
     console.log('>>> product', product)
-    console.log(product.id, selectedCapacity, selectedColor)
+    console.log(product.id, selectedVariant)
   }
 
   return (
     <>
       <div className="bg-slate-100">
-        <Breadcrumbs currentName={product?.name} category={product?.category} />
+        <Breadcrumbs
+          currentName={product?.name}
+          categories={product?.categories}
+        />
         <div className="mx-auto flex max-w-[1220px] gap-4 pb-4 pt-2">
           <div className="w-[50%] flex-1 rounded-b-md bg-white">
             <SlideProduct
@@ -73,7 +84,7 @@ const ProductDetail = () => {
               //   },
               // ]}
               imgs={
-                !selectedCapacity || !selectedColor
+                selectedCapacity === -1 || selectedVariant === -1
                   ? uniqueImageUrls
                   : [selectedColorObject?.imageUrl]
               }
@@ -109,7 +120,7 @@ const ProductDetail = () => {
                 </div>
                 <div className="flex justify-between">
                   <div className="text-3xl font-bold text-primary-red">
-                    {!selectedCapacity || !selectedColor
+                    {selectedCapacity === -1 || selectedVariant === -1
                       ? formatVND(product?.basePrice + 0)
                       : formatVND(selectedColorObject?.price + 0)}
                     đ
@@ -126,10 +137,10 @@ const ProductDetail = () => {
                 {/* Capacity */}
                 <CapacitySection
                   handleSelectCapacity={handleSelectCapacity}
-                  capacities={product?.variants}
+                  variants={product?.variants}
                   selectedCapacity={selectedCapacity}
-                  selectedColor={selectedColor}
-                  handleSelectColor={handleSelectColor}
+                  selectedVariant={selectedVariant}
+                  handleSelectVariant={setSelectedVariant}
                 />
               </>
               {/* Button */}

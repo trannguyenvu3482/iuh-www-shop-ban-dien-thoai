@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { FaMinus, FaPlus } from 'react-icons/fa'
 
 const InputQuantity = ({ toggleCounting, initCount }) => {
   const [count, setCount] = useState(initCount)
@@ -14,19 +15,19 @@ const InputQuantity = ({ toggleCounting, initCount }) => {
     toggleCounting(count)
   }, [count])
   return (
-    <div className="flex h-10 items-center overflow-hidden rounded-md border border-gray-300">
+    <div className="flex h-8 items-center overflow-hidden rounded-md border border-gray-300">
       <button
         onClick={handleDecrement}
-        className="border-r border-gray-300 px-3 py-2 text-sm hover:bg-gray-200"
+        className="h-full border-r border-gray-300 px-3 py-1 text-sm hover:bg-gray-200"
       >
-        -
+        <FaMinus className="h-2.5 w-2.5" />
       </button>
-      <div className="px-4 py-2 text-sm font-medium">{count}</div>
+      <div className="px-4 py-1 text-sm font-medium">{count}</div>
       <button
         onClick={handleIncrement}
-        className="border-l border-gray-300 px-3 py-2 text-sm hover:bg-gray-200"
+        className="h-full border-l border-gray-300 px-3 py-1 text-sm hover:bg-gray-200"
       >
-        +
+        <FaPlus className="h-2.5 w-2.5" />
       </button>
     </div>
   )
