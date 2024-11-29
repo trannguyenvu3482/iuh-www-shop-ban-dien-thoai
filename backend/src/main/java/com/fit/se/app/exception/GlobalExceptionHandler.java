@@ -75,4 +75,14 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity.badRequest().body(response);
     }
+
+    @ExceptionHandler(value = InvalidTokenException.class)
+    ResponseEntity<RestResponse<Object>> handleInvalidTokenException(InvalidTokenException e) {
+        RestResponse<Object> response = new RestResponse<>();
+        response.setStatusCode(-1);
+        response.setError(e.getMessage());
+        response.setMessage("Token không hợp lệ");
+
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+    }
 }

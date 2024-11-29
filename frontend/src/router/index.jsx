@@ -20,6 +20,7 @@ import PrivateUserRoute from './PrivateUserRoute'
 const Home = lazy(() => import('../pages/Home'))
 const CartPage = lazy(() => import('../pages/Cart'))
 const ProductDetail = lazy(() => import('../pages/ProductDetail'))
+const Category = lazy(() => import('../pages/Category'))
 
 const router = createBrowserRouter([
   {
@@ -48,6 +49,14 @@ const router = createBrowserRouter([
         element: (
           <Suspense fallback={<div>Loading...</div>}>
             <ProductDetail />
+          </Suspense>
+        ),
+      },
+      {
+        path: '/category/:id',
+        element: (
+          <Suspense fallback={<div>Loading...</div>}>
+            <Category />
           </Suspense>
         ),
       },

@@ -1,7 +1,8 @@
+import { useSnackbar } from 'notistack'
 import React, { useEffect, useState } from 'react'
 import { FaAngleDown, FaAngleUp, FaUser } from 'react-icons/fa6'
 import { IoLogIn } from 'react-icons/io5'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import Sticky from 'react-sticky-el'
 import 'swiper/css'
 import { EffectFade, Navigation } from 'swiper/modules'
@@ -14,18 +15,25 @@ import logo from '../assets/img/logo.png'
 import webicons from '../assets/img/webicons.png'
 import { hotProducts, storesAddress } from '../constants'
 import { useDebounce } from '../hooks/useDebounce'
+import { logout } from '../service/apiAuthentication'
 import { getProductsByNameRelative } from '../service/apiProduct'
 import { useUserStore } from '../zustand/userStore'
 import SearchBar from './SearchBar'
-
 const Header = () => {
+  const { enqueueSnackbar } = useSnackbar()
+  const navigate = useNavigate()
   const [slideIndex, setSlideIndex] = useState(0)
   const [showShowroom, setShowShowroom] = useState(false)
   const [isSticky, setIsSticky] = useState(false)
   const [searchValue, setSearchValue] = useState('')
   const debouncedSearchValue = useDebounce(searchValue, 2000)
   const [listProducts, setListProducts] = useState([])
-  const { user, isAuthenticated, accessToken } = useUserStore()
+  const {
+    user,
+    isAuthenticated,
+    accessToken,
+    logout: stateLogout,
+  } = useUserStore()
 
   console.log(accessToken)
 
@@ -40,6 +48,22 @@ const Header = () => {
 
     getProducts()
   }, [debouncedSearchValue])
+
+  const handleLogout = async () => {
+    const { data } = await logout()
+
+    console.log(data)
+
+    stateLogout()
+
+    enqueueSnackbar('Đăng xuất thành công', {
+      variant: 'success',
+      autoHideDuration: 3000,
+      preventDuplicate: true,
+    })
+
+    navigate('/login')
+  }
 
   return (
     <header>
@@ -179,7 +203,7 @@ const Header = () => {
 
                     <div
                       id="userDropdown"
-                      className="absolute -right-4 top-14 z-20 hidden w-44 divide-y divide-gray-100 rounded-lg bg-white shadow group-hover:block dark:divide-gray-600 dark:bg-gray-700"
+                      className="absolute -right-4 top-11 z-20 hidden w-44 divide-y divide-gray-100 rounded-lg bg-white shadow group-hover:block dark:divide-gray-600 dark:bg-gray-700"
                     >
                       <div className="px-4 py-3 text-sm text-gray-900 dark:text-white">
                         <div>{user.name}</div>
@@ -216,7 +240,7 @@ const Header = () => {
                       </ul>
                       <div className="py-1">
                         <button
-                          onClick={() => alert('LOG OUT')}
+                          onClick={handleLogout}
                           className="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-600 dark:hover:text-white"
                         >
                           Đăng xuất

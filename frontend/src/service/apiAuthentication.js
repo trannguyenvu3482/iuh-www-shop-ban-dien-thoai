@@ -16,15 +16,14 @@ const getAccount = async () => {
   return await instance.get(`${BASE_URL}/account`);
 };
 
-const getNewToken = async () => {
-  return await instance.get(`${BASE_URL}/refresh-token`, {
-    headers: {
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "*",
-      Authorization: "Bearer ",
-    },
-    withCredentials: true,
-  });
-};
+// const getNewToken = async () => {
+//   return await instance.get(`${BASE_URL}/refresh-token`, {
+//     headers: {
+//       "Content-Type": "application/json",
+//       Authentication: undefined,
+//     },
+//     withCredentials: true,
+//   });
+// };
 
-export { getAccount, getNewToken, login, logout };
+export { getAccount, login, logout };

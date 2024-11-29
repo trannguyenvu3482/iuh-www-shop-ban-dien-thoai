@@ -117,18 +117,20 @@ public class AuthController {
         responseLoginDTO.setAccessToken(access_token);
 
         // Create refresh token
-        String newRefreshToken = securityService.createRefreshToken(email, responseLoginDTO);
-        userService.updateUserToken(newRefreshToken, email);
+        // String newRefreshToken = securityService.createRefreshToken(email, responseLoginDTO);
+        // userService.updateUserToken(newRefreshToken, email);
 
         // Set cookie
-        ResponseCookie resCookie = ResponseCookie.from("refresh_token", newRefreshToken)
-                .httpOnly(true)
-                .path("/")
-                .maxAge(Integer.parseInt(refreshTokenExpiration))
-                .build();
-        return ResponseEntity.ok()
-                .header(HttpHeaders.SET_COOKIE, resCookie.toString())
-                .body(responseLoginDTO);
+        // ResponseCookie resCookie = ResponseCookie.from("refresh_token", newRefreshToken)
+        //         .httpOnly(true)
+        //         .path("/")
+        //         .maxAge(Integer.parseInt(refreshTokenExpiration))
+        //         .build();
+        // return ResponseEntity.ok()
+        //         .header(HttpHeaders.SET_COOKIE, resCookie.toString())
+        //         .body(responseLoginDTO);
+
+        return ResponseEntity.ok(responseLoginDTO);
     }
 
     @GetMapping("/logout")

@@ -28,10 +28,10 @@ import com.fit.se.app.service.SecurityService;
 import com.nimbusds.jose.jwk.source.ImmutableSecret;
 import com.nimbusds.jose.util.Base64;
 
+
 @Configuration
 @EnableMethodSecurity(securedEnabled = true)
 public class SecurityConfiguration {
-
     @Value("${security.jwt.secret-key}")
     private String jwtKey;
 
@@ -40,7 +40,6 @@ public class SecurityConfiguration {
         return new BCryptPasswordEncoder();
     }
 
-    // Convert JWT secret key (base64 decoded) into SecretKey object
     private SecretKey getSecretKey() {
         byte[] keyBytes = Base64.from(jwtKey).decode();
         return new SecretKeySpec(keyBytes, SecurityService.JWT_ALGORITHM.getName());
@@ -58,7 +57,6 @@ public class SecurityConfiguration {
 
         return token -> {
             try {
-                System.out.println("Decoding JWT: " + token);  // Debugging log
                 return jwtDecoder.decode(token);
             } catch (Exception e) {
                 System.out.println("JWT error: " + e.getMessage());
@@ -67,39 +65,40 @@ public class SecurityConfiguration {
         };
     }
 
-    // Configure JwtAuthenticationConverter to extract roles/authorities from JWT
     @Bean
     public JwtAuthenticationConverter jwtAuthenticationConverter() {
         JwtGrantedAuthoritiesConverter grantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
-        grantedAuthoritiesConverter.setAuthorityPrefix("");  // No prefix
-        grantedAuthoritiesConverter.setAuthoritiesClaimName("permission");  // Permission claim name
+        grantedAuthoritiesConverter.setAuthorityPrefix("");
+        grantedAuthoritiesConverter.setAuthoritiesClaimName("permission");
 
         JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();
         jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(grantedAuthoritiesConverter);
         return jwtAuthenticationConverter;
     }
 
-    // Define HTTP security configurations for authorization, JWT authentication, and session management
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http, CustomAuthenticationEntryPoint customAuthenticationEntryPoint) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http,
+                                           CustomAuthenticationEntryPoint customAuthenticationEntryPoint) throws Exception {
         http
-                .csrf(AbstractHttpConfigurer::disable) // Disable CSRF
+                .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(
                         authz -> authz
-                                .requestMatchers("/", "api/v1/auth/**", "api/v1/create-order/**", "/api-docs/**", "/swagger-ui/**", "/v3/api-docs/**", "api/v1/products/**").permitAll() // Public URLs
-                                .requestMatchers(HttpMethod.POST, "api/v1/users").permitAll() // Permit user creation
-                                .anyRequest().authenticated()) // All other requests need authentication
+                                .requestMatchers("/", "api/v1/auth/**", "api/v1/create-order/**", "/api-docs/**", "/swagger-ui/**", "/v3/api-docs/**", "api/v1/products/**").permitAll()
+                                .requestMatchers(HttpMethod.POST, "api/v1/users").permitAll()
+                                .anyRequest().authenticated())
                 .oauth2ResourceServer(oauth2 -> oauth2
-                        .jwt(Customizer.withDefaults()) // Enable JWT authentication
+                        .jwt(Customizer.withDefaults())
                         .authenticationEntryPoint(customAuthenticationEntryPoint)
                 )
                 .exceptionHandling(exceptions -> exceptions
                         .authenticationEntryPoint(new BearerTokenAuthenticationEntryPoint()) // 401 Unauthorized
                         .accessDeniedHandler(new BearerTokenAccessDeniedHandler()) // 403 Forbidden
                 )
-                .formLogin(AbstractHttpConfigurer::disable) // Disable form login
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)); // Stateless authentication
+                .formLogin(AbstractHttpConfigurer::disable)
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         return http.build();
     }
+
 }
+

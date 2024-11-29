@@ -16,6 +16,13 @@ export const useUserStore = create(
       setIsAuthenticated: (isAuthenticated) => {
         set({ isAuthenticated });
       },
+      logout: () => {
+        set({
+          user: null,
+          accessToken: null,
+          isAuthenticated: false,
+        });
+      },
     }),
     {
       name: "user-store",
