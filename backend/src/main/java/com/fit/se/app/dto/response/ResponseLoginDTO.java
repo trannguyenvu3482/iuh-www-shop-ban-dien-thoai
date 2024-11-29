@@ -23,6 +23,8 @@ public class ResponseLoginDTO {
         private Integer id;
         private String email;
         private String name;
+        private String phoneNumber;
+        private String address;
     }
 
     @Getter

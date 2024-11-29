@@ -16,8 +16,6 @@ import java.util.List;
 public class ResponseCartDTO {
     private Integer id;
 
-    private CartUserDTO user;
-
     private BigDecimal totalPrice;
     private List<ResponseCartDetailDTO> cartDetails;
 

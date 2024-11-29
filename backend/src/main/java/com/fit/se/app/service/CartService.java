@@ -1,9 +1,7 @@
 package com.fit.se.app.service;
 
 import com.fit.se.app.dto.response.ResponseCartDTO;
-import com.fit.se.app.entity.Cart;
-import com.fit.se.app.entity.CartDetail;
-import com.fit.se.app.entity.User;
+import com.fit.se.app.entity.*;
 import com.fit.se.app.mapper.CartMapper;
 import com.fit.se.app.repository.CartDetailRepository;
 import com.fit.se.app.repository.CartRepository;
@@ -34,8 +32,8 @@ public class CartService {
         this.cartMapper = cartMapper;
     }
 
-    public Cart createCart(Cart cart) {
-        return cartRepository.save(cart);
+    public void createCart(Cart cart) {
+        cartRepository.save(cart);
     }
 
     public ResponseCartDTO getCartByUserId(Integer userId) {
@@ -51,6 +49,24 @@ public class CartService {
                 .map(cartDetail -> cartDetail.getProduct().getBasePrice().multiply(BigDecimal.valueOf(cartDetail.getQuantity())))
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
         cart.setTotalPrice(totalPrice);
+    }
+
+    public boolean isOutOfStock(Integer productId, Integer productVariantId, Integer needQuantity) {
+        Optional<Product> product = productRepository.findById(productId);
+        if (product.isPresent()) {
+            Optional<ProductVariants> searchedProductVariant = product.get().getProductVariants().stream()
+                    .filter(productVariants -> productVariants.getId().equals(productVariantId))
+                    .findFirst();
+
+            if (searchedProductVariant.isPresent()) {
+                return searchedProductVariant.get().getStock() < needQuantity;
+            } else {
+                throw new IllegalArgumentException("Không tìm thấy biến thể sản phẩm");
+            }
+
+        } else {
+            throw new IllegalArgumentException("Không tìm thấy sản phẩm");
+        }
     }
 
     public Cart initCartDetail(Integer productId, Integer productVariantId, User user) {
@@ -72,14 +88,19 @@ public class CartService {
         return cart;
     }
 
-    public ResponseCartDTO increaseCartDetail(Integer productId, Integer productVariantId, User user) {
+    public ResponseCartDTO increaseCartDetail(Integer productId, Integer productVariantId, User user, Integer quantity) {
+
         Cart cart = cartRepository.findByUserId(user.getId())
                 .orElseThrow(() -> new IllegalArgumentException("Không tìm thấy giỏ hàng"));
 
         CartDetail cartDetail = cartDetailRepository.findByProductIdAndCartIdAndAndProductVariantId(productId, cart.getId(), productVariantId)
                 .orElseGet(() -> initCartDetail(productId, productVariantId, user).getCartDetails().get(0));
 
-        cartDetail.setQuantity(cartDetail.getQuantity() + 1);
+        if (isOutOfStock(productId, productVariantId, quantity)) {
+            throw new IllegalArgumentException("Sản phẩm đã hết hàng");
+        }
+
+        cartDetail.setQuantity(quantity);
         cartDetailRepository.save(cartDetail);
 
         recalculateCart(cart);
@@ -88,19 +109,35 @@ public class CartService {
         return cartMapper.toCartDTO(cart);
     }
 
-    public ResponseCartDTO decreaseCartDetail(Integer productId, Integer productVariantId, User user) {
+    public ResponseCartDTO decreaseCartDetail(Integer productId, Integer productVariantId, User user, Integer quantity) {
+
         Cart cart = cartRepository.findByUserId(user.getId())
                 .orElseThrow(() -> new IllegalArgumentException("Không tìm thấy giỏ hàng"));
 
         CartDetail cartDetail = cartDetailRepository.findByProductIdAndCartIdAndAndProductVariantId(productId, cart.getId(), productVariantId)
                 .orElseThrow(() -> new IllegalArgumentException("Không tìm thấy chi tiết giỏ hàng"));
 
-        if (cartDetail.getQuantity() > 1) {
-            cartDetail.setQuantity(cartDetail.getQuantity() - 1);
-            cartDetailRepository.save(cartDetail);
-        } else {
-            cartDetailRepository.delete(cartDetail);
+        if (isOutOfStock(productId, productVariantId, quantity)) {
+            throw new IllegalArgumentException("Sản phẩm đã hết hàng");
         }
+
+        cartDetail.setQuantity(quantity);
+        cartDetailRepository.save(cartDetail);
+
+        recalculateCart(cart);
+        cartRepository.save(cart);
+
+        return cartMapper.toCartDTO(cart);
+    }
+
+    public ResponseCartDTO deleteCartDetail(Integer productId, Integer productVariantId, User user) {
+        Cart cart = cartRepository.findByUserId(user.getId())
+                .orElseThrow(() -> new IllegalArgumentException("Không tìm thấy giỏ hàng"));
+
+        CartDetail cartDetail = cartDetailRepository.findByProductIdAndCartIdAndAndProductVariantId(productId, cart.getId(), productVariantId)
+                .orElseThrow(() -> new IllegalArgumentException("Không tìm thấy chi tiết giỏ hàng"));
+
+        cartDetailRepository.delete(cartDetail);
 
         recalculateCart(cart);
         cartRepository.save(cart);

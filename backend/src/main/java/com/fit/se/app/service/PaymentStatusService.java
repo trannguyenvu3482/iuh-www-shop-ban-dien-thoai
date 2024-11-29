@@ -2,7 +2,7 @@ package com.fit.se.app.service;
 
 import com.fit.se.app.common.constant.VnPayConstant;
 import com.fit.se.app.common.util.VnPayUtil;
-import com.fit.se.app.dto.request.RequestOrderStatusDTO;
+import com.fit.se.app.dto.request.RequestPaymentStatusDTO;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
@@ -21,7 +21,7 @@ import java.util.Map;
 
 @Service
 public class PaymentStatusService {
-    public Map<String, Object> getStatus(HttpServletRequest request, RequestOrderStatusDTO statusRequestDTO) throws IOException {
+    public Map<String, Object> getStatus(HttpServletRequest request, RequestPaymentStatusDTO statusRequestDTO) throws IOException {
 
         JSONObject statusQuery = new JSONObject();
 
