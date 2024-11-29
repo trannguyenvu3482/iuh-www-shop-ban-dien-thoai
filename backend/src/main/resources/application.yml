@@ -7,7 +7,7 @@ server:
   port: 8080
   servlet:
     context-path: /
-  address: 192.168.0.114
+#  address: 192.168.0.114
 
 spring:
   data:

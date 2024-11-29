@@ -1,8 +1,8 @@
 package com.fit.se.app.config;
 
-import javax.crypto.SecretKey;
-import javax.crypto.spec.SecretKeySpec;
-
+import com.fit.se.app.service.SecurityService;
+import com.nimbusds.jose.jwk.source.ImmutableSecret;
+import com.nimbusds.jose.util.Base64;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,9 +24,8 @@ import org.springframework.security.oauth2.server.resource.web.BearerTokenAuthen
 import org.springframework.security.oauth2.server.resource.web.access.BearerTokenAccessDeniedHandler;
 import org.springframework.security.web.SecurityFilterChain;
 
-import com.fit.se.app.service.SecurityService;
-import com.nimbusds.jose.jwk.source.ImmutableSecret;
-import com.nimbusds.jose.util.Base64;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
 
 
 @Configuration
@@ -83,7 +82,7 @@ public class SecurityConfiguration {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(
                         authz -> authz
-                                .requestMatchers("/", "api/v1/auth/**", "api/v1/create-order/**", "/api-docs/**", "/swagger-ui/**", "/v3/api-docs/**", "api/v1/products/**").permitAll()
+                                .requestMatchers("/", "api/v1/auth/**", "api/v1/create-order/**", "/api-docs/**", "/swagger-ui/**", "/v3/api-docs/**", "api/v1/products/**", "api/v1/categories/**").permitAll()
                                 .requestMatchers(HttpMethod.POST, "api/v1/users").permitAll()
                                 .anyRequest().authenticated())
                 .oauth2ResourceServer(oauth2 -> oauth2

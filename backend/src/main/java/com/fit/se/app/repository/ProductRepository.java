@@ -11,4 +11,5 @@ public interface ProductRepository extends JpaRepository<Product, Integer>, JpaS
     Product findBySlug(String slug);
 
     List<Product> findByStatus(StatusEnum status);
+
 }
