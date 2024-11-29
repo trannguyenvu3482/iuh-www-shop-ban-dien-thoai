@@ -1,14 +1,21 @@
 package com.fit.se.app.dto.request;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
-@AllArgsConstructor
+import java.io.Serializable;
+import java.math.BigDecimal;
+
+@Getter
+@Setter
 @NoArgsConstructor
-public class RequestOrderDTO {
-
-    private Long amount;
-    private String orderInfo;
+@AllArgsConstructor
+public class RequestOrderDTO implements Serializable {
+    private String userId;
+    private String shippingAddress;
+    private BigDecimal totalPrice;
+    private String paymentMethod;
+    private String note;
 }

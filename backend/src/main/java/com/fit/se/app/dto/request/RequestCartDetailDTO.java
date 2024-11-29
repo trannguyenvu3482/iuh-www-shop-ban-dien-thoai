@@ -1,11 +1,7 @@
 package com.fit.se.app.dto.request;
 
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Data
 @Setter
@@ -18,4 +14,6 @@ public class RequestCartDetailDTO {
 
     @NotNull(message = "Product variant is required")
     private Integer productVariantId;
+
+    private Integer quantity;
 }

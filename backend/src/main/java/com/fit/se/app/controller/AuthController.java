@@ -46,7 +46,7 @@ public class AuthController {
         ResponseLoginDTO responseLoginDTO = new ResponseLoginDTO();
         User currentUser = userService.getUserByEmail(requestLoginDTO.getUsername());
 
-        ResponseLoginDTO.UserLogin userLogin = new ResponseLoginDTO.UserLogin(currentUser.getId(), currentUser.getEmail(), currentUser.getName());
+        ResponseLoginDTO.UserLogin userLogin = new ResponseLoginDTO.UserLogin(currentUser.getId(), currentUser.getEmail(), currentUser.getName(), currentUser.getPhoneNumber(), currentUser.getAddress());
         responseLoginDTO.setUser(userLogin);
 
         // Create token
@@ -110,7 +110,7 @@ public class AuthController {
         ResponseLoginDTO responseLoginDTO = new ResponseLoginDTO();
         User currentUser = userService.getUserByEmail(email);
 
-        ResponseLoginDTO.UserLogin userLogin = new ResponseLoginDTO.UserLogin(currentUser.getId(), currentUser.getEmail(), currentUser.getName());
+        ResponseLoginDTO.UserLogin userLogin = new ResponseLoginDTO.UserLogin(currentUser.getId(), currentUser.getEmail(), currentUser.getName(), currentUser.getPhoneNumber(), currentUser.getAddress());
         responseLoginDTO.setUser(userLogin);
 
         String access_token = securityService.createAccessToken(email, responseLoginDTO.getUser());
