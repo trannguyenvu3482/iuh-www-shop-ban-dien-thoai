@@ -9,8 +9,7 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.*;
 
 @Builder
 @Data
@@ -23,6 +22,8 @@ public class ResponseProductDTO {
     private BigDecimal basePrice;
     private BigDecimal discount;
     private String brand;
+
+    @JsonIgnore
     private ResponseCategoryDTO category;
     private String thumbnailUrl;
     private String slug;
@@ -32,8 +33,21 @@ public class ResponseProductDTO {
     @JsonIgnore
     private Set<ProductVariantsDto> productVariants = new LinkedHashSet<>();
 
-    private Integer getTotalStock() {
+    public Integer getTotalStock() {
         return productVariants.stream().mapToInt(ProductVariantsDto::getStock).sum();
+    }
+
+    public List<Map<String, Object>> getCategories() {
+        List<Map<String, Object>> result = new ArrayList<>();
+        while (category != null) {
+            result.add(Map.of(
+                    "id", category.getId(),
+                    "name", category.getName()
+            ));
+            category = category.getParent();
+        }
+        Collections.reverse(result);
+        return result;
     }
 
     /**
