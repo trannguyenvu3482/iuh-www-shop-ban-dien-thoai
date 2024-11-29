@@ -2,7 +2,7 @@ package com.fit.se.app.service;
 
 import com.fit.se.app.common.constant.VnPayConstant;
 import com.fit.se.app.common.util.VnPayUtil;
-import com.fit.se.app.dto.request.RequestOrderDTO;
+import com.fit.se.app.dto.request.RequestPaymentDTO;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Service;
 
@@ -13,16 +13,16 @@ import java.util.*;
 
 @Service
 public class PaymentService {
-    public Map<String, Object> createOrder(HttpServletRequest request, RequestOrderDTO requestOrderDTO) throws UnsupportedEncodingException {
+    public Map<String, Object> createOrder(HttpServletRequest request, RequestPaymentDTO requestPaymentDTO) throws UnsupportedEncodingException {
 
         Map<String, Object> payload = new HashMap<>() {{
             put("vnp_Version", VnPayConstant.VNP_VERSION);
             put("vnp_Command", VnPayConstant.VNP_COMMAND_ORDER);
             put("vnp_TmnCode", VnPayConstant.VNP_TMN_CODE);
-            put("vnp_Amount", String.valueOf(requestOrderDTO.getAmount() * 100));
+            put("vnp_Amount", String.valueOf(requestPaymentDTO.getAmount() * 100));
             put("vnp_CurrCode", VnPayConstant.VNP_CURRENCY_CODE);
             put("vnp_TxnRef", VnPayUtil.getRandomNumber(8));
-            put("vnp_OrderInfo", requestOrderDTO.getOrderInfo());
+            put("vnp_OrderInfo", requestPaymentDTO.getOrderInfo());
             put("vnp_OrderType", VnPayConstant.ORDER_TYPE);
             put("vnp_Locale", VnPayConstant.VNP_LOCALE);
             put("vnp_ReturnUrl", VnPayConstant.VNP_RETURN_URL);

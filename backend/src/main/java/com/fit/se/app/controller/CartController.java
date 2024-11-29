@@ -34,18 +34,25 @@ public class CartController {
         return ResponseEntity.ok(cartService.getCartByUserId(userService.getUserByEmail(email.get()).getId()));
     }
 
-    @PostMapping("/increase")
+    @PutMapping("/increase")
     public ResponseEntity<ResponseCartDTO> addCartDetail(@Valid @RequestBody RequestCartDetailDTO requestCartDetailDTO) {
         String email = SecurityService.getCurrentUserLogin().orElseThrow(() -> new RuntimeException("User not found"));
         User user = userService.getUserByEmail(email);
-        return ResponseEntity.ok(cartService.increaseCartDetail(requestCartDetailDTO.getProductId(), requestCartDetailDTO.getProductVariantId(), user));
+        return ResponseEntity.ok(cartService.increaseCartDetail(requestCartDetailDTO.getProductId(), requestCartDetailDTO.getProductVariantId(), user, requestCartDetailDTO.getQuantity()));
     }
 
-    @PostMapping("/decrease")
+    @PutMapping("/decrease")
     public ResponseEntity<ResponseCartDTO> decreaseCartDetail(@Valid @RequestBody RequestCartDetailDTO requestCartDetailDTO) {
         String email = SecurityService.getCurrentUserLogin().orElseThrow(() -> new RuntimeException("User not found"));
         User user = userService.getUserByEmail(email);
-        return ResponseEntity.ok(cartService.decreaseCartDetail(requestCartDetailDTO.getProductId(), requestCartDetailDTO.getProductVariantId(), user));
+        return ResponseEntity.ok(cartService.decreaseCartDetail(requestCartDetailDTO.getProductId(), requestCartDetailDTO.getProductVariantId(), user, requestCartDetailDTO.getQuantity()));
+    }
+
+    @DeleteMapping("/delete")
+    public ResponseEntity<ResponseCartDTO> deleteCartDetail(RequestCartDetailDTO requestCartDetailDTO) {
+        String email = SecurityService.getCurrentUserLogin().orElseThrow(() -> new RuntimeException("User not found"));
+        User user = userService.getUserByEmail(email);
+        return ResponseEntity.ok(cartService.deleteCartDetail(requestCartDetailDTO.getProductId(), requestCartDetailDTO.getProductVariantId(), user));
     }
 
 }

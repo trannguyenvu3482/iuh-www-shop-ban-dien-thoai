@@ -11,6 +11,7 @@ import org.hibernate.annotations.Nationalized;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 
 @Setter
 @Getter
@@ -62,6 +63,11 @@ public class Order {
     @PrePersist
     public void prePersist() {
         createdAt = Instant.now();
+        updatedAt = Instant.now();
+        orderDate = Instant.now();
+
+        // Shipping date default: 2 day
+        shippingDate = Instant.now().plus(2, ChronoUnit.DAYS);
     }
 
     @PreUpdate

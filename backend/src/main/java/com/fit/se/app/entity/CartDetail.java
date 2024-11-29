@@ -47,6 +47,6 @@ public class CartDetail {
 
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
-        this.price = this.product.getBasePrice().multiply(BigDecimal.valueOf(quantity));
+        this.price = this.productVariant.getPrice().multiply(BigDecimal.valueOf(quantity));
     }
 }
