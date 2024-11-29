@@ -1,6 +1,5 @@
 import styled from '@emotion/styled'
 import { Box, Grid, Typography } from '@mui/material'
-import React from 'react'
 import Table from '../../components/Admin/Table'
 import { orders, ordersColumns } from '../../constants/orders'
 import BarChart from './Home/BarChart'

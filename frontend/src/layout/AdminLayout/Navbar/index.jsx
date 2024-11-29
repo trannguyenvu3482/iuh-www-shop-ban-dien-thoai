@@ -12,6 +12,7 @@ import React from 'react'
 import { BsBell } from 'react-icons/bs'
 import { FiMenu } from 'react-icons/fi'
 import ProfileMenu from '../ProfileMenu'
+import { useUserStore } from '../../../zustand/userStore'
 
 const Navbar = ({ sideBarWidth, handleDrawerToggle }) => {
   return (

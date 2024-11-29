@@ -1,18 +1,7 @@
 import styled from '@emotion/styled'
-import {
-  Box,
-  Button,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Paper,
-  Select,
-  TextField,
-  Typography,
-} from '@mui/material'
+import { Box, Button, Paper, TextField, Typography } from '@mui/material'
 import { useRef, useState } from 'react'
 import { BiImageAdd } from 'react-icons/bi'
-import { categories } from '../../../../constants/categories'
 
 const AddCategory = () => {
   const [category, setCategory] = useState('')
@@ -39,7 +28,7 @@ const AddCategory = () => {
   return (
     <Box sx={{ pt: '80px', pb: '20px' }}>
       <Typography variant="h6" sx={{ marginBottom: '14px' }}>
-        Thêm Sản Phẩm
+        Thêm Danh mục
       </Typography>
       <Paper
         sx={{
@@ -57,66 +46,10 @@ const AddCategory = () => {
       >
         <Box sx={{ my: 2 }}>
           <TextField
-            label="Tên Sản Phẩm"
+            label="Tên danh mục"
             variant="outlined"
             size="small"
             fullWidth
-          />
-        </Box>
-        <Box sx={{ mt: 4 }}>
-          <TextField
-            label="Mô Tả Sản Phẩm"
-            variant="outlined"
-            rows={4}
-            fullWidth
-            multiline
-          />
-        </Box>
-        <Box sx={{ mt: 4 }}>
-          <FormControl fullWidth size="small">
-            <InputLabel id="demo-simple-select-label">Danh Mục</InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              label="Danh Mục"
-              value={category}
-              onChange={handleChange}
-            >
-              {categories?.map(({ category_id, name }) => (
-                <MenuItem value={name} key={category_id}>
-                  {name}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        </Box>
-
-        <Box sx={{ mt: 4 }}>
-          <TextField
-            label="Thương Hiệu"
-            variant="outlined"
-            rows={4}
-            size="small"
-            fullWidth
-          />
-        </Box>
-
-        <Box sx={{ mt: 4, display: 'flex', alignItems: 'center', gap: 4 }}>
-          <TextField
-            label="Giá"
-            variant="outlined"
-            rows={4}
-            fullWidth
-            size="small"
-            defaultValue={'20000000'}
-          />
-          <TextField
-            label="Giảm Giá"
-            variant="outlined"
-            rows={4}
-            fullWidth
-            size="small"
-            defaultValue={'20%'}
           />
         </Box>
         <input
@@ -156,7 +89,7 @@ const AddCategory = () => {
           }}
         >
           <Button variant="contained" sx={{ borderRadius: '20px' }}>
-            Lưu sản phẩm
+            Lưu danh mục
           </Button>
         </Box>
       </Paper>

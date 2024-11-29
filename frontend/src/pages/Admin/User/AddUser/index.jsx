@@ -12,23 +12,23 @@ import {
 } from '@mui/material'
 import { useRef, useState } from 'react'
 import { BiImageAdd } from 'react-icons/bi'
-import { categories } from '../../../../constants/categories'
 
 const AddUser = () => {
-  const [category, setCategory] = useState('')
+  const [userType, setuserType] = useState('')
   const imageInput = useRef(null)
   const [image, setImage] = useState('')
   const handleChange = (event) => {
-    setCategory(event.target.value)
-    console.log(category)
+    setuserType(event.target.value)
+    console.log(userType)
   }
 
   const UploadBox = styled(Box)({
-    marginTop: 30,
-    height: 200,
+    height: 'auto',
+    flex: 0.8,
     borderRadius: '10px',
     display: 'flex',
     alignItems: 'center',
+    textAlign: 'center',
     justifyContent: 'center',
     flexDirection: 'column',
     borderStyle: 'dashed',
@@ -39,7 +39,7 @@ const AddUser = () => {
   return (
     <Box sx={{ pt: '80px', pb: '20px' }}>
       <Typography variant="h6" sx={{ marginBottom: '14px' }}>
-        Thêm Sản Phẩm
+        Thêm người dùng
       </Typography>
       <Paper
         sx={{
@@ -48,83 +48,16 @@ const AddUser = () => {
           borderStyle: 'solid',
           borderWidth: '1px',
           borderColor: 'divider',
-          p: '20px',
+          py: 4,
           maxWidth: '1140px',
           margin: '0 auto',
           cursor: 'pointer',
           overflow: 'hidden',
+          gap: 10,
+          justifyContent: 'space-around',
+          display: 'flex',
         }}
       >
-        <Box sx={{ my: 2 }}>
-          <TextField
-            label="Tên Sản Phẩm"
-            variant="outlined"
-            size="small"
-            fullWidth
-          />
-        </Box>
-        <Box sx={{ mt: 4 }}>
-          <TextField
-            label="Mô Tả Sản Phẩm"
-            variant="outlined"
-            rows={4}
-            fullWidth
-            multiline
-          />
-        </Box>
-        <Box sx={{ mt: 4 }}>
-          <FormControl fullWidth size="small">
-            <InputLabel id="demo-simple-select-label">Danh Mục</InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              label="Danh Mục"
-              value={category}
-              onChange={handleChange}
-            >
-              {categories?.map(({ category_id, name }) => (
-                <MenuItem value={name} key={category_id}>
-                  {name}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        </Box>
-
-        <Box sx={{ mt: 4 }}>
-          <TextField
-            label="Thương Hiệu"
-            variant="outlined"
-            rows={4}
-            size="small"
-            fullWidth
-          />
-        </Box>
-
-        <Box sx={{ mt: 4, display: 'flex', alignItems: 'center', gap: 4 }}>
-          <TextField
-            label="Giá"
-            variant="outlined"
-            rows={4}
-            fullWidth
-            size="small"
-            defaultValue={'20000000'}
-          />
-          <TextField
-            label="Giảm Giá"
-            variant="outlined"
-            rows={4}
-            fullWidth
-            size="small"
-            defaultValue={'20%'}
-          />
-        </Box>
-        <input
-          type="file"
-          hidden
-          ref={imageInput}
-          onChange={(e) => setImage(e.target.files[0])}
-        />
         <UploadBox onClick={() => imageInput.current.click()}>
           {image ? (
             <img
@@ -136,7 +69,7 @@ const AddUser = () => {
             <Box sx={{ textAlign: 'center' }}>
               <BiImageAdd style={{ fontSize: '50px', color: '#027edd' }} />
               <Typography>
-                Thả ảnh vào đây hoặc{' '}
+                Thả ảnh đại diện vào đây hoặc{' '}
                 <span style={{ color: '#027edd', cursor: 'pointer' }}>
                   duyệt
                 </span>
@@ -147,17 +80,110 @@ const AddUser = () => {
             </Box>
           )}
         </UploadBox>
-        <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            mt: '30px',
-          }}
-        >
-          <Button variant="contained" sx={{ borderRadius: '20px' }}>
-            Lưu sản phẩm
-          </Button>
+        <Box>
+          <Box sx={{ my: 2, display: 'flex', gap: 2 }}>
+            <TextField
+              label="Tên người dùng"
+              variant="outlined"
+              size="small"
+              fullWidth
+            />
+            <Box width={200}>
+              <FormControl fullWidth size="small">
+                <InputLabel id="demo-simple-select-label">Vai trò</InputLabel>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  label="Vai trò"
+                  value={userType}
+                  onChange={handleChange}
+                >
+                  {[
+                    {
+                      userType_id: 'USER',
+                      name: 'Khách hàng',
+                    },
+                    {
+                      userType_id: 'ADMIN',
+                      name: 'Quản trị viên',
+                    },
+                  ]?.map(({ userType_id, name }) => (
+                    <MenuItem value={name} key={userType_id}>
+                      {name}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Box>
+          </Box>
+          <Box sx={{ my: 2 }}>
+            <TextField
+              label="Email"
+              variant="outlined"
+              size="small"
+              fullWidth
+            />
+          </Box>
+          <Box sx={{ my: 2 }}>
+            <TextField
+              label="Số điện thoại"
+              variant="outlined"
+              size="small"
+              fullWidth
+            />
+          </Box>
+          <Box sx={{ my: 2, display: 'flex', gap: 2 }}>
+            <TextField
+              label="Mật khẩu"
+              variant="outlined"
+              size="small"
+              fullWidth
+            />
+            <TextField
+              label="Nhập lại mật khẩu"
+              variant="outlined"
+              size="small"
+              fullWidth
+            />
+          </Box>
+          <Box sx={{ mt: 2 }}>
+            <TextField
+              label="Địa chỉ"
+              variant="outlined"
+              rows={4}
+              fullWidth
+              multiline
+            />
+          </Box>
+
+          <input
+            type="file"
+            hidden
+            ref={imageInput}
+            onChange={(e) => setImage(e.target.files[0])}
+          />
+
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'end',
+              alignItems: 'center',
+              mt: 4,
+              gap: 2,
+            }}
+          >
+            <Button
+              type="reset"
+              color="info"
+              variant="contained"
+              sx={{ borderRadius: '20px' }}
+            >
+              reset thông tin
+            </Button>
+            <Button variant="contained" sx={{ borderRadius: '20px' }}>
+              Thêm người dùng
+            </Button>
+          </Box>
         </Box>
       </Paper>
     </Box>

@@ -85,21 +85,21 @@ export const links = [
       },
     ],
   },
-  {
-    name: 'Nhà phân phối',
-    icon: <FaShare />,
-    url: '/admin/suppliers',
-  },
-  {
-    name: 'Giao dịch',
-    icon: <FaHandshake />,
-    url: '/admin/transactions',
-  },
-  {
-    name: 'Đánh giá',
-    icon: <FiMessageCircle />,
-    url: '/admin/reviews',
-  },
+  // {
+  //   name: 'Nhà phân phối',
+  //   icon: <FaShare />,
+  //   url: '/admin/suppliers',
+  // },
+  // {
+  //   name: 'Giao dịch',
+  //   icon: <FaHandshake />,
+  //   url: '/admin/transactions',
+  // },
+  // {
+  //   name: 'Đánh giá',
+  //   icon: <FiMessageCircle />,
+  //   url: '/admin/reviews',
+  // },
   {
     name: 'Cài đặt',
     icon: <FiSettings />,
