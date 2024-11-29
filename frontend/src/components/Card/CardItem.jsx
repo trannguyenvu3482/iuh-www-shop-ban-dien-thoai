@@ -1,11 +1,12 @@
-import { useState } from 'react'
 import { FaRegTrashAlt } from 'react-icons/fa'
 import InputQuantity from '../InputQuantity'
+import { formatVND } from '../../utils/format'
+import useCart from '../../hooks/useCart'
 
-function CardItem({ item }) {
-  const [count, setCount] = useState(1)
-  const toggleCounting = (count) => {
-    setCount(count)
+function CardItem({ cartItemValue }) {
+  const { toggleCart, onDeleteCartItem } = useCart()
+  const toggleCounting = (count, type) => {
+    toggleCart(type, cartItemValue.productId, cartItemValue.variant.id, count)
   }
 
   return (
@@ -13,22 +14,24 @@ function CardItem({ item }) {
       <div className="flex items-center gap-4">
         <img
           className="ml-4 h-16 w-16 rounded-md border border-gray-200 p-1"
-          src="https://cdn.xtmobile.vn/vnt_upload/product/06_2024/thumbs/(200x200)_crop_16pd.jpg"
+          src={cartItemValue?.variant?.imageUrl}
           alt=""
         />
         <div>
           <h3 className="text-sm font-semibold text-gray-800">
-            iPhone 16 Pro 128GB (VN/A)
+            {cartItemValue?.productName}
           </h3>
           <h6 className="mt-1 text-xs font-normal text-blue-600">
             Dung lượng:
             <span className="ml-[2px] text-xs font-bold text-blue-600">
-              128GB
+              {cartItemValue?.variant?.storage}
             </span>
           </h6>
           <h6 className="text-xs font-normal text-blue-600">
             Màu sắc:
-            <span className="ml-[2px] text-xs font-bold text-blue-600">Đỏ</span>
+            <span className="ml-[2px] text-xs font-bold text-blue-600">
+              {cartItemValue?.variant?.color}
+            </span>
           </h6>
         </div>
       </div>
@@ -37,11 +40,20 @@ function CardItem({ item }) {
         <div>
           <h5 className="my-1 text-sm font-bold text-primary-red">
             {' '}
-            55.798.000đ{' '}
+            {formatVND(cartItemValue.price)}
+            {' VND'}
           </h5>
         </div>
-        <InputQuantity initCount={count} toggleCounting={toggleCounting} />
-        <button className="ml-2">
+        <InputQuantity
+          initCount={cartItemValue.quantity}
+          toggleCounting={toggleCounting}
+        />
+        <button
+          onClick={() =>
+            onDeleteCartItem(cartItemValue.productId, cartItemValue.variant.id)
+          }
+          className="ml-2"
+        >
           <FaRegTrashAlt className="hover:text-primary-red" />
         </button>
       </div>

@@ -13,9 +13,8 @@ import {
   useFetchDistrict,
   useProvince,
 } from '../../hooks/useProvince'
-import { getCart } from '../../service/apiCart'
-import { getUser } from '../../service/apiUser'
-import { useUserStore } from '../../zustand/userStore'
+import useMe from '../../hooks/useMe'
+import { formatVND } from '../../utils/format'
 
 const convertProvince = (provinces) => {
   if (!provinces || provinces === undefined || provinces === null) return []
@@ -78,8 +77,8 @@ const convertAddress = (
 }
 
 function CartPage() {
-  const [user, setUser] = useState({})
-  const [cart, setCart] = useState([])
+  const { cartDetails, totalPrice, me } = useMe()
+
   const [provinceId, setProvinceId] = useState('01')
   const [districtId, setDistrictId] = useState('001')
   const [communeId, setCommuneId] = useState('')
@@ -88,26 +87,6 @@ function CartPage() {
   const provinces = useProvince()
   const districts = useFetchDistrict(provinceId)
   const communes = useFetchCommunes(districtId)
-
-  const {
-    user: { id: userId },
-  } = useUserStore()
-
-  useEffect(() => {
-    try {
-      const fetchData = async () => {
-        const { data: dataCart } = await getCart()
-        const { data: dataUser } = await getUser(userId)
-
-        setCart(dataCart)
-        setUser(dataUser)
-      }
-
-      fetchData()
-    } catch (error) {
-      console.error('Error fetching data:', error)
-    }
-  }, [userId])
 
   const handleSelectProvince = (e) => {
     setProvinceId(e.target.value)
@@ -144,9 +123,9 @@ function CartPage() {
   return (
     <Formik
       initialValues={{
-        name: user?.name,
-        email: user?.email,
-        phone_number: user?.phoneNumber,
+        name: me?.name,
+        email: me?.email,
+        phone_number: me?.phoneNumber,
         more_info: '',
       }}
       validationSchema={CartValidationSchema}
@@ -177,8 +156,11 @@ function CartPage() {
                   {/*Card Item*/}
                   <div className="max-h-[700px] overflow-y-auto">
                     <div>
-                      {[1, 2, 3, 4, 5, 6, 7, 8].map((item) => (
-                        <CardItem key={item} item={item} />
+                      {cartDetails.map((cartItemValue) => (
+                        <CardItem
+                          key={cartItemValue.id}
+                          cartItemValue={cartItemValue}
+                        />
                       ))}
                     </div>
                   </div>
@@ -324,18 +306,20 @@ function CartPage() {
                     </p>
                     <div className="flex w-full items-center justify-between">
                       <p className="text-sm">Tổng tiền</p>
-                      <div className="font-semibold">28.990.000&nbsp;₫</div>
+                      <div className="font-semibold">
+                        {formatVND(totalPrice)} &nbsp;₫
+                      </div>
                     </div>
                     <div className="border-neutral-gray-3 block h-0 w-full border-b after:content-['']"></div>
                     <div className="flex w-full items-center justify-between">
                       <p className="text-sm">Tổng khuyến mãi</p>
-                      <div className="font-semibold">400.000&nbsp;₫</div>
+                      <div className="font-semibold">0&nbsp;₫</div>
                     </div>
                     <div className="border-neutral-gray-3 block h-0 w-full border-b border-dashed after:content-['']"></div>
                     <div className="flex w-full items-center justify-between">
                       <p className="text-sm">Cần thanh toán</p>
                       <div className="font-bold text-primary-red">
-                        28.590.000&nbsp;₫
+                        {formatVND(totalPrice)} &nbsp;₫
                       </div>
                     </div>
                     <div className="flex w-full items-center justify-between">
@@ -344,8 +328,8 @@ function CartPage() {
                         <div className="flex items-center gap-0.5">
                           {' '}
                           <span className="flex items-center gap-1">
-                            <FaCoins color="gold" />
-                            +2,859
+                            <FaCoins color="gold" />{' '}
+                            {parseFloat(totalPrice / 4000).toFixed(0)}
                           </span>
                         </div>
                       </div>
