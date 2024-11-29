@@ -11,6 +11,9 @@ import AddProduct from '../pages/Admin/Products/AddProducts'
 import Login from '../pages/Authentication/Login'
 import SignUp from '../pages/Authentication/SignUp'
 import Error from '../pages/Error'
+
+import Users from '../pages/Admin/User'
+import AddUser from '../pages/Admin/User/AddUser'
 import PrivateAdminRoute from './PrivateAdminRoute'
 import PrivateUserRoute from './PrivateUserRoute'
 
@@ -96,6 +99,14 @@ const router = createBrowserRouter([
       {
         path: '/admin/categories/add',
         element: <AddCategory />,
+      },
+      {
+        path: '/admin/users',
+        element: <Users />,
+      },
+      {
+        path: '/admin/users/add',
+        element: <AddUser />,
       },
     ],
   },

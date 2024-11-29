@@ -44,9 +44,18 @@ export const links = [
     ],
   },
   {
-    name: 'Khách hàng',
+    name: 'Người dùng',
     icon: <FiUsers />,
-    url: '/admin/customers',
+    subLinks: [
+      {
+        name: 'Tất cả người dùng',
+        url: '/admin/users',
+      },
+      {
+        name: 'Thêm người dùng',
+        url: '/admin/users/add',
+      },
+    ],
   },
   {
     name: 'Thống kê',
@@ -76,21 +85,21 @@ export const links = [
       },
     ],
   },
-  {
-    name: 'Nhà phân phối',
-    icon: <FaShare />,
-    url: '/admin/suppliers',
-  },
-  {
-    name: 'Giao dịch',
-    icon: <FaHandshake />,
-    url: '/admin/transactions',
-  },
-  {
-    name: 'Đánh giá',
-    icon: <FiMessageCircle />,
-    url: '/admin/reviews',
-  },
+  // {
+  //   name: 'Nhà phân phối',
+  //   icon: <FaShare />,
+  //   url: '/admin/suppliers',
+  // },
+  // {
+  //   name: 'Giao dịch',
+  //   icon: <FaHandshake />,
+  //   url: '/admin/transactions',
+  // },
+  // {
+  //   name: 'Đánh giá',
+  //   icon: <FiMessageCircle />,
+  //   url: '/admin/reviews',
+  // },
   {
     name: 'Cài đặt',
     icon: <FiSettings />,

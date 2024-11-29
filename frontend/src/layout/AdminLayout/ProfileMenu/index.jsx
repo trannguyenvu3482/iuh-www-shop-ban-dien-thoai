@@ -10,8 +10,13 @@ import MenuItem from '@mui/material/MenuItem'
 import Tooltip from '@mui/material/Tooltip'
 import * as React from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useUserStore } from '../../../zustand/userStore'
+import Typography from '@mui/material/Typography'
+import { Box } from '@mui/material'
 
 const ProfileMenu = () => {
+  const user = useUserStore((s) => s.user)
+
   const navigate = useNavigate()
   const [anchorEl, setAnchorEl] = React.useState(null)
   const open = Boolean(anchorEl)
@@ -23,20 +28,22 @@ const ProfileMenu = () => {
   }
   return (
     <>
-      <Tooltip title="Account settings" arrow>
-        <IconButton
-          onClick={handleClick}
-          size="small"
-          sx={{ ml: 2 }}
-          aria-controls={open ? 'account-menu' : undefined}
-          aria-haspopup="true"
-          aria-expanded={open ? 'true' : undefined}
-        >
-          <Avatar
-            sx={{ width: 32, height: 32 }}
-            src="/images/avatars/profile-avatar.png"
-          />
-        </IconButton>
+      <Tooltip title="Xem thông tin" arrow>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          <IconButton
+            onClick={handleClick}
+            size="small"
+            sx={{ ml: 2 }}
+            aria-controls={open ? 'account-menu' : undefined}
+            aria-haspopup="true"
+            aria-expanded={open ? 'true' : undefined}
+          >
+            <Avatar sx={{ width: 32, height: 32 }} />
+          </IconButton>
+          <Typography variant="body1" color="grey.600">
+            {user.name}
+          </Typography>
+        </Box>
       </Tooltip>
 
       <Menu
@@ -46,7 +53,7 @@ const ProfileMenu = () => {
         onClose={handleClose}
         onClick={handleClose}
         PaperProps={{
-          elevation: 0,
+          elevation: 2,
           sx: {
             overflow: 'visible',
             mt: 1.5,
@@ -74,23 +81,20 @@ const ProfileMenu = () => {
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
         <MenuItem>
-          <Avatar /> Profile
-        </MenuItem>
-        <MenuItem>
-          <Avatar /> My account
+          <Avatar /> Thông tin cá nhân
         </MenuItem>
         <Divider />
         <MenuItem>
           <ListItemIcon>
             <PersonAdd fontSize="small" />
           </ListItemIcon>
-          Manage Other Accounts
+          Khác
         </MenuItem>
         <MenuItem>
           <ListItemIcon>
             <Settings fontSize="small" />
           </ListItemIcon>
-          Settings
+          Cài đặt
         </MenuItem>
         <MenuItem onClick={() => navigate('/')}>
           <ListItemIcon>

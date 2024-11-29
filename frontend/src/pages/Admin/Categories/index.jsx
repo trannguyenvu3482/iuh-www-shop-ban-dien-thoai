@@ -8,41 +8,30 @@ const Categories = () => {
   const CategoriesColumns = useMemo(
     () => [
       {
-        accessorKey: 'product_name',
-        header: 'Sản Phẩm',
-        Cell: ({ cell }) => (
-          <div>
-            <img src={cell.getValue()} alt="" width={60} />
-          </div>
-        ),
-      },
-
-      {
         accessorKey: 'category',
-        header: 'Danh Mục',
+        header: 'Tên danh Mục',
+      },
+      {
+        accessorKey: 'name2',
+        header: 'Danh Mục Cha',
       },
       {
         accessorKey: 'quantity',
-        header: 'Số Lượng',
+        header: 'Số Lượng sản phẩm',
       },
       {
-        accessorKey: 'price',
-        header: 'Giá',
-        Cell: ({ cell }) => <span>{cell.getValue()}</span>,
-      },
-      {
-        accessorKey: 'instock',
+        accessorKey: 'status',
         header: 'Trạng Thái',
         Cell: ({ cell, row }) => (
           <div>
             {row.original.instock && (
               <span style={{ color: '#388b84', textTransform: 'capitalize' }}>
-                Còn hàng
+                Đăng bán
               </span>
             )}
             {!row.original.instock && (
               <span style={{ color: '#fd4332', textTransform: 'capitalize' }}>
-                Hết hàng
+                Ngừng bán
               </span>
             )}
           </div>
@@ -61,7 +50,7 @@ const Categories = () => {
           marginBottom: '16px',
         }}
       >
-        <Typography variant="h6">Sản Phẩm</Typography>
+        <Typography variant="h6">Danh sách các danh mục</Typography>
         <Link to="/admin/Categories/add" style={{ textDecoration: 'none' }}>
           <Button
             variant="contained"
@@ -69,7 +58,7 @@ const Categories = () => {
             startIcon={<FiPlus />}
             sx={{ borderRadius: '10px' }}
           >
-            Thêm sản phẩm
+            Thêm danh mục
           </Button>
         </Link>
       </Box>

@@ -2,14 +2,13 @@
 import { Button, IconButton, Tooltip } from '@mui/material'
 import { Box } from '@mui/system'
 import { MaterialReactTable } from 'material-react-table'
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useMemo } from 'react'
 import { FiEdit, FiEye, FiTrash } from 'react-icons/fi'
 import { Link } from 'react-router-dom'
 import { MRT_Localization_VI } from 'material-react-table/locales/vi'
 export const Table = ({
   data,
   fields,
-  numberOfRows,
   enableEditing,
   showPreview,
   routeLink,
@@ -17,23 +16,17 @@ export const Table = ({
 }) => {
   const columns = useMemo(() => fields, [])
 
-  const [tableData, setTableData] = useState(() => data)
-
-  const handleDeleteRow = useCallback(
-    (row) => {
-      if (!confirm('Bạn có chắc chắn muốn xóa dòng này')) {
-        return
-      }
-      data.splice(row.index, 1)
-      setTableData([...tableData])
-    },
-    [tableData],
-  )
+  const handleDeleteRow = useCallback((row) => {
+    if (!confirm('Bạn có chắc chắn muốn xóa dòng này')) {
+      return
+    }
+    data.splice(row.index, 1)
+  }, [])
 
   return (
     <MaterialReactTable
       columns={columns}
-      data={tableData.slice(0, numberOfRows)}
+      data={data}
       getRowId={(row) => row.id}
       positionActionsColumn="last"
       localization={MRT_Localization_VI}
@@ -79,8 +72,8 @@ export const Table = ({
           padding: '20px',
           borderRadius: '15px',
           borderStyle: 'solid',
-          borderWidth: '1px',
-          borderColor: 'divider',
+          borderWidth: '0.5px',
+          borderColor: 'grey.200',
         },
       }}
       muiTableContainerProps={{
@@ -95,17 +88,18 @@ export const Table = ({
       muiTableHeadProps={{
         sx: {
           '& tr th': {
-            borderWidth: '1px',
-            borderColor: 'divider',
+            borderWidth: '0.5px',
+            borderColor: 'grey.200',
             borderStyle: 'solid',
+            bgcolor: 'grey.100',
           },
         },
       }}
       muiTableBodyProps={{
         sx: {
           '& tr td': {
-            borderWidth: '1px',
-            borderColor: 'divider',
+            borderWidth: '0.5px',
+            borderColor: 'grey.200',
             borderStyle: 'solid',
           },
         },

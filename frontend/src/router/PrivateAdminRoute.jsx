@@ -6,7 +6,6 @@ const PrivateAdminRoute = ({ children }) => {
   // TODO: CHANGE THIS LATER
   const navigate = useNavigate()
   const { isAuthenticated } = useUserStore()
-
   useEffect(() => {
     const fetchUser = async () => {
       const { data } = await getUser(useUserStore.getState().user.id)

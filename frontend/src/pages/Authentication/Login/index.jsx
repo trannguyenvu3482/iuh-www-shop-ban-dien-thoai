@@ -16,8 +16,7 @@ const SignIn = () => {
   const handleLogin = async (values) => {
     try {
       const { data } = await login(values.email, values.password)
-
-      console.log(data)
+      console.log("🚀 ~ handleLogin ~ data:", data)
 
       if (data.statusCode === 401) {
         enqueueSnackbar(data.message, {
@@ -38,10 +37,7 @@ const SignIn = () => {
             preventDuplicate: true,
           },
         )
-
-        setTimeout(() => {
           navigate('/')
-        }, 3000)
       }
     } catch (error) {
       enqueueSnackbar(error.response.data.message, {
