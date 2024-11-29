@@ -6,14 +6,17 @@ const InputQuantity = ({ toggleCounting, initCount }) => {
   const handleDecrement = () => {
     if (count > 1) {
       setCount(count - 1)
+      toggleCounting(count - 1, 'decrease')
     }
   }
   const handleIncrement = () => {
     setCount(count + 1)
+    toggleCounting(count + 1, 'increase')
   }
   useEffect(() => {
     toggleCounting(count)
   }, [count])
+  
   return (
     <div className="flex h-8 items-center overflow-hidden rounded-md border border-gray-300">
       <button

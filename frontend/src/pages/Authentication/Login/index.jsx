@@ -1,52 +1,12 @@
 import { Form, Formik } from 'formik'
-import { useSnackbar } from 'notistack'
-import React from 'react'
 import { FaChevronLeft, FaEnvelope, FaLock } from 'react-icons/fa6'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import Logo from '../../../assets/img/logo.png'
 import TextInput from '../../../components/TextInput'
-import { login } from '../../../service/apiAuthentication'
-import { useUserStore } from '../../../zustand/userStore'
 import { LoginSchema } from '../context'
+import useMe from '../../../hooks/useMe'
 const SignIn = () => {
-  const navigate = useNavigate()
-  const { enqueueSnackbar, closeSnackbar } = useSnackbar()
-  const { setUser, setAccessToken, setIsAuthenticated } = useUserStore()
-
-  const handleLogin = async (values) => {
-    try {
-      const { data } = await login(values.email, values.password)
-      console.log("🚀 ~ handleLogin ~ data:", data)
-
-      if (data.statusCode === 401) {
-        enqueueSnackbar(data.message, {
-          variant: 'error',
-          autoHideDuration: 3000,
-          preventDuplicate: true,
-        })
-      } else {
-        setUser(data.user)
-        setAccessToken(data.access_token)
-        setIsAuthenticated(true)
-
-        enqueueSnackbar(
-          'Đăng nhập thành công, đang chuyển hướng đến trang chủ',
-          {
-            variant: 'success',
-            autoHideDuration: 3000,
-            preventDuplicate: true,
-          },
-        )
-          navigate('/')
-      }
-    } catch (error) {
-      enqueueSnackbar(error.response.data.message, {
-        variant: 'error',
-        autoHideDuration: 3000,
-        preventDuplicate: true,
-      })
-    }
-  }
+  const { handleLogin } = useMe()
 
   return (
     <div className="pt:mt-0 mx-auto flex flex-col items-end justify-center bg-[url('/authbg.jpg')] bg-cover bg-center bg-no-repeat px-6 pt-8 md:h-screen">

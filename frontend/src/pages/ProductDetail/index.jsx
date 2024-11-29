@@ -11,6 +11,7 @@ import { useUserStore } from '../../zustand/userStore'
 import CapacitySection from './CapacitySection'
 import Description from './Description'
 import SlideProduct from './SlideProduct'
+import useCart from '../../hooks/useCart'
 
 const ProductDetail = () => {
   const navigate = useNavigate()
@@ -19,15 +20,8 @@ const ProductDetail = () => {
   const [selectedCapacity, setSelectedCapacity] = useState(-1)
   const [selectedVariant, setSelectedVariant] = useState(-1)
   const [openNotLoggedInModal, setOpenNotLoggedInModal] = useState(false)
-  const { user, isAuthenticated } = useUserStore()
-
-  console.log(product)
-
-  console.log('selected capacity: ', selectedCapacity)
-  console.log('selected variant: ', selectedVariant)
-
-  console.log('Colors: ', product?.variants[selectedCapacity]?.colors)
-
+  const { isAuthenticated } = useUserStore()
+  const { toggleCart } = useCart()
   const selectedColorObject = product?.variants[selectedCapacity]?.colors.find(
     (color) => color.variantId === selectedVariant,
   )
@@ -38,8 +32,6 @@ const ProductDetail = () => {
     }
     setSelectedCapacity(index)
   }
-
-  console.log('selected color object: ', selectedColorObject)
 
   const uniqueImageUrls = Array.from(
     new Set(
@@ -63,9 +55,8 @@ const ProductDetail = () => {
       })
       return
     }
-
-    console.log('>>> product', product)
-    console.log(product.id, selectedVariant)
+    toggleCart('increase', product.id, selectedVariant, 1)
+    navigate('/cart')
   }
 
   return (

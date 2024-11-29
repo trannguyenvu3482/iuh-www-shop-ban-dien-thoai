@@ -57,7 +57,6 @@ instance.interceptors.response.use(
       logout();
       window.location.href = "/login";
     }
-
     return error && error.response.data
       ? error.response.data
       : Promise.reject(error);

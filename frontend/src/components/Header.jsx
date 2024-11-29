@@ -19,6 +19,7 @@ import { logout } from '../service/apiAuthentication'
 import { getProductsByNameRelative } from '../service/apiProduct'
 import { useUserStore } from '../zustand/userStore'
 import SearchBar from './SearchBar'
+import useMe from '../hooks/useMe'
 const Header = () => {
   const { enqueueSnackbar } = useSnackbar()
   const navigate = useNavigate()
@@ -28,14 +29,8 @@ const Header = () => {
   const [searchValue, setSearchValue] = useState('')
   const debouncedSearchValue = useDebounce(searchValue, 2000)
   const [listProducts, setListProducts] = useState([])
-  const {
-    user,
-    isAuthenticated,
-    accessToken,
-    logout: stateLogout,
-  } = useUserStore()
-
-  console.log(accessToken)
+  const { isAuthenticated, logout: stateLogout } = useUserStore()
+  const { totalItems, me } = useMe()
 
   useEffect(() => {
     const getProducts = async () => {
@@ -184,7 +179,7 @@ const Header = () => {
                         className="absolute left-[14px] top-[8px] block h-[20px] w-[17px]"
                       >
                         <span className="absolute left-[9px] top-[12px] flex h-4 w-4 items-center justify-center rounded-full bg-[#c60004] text-xs">
-                          5
+                          {totalItems}
                         </span>
                       </i>
                       <span className="text-sm">Giỏ hàng</span>
@@ -206,8 +201,8 @@ const Header = () => {
                       className="absolute -right-4 top-11 z-20 hidden w-44 divide-y divide-gray-100 rounded-lg bg-white shadow group-hover:block dark:divide-gray-600 dark:bg-gray-700"
                     >
                       <div className="px-4 py-3 text-sm text-gray-900 dark:text-white">
-                        <div>{user.name}</div>
-                        <div className="truncate font-medium">{user.email}</div>
+                        <div>{me?.name}</div>
+                        <div className="truncate font-medium">{me?.email}</div>
                       </div>
                       <ul
                         className="py-2 text-sm text-gray-700 dark:text-gray-200"
