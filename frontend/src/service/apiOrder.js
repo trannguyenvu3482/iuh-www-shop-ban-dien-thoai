@@ -1,9 +1,8 @@
-import instance from "./axios/instance";
+import instance from './axios/instance'
 
-const BASE_URL = "/order";
-export const createOrder = async (amount, orderInfo) => {
+const BASE_URL = '/orders'
+export const createOrder = async (data) => {
   return await instance.post(`${BASE_URL}`, {
-    amount: amount,
-    orderInfo: orderInfo,
-  });
-};
+    ...data,
+  })
+}

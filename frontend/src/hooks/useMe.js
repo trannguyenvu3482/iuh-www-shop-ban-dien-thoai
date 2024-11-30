@@ -24,7 +24,7 @@ export const useMe = () => {
       } else {
         setAccessToken(data.access_token)
         setIsAuthenticated(true)
-        
+
         const rs = await getCart()
         setCart({
           totalPrice: rs.data?.totalPrice,
@@ -41,7 +41,8 @@ export const useMe = () => {
             preventDuplicate: true,
           },
         )
-        navigate('/')
+        if (data.user.userType === 'USER') navigate('/')
+        else navigate('/admin')
       }
     } catch (error) {
       enqueueSnackbar(error.response.data.message, {

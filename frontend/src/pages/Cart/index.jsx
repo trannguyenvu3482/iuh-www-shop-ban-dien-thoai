@@ -15,6 +15,7 @@ import {
 } from '../../hooks/useProvince'
 import useMe from '../../hooks/useMe'
 import { formatVND } from '../../utils/format'
+import { createOrder } from '../../service/apiOrder'
 
 const convertProvince = (provinces) => {
   if (!provinces || provinces === undefined || provinces === null) return []
@@ -78,7 +79,6 @@ const convertAddress = (
 
 function CartPage() {
   const { cartDetails, totalPrice, me } = useMe()
-
   const [provinceId, setProvinceId] = useState('01')
   const [districtId, setDistrictId] = useState('001')
   const [communeId, setCommuneId] = useState('')
@@ -100,7 +100,7 @@ function CartPage() {
   const handleSelectPaymentMethod = (methodName) => {
     setPaymentMethod(methodName)
   }
-  const handleSubmit = (values) => {
+  const handleSubmit = async (values) => {
     const addressJSON = convertAddress(
       values.more_info,
       provinceId,
@@ -110,14 +110,14 @@ function CartPage() {
       districts,
       communes,
     )
-
     const data = {
-      name: values.name,
-      email: values.email,
-      phone_number: values.phone_number,
-      address: addressJSON,
+      userId: me.id,
+      totalPrice: totalPrice,
+      shippingAddress: addressJSON,
+      paymentMethod: 'vnpay',
+      note: 'Ship can than giup em',
     }
-    alert(JSON.stringify(data, null, 2))
+    return await createOrder(data).then
   }
 
   return (
@@ -156,12 +156,40 @@ function CartPage() {
                   {/*Card Item*/}
                   <div className="max-h-[700px] overflow-y-auto">
                     <div>
-                      {cartDetails.map((cartItemValue) => (
-                        <CardItem
-                          key={cartItemValue.id}
-                          cartItemValue={cartItemValue}
-                        />
-                      ))}
+                      {!cartDetails ? (
+                        <div className="container mx-auto py-8">
+                          <div className="rounded-lg bg-white p-8">
+                            <div className="text-center">
+                              <img
+                                className="mx-auto h-32 w-32"
+                                src="/no-order.png"
+                              />
+                              <h2 className="mt-4 text-2xl font-semibold text-gray-800">
+                                Giỏ Hàng Của Bạn Đang Trống
+                              </h2>
+                              <p className="mt-2 text-gray-600">
+                                Không có sản phẩm nào trong giỏ hàng. Hãy thêm
+                                sản phẩm vào giỏ để tiếp tục mua sắm.
+                              </p>
+                              <div className="mt-6">
+                                <a
+                                  href="/"
+                                  className="rounded-lg bg-red-600 px-6 py-3 text-white hover:bg-red-700"
+                                >
+                                  Tiếp Tục Mua Sắm
+                                </a>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      ) : (
+                        cartDetails?.map((cartItemValue) => (
+                          <CardItem
+                            key={cartItemValue.id}
+                            cartItemValue={cartItemValue}
+                          />
+                        ))
+                      )}
                     </div>
                   </div>
                 </div>
@@ -329,7 +357,9 @@ function CartPage() {
                           {' '}
                           <span className="flex items-center gap-1">
                             <FaCoins color="gold" />{' '}
-                            {parseFloat(totalPrice / 4000).toFixed(0)}
+                            {!totalPrice
+                              ? 0
+                              : parseFloat(totalPrice / 4000)?.toFixed(0)}
                           </span>
                         </div>
                       </div>
