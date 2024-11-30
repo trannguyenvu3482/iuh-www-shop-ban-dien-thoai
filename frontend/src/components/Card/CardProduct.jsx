@@ -12,6 +12,7 @@ function CardProduct(props) {
     oldPrice,
     initPayment,
     productId,
+    isBorder = false,
   } = props
 
   const navigate = useNavigate()
@@ -19,12 +20,17 @@ function CardProduct(props) {
     <div
       onClick={() => navigate(`/product/${productId}`)}
       key={productId}
-      className="relative flex h-[380px] w-full cursor-pointer flex-col justify-center rounded-lg bg-white px-3 duration-300 hover:shadow-md hover:shadow-slate-400"
+      className={`${isBorder && 'border-[1px] border-slate-200'} relative flex h-[380px] w-full cursor-pointer flex-col justify-center rounded-lg bg-white px-3 duration-300 hover:shadow-md hover:shadow-slate-400`}
     >
       {chips && (
         <>
           {chips.map((chip, index) => (
-            <Chip key={index} color={chip.color} label={chip.label} />
+            <Chip
+              className="absolute top-2 left-1"
+              key={index}
+              color={chip.color}
+              label={chip.label}
+            />
           ))}
         </>
       )}
@@ -47,9 +53,17 @@ function CardProduct(props) {
         <span className="font-bold text-slate-800">{initPayment}</span>
       </h1>
       <div className="mt-4 flex gap-0.5">
-        {rating &&
+        {rating > 0 &&
           Array.from({ length: rating }, (_, index) => (
             <FaStar key={index} className="w-3.5 text-yellow-500" />
+          ))}
+        {rating > 0 &&
+          Array.from({ length: 5 - rating + 1 }, (_, index) => (
+            <FaStar key={index} className="w-3.5 text-slate-200" />
+          ))}
+        {rating === 0 &&
+          Array.from({ length: 5 }, (_, index) => (
+            <FaStar key={index} className="w-3.5 text-slate-200" />
           ))}
       </div>
     </div>

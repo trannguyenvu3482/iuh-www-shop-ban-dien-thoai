@@ -33,7 +33,7 @@ const Breadcrumbs = ({ currentName, categories }) => {
                 <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z" />
               </svg>
               <Link
-                to={`/category/${page.id}`}
+                to={`/categories/${page.id}/products`}
                 aria-current={page.current ? 'page' : undefined}
                 className="ml-4 text-sm font-medium text-gray-500 hover:text-gray-700"
               >
@@ -53,7 +53,7 @@ const Breadcrumbs = ({ currentName, categories }) => {
             >
               <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z" />
             </svg>
-            <span className="ml-4 text-sm font-medium text-gray-500">
+            <span className="ml-4 text-sm font-bold text-gray-700">
               {currentName}
             </span>
           </div>

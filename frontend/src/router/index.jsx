@@ -4,8 +4,8 @@ import { createBrowserRouter } from 'react-router-dom'
 import App from '../App'
 import AdminLayout from '../layout/AdminLayout'
 import Admin from '../pages/Admin'
-import Categories from '../pages/Admin/Categories'
-import AddCategory from '../pages/Admin/Categories/AddCategory'
+import AddCategoryDetail from '../pages/Admin/Categories/AddCategory'
+import AdminCategories from '../pages/Admin/Categories'
 import Products from '../pages/Admin/Products'
 import AddProduct from '../pages/Admin/Products/AddProducts'
 import Login from '../pages/Authentication/Login'
@@ -16,11 +16,13 @@ import Users from '../pages/Admin/User'
 import AddUser from '../pages/Admin/User/AddUser'
 import PrivateAdminRoute from './PrivateAdminRoute'
 import PrivateUserRoute from './PrivateUserRoute'
+import FixedLoading from '../components/FixedLoading'
 
 const Home = lazy(() => import('../pages/Home'))
 const CartPage = lazy(() => import('../pages/Cart'))
 const ProductDetail = lazy(() => import('../pages/ProductDetail'))
-const Category = lazy(() => import('../pages/Category'))
+const PaymentSuccess = lazy(() => import('../pages/PaymentSuccess'))
+const Categories = lazy(() => import('../pages/Categories'))
 
 const router = createBrowserRouter([
   {
@@ -39,7 +41,7 @@ const router = createBrowserRouter([
         index: true,
         path: '/',
         element: (
-          <Suspense fallback={<div>Loading...</div>}>
+          <Suspense fallback={<FixedLoading />}>
             <Home />
           </Suspense>
         ),
@@ -47,30 +49,39 @@ const router = createBrowserRouter([
       {
         path: '/product/:id',
         element: (
-          <Suspense fallback={<div>Loading...</div>}>
+          <Suspense fallback={<FixedLoading />}>
             <ProductDetail />
           </Suspense>
         ),
       },
       {
-        path: '/category/:id',
+        path: '/categories/:categoryId/products',
         element: (
-          <Suspense fallback={<div>Loading...</div>}>
-            <Category />
+          <Suspense fallback={<FixedLoading />}>
+            <Categories />
           </Suspense>
         ),
       },
+
       {
         path: '/cart',
         element: (
           <PrivateUserRoute>
-            <Suspense fallback={<div>Loading...</div>}>
+            <Suspense fallback={<FixedLoading />}>
               <CartPage />
             </Suspense>
           </PrivateUserRoute>
         ),
       },
     ],
+  },
+  {
+    path: '/payment-success',
+    element: (
+      <Suspense fallback={<FixedLoading />}>
+        <PaymentSuccess />
+      </Suspense>
+    ),
   },
   {
     path: '/admin',
@@ -94,11 +105,11 @@ const router = createBrowserRouter([
       },
       {
         path: '/admin/categories',
-        element: <Categories />,
+        element: <AdminCategories />,
       },
       {
         path: '/admin/categories/add',
-        element: <AddCategory />,
+        element: <AddCategoryDetail />,
       },
       {
         path: '/admin/users',

@@ -37,7 +37,6 @@ const Header = () => {
       if (!debouncedSearchValue || debouncedSearchValue === '') return
 
       const { data } = await getProductsByNameRelative(debouncedSearchValue)
-      console.log(data)
       setListProducts(data.result)
     }
 
