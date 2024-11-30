@@ -26,7 +26,7 @@ public class CartDetail {
     @JoinColumn(name = "product_id")
     private Product product;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "product_variant_id")
     private ProductVariants productVariant;
 

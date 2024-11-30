@@ -82,7 +82,7 @@ public class SecurityConfiguration {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(
                         authz -> authz
-                                .requestMatchers("/", "api/v1/auth/**", "api/v1/create-order/**", "/api-docs/**", "/swagger-ui/**", "/v3/api-docs/**", "api/v1/products/**", "api/v1/categories/**").permitAll()
+                                .requestMatchers("/", "api/v1/auth/**", "api/v1/create-order/**", "/api-docs/**", "/swagger-ui/**", "/v3/api-docs/**", "api/v1/products/**", "api/v1/categories/**", "api/v1/payment/**").permitAll()
                                 .requestMatchers(HttpMethod.POST, "api/v1/users").permitAll()
                                 .anyRequest().authenticated())
                 .oauth2ResourceServer(oauth2 -> oauth2

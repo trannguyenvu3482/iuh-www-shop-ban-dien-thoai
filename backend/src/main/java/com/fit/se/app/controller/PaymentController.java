@@ -7,12 +7,13 @@ import com.fit.se.app.service.PaymentStatusService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.Map;
 
-@RestController
+@Controller
 @RequestMapping("/api/v1/payment")
 public class PaymentController {
     private final PaymentService paymentService;
@@ -23,20 +24,22 @@ public class PaymentController {
         this.paymentStatusService = paymentStatusService;
     }
 
-    @PostMapping("/create-order")
-    public ResponseEntity<Map<String, Object>> createOrderPayment(HttpServletRequest request, @RequestBody RequestPaymentDTO requestPaymentDTO) throws IOException {
+    @PostMapping
+    public String createOrderPayment(HttpServletRequest request, @RequestBody RequestPaymentDTO requestPaymentDTO) throws IOException {
 
-        Map<String, Object> result = this.paymentService.createOrder(request, requestPaymentDTO);
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        String result = this.paymentService.createOrder(request, requestPaymentDTO.getOrderId());
+        return "redirect:" + result;
     }
 
-    @GetMapping("/create-order/callback")
+    @GetMapping("/callback")
+    @ResponseBody
     public ResponseEntity<Map<String, Object>> doCallBack(@RequestParam Map<String, Object> callBackInfo) {
         System.out.println(callBackInfo);
         return ResponseEntity.ok(callBackInfo);
     }
 
-    @PostMapping("/create-order/get-status")
+    @PostMapping("/get-status")
+    @ResponseBody
     public ResponseEntity<Map<String, Object>> getStatus(HttpServletRequest request, @RequestBody RequestPaymentStatusDTO statusRequestDTO) throws IOException {
 
         Map<String, Object> result = this.paymentStatusService.getStatus(request, statusRequestDTO);

@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.util.*;
 
 @Builder
@@ -32,6 +33,8 @@ public class ResponseProductDTO {
 
     @JsonIgnore
     private Set<ProductVariantsDto> productVariants = new LinkedHashSet<>();
+    private Instant createdAt;
+    private Instant updatedAt;
 
     public Integer getTotalStock() {
         return productVariants.stream().mapToInt(ProductVariantsDto::getStock).sum();
