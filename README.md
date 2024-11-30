@@ -5,10 +5,9 @@ Xây dựng Website quản lý điện thoại
 
 ## Tech Stack
 
-**Client:** React 18, TailwindCSS
+**Client:** React 18, TailwindCSS, MUI
 
-**Server:** Spring Boot 3, SQL Server
-
+**Server:** Spring Boot 3, PostgreSQL (Hosted on Supabase), Nimbus JWT, VNPay API
 
 ## Cấu trúc dự án
 
@@ -50,7 +49,7 @@ Xây dựng Website quản lý điện thoại
 Clone project này
 
 ```bash
-  git clone https://link-to-project
+  git clone https://github.com/trannguyenvu3482/iuh-www-shop-ban-dien-thoai.git
 ```
 
 ### Front-end
@@ -73,7 +72,7 @@ Chạy server
   npm run dev
 ```
 
-Mặc định server sẽ chạy tại `localhost:5176`
+Mặc định server sẽ chạy tại `http://localhost:3000`
 
 ### Back-end
 Vào thư mục backend 
@@ -83,10 +82,8 @@ Vào thư mục backend
 ```
 
 Chạy server (Yêu cầu đã cài maven và load tất cả thư viện)
+Mặc định server sẽ chạy tại `http://localhost:8080`
 
-```bash
-  mvn spring-boot:run
-```
 
 
 ## License
@@ -98,4 +95,3 @@ Project này sử dụng license theo
 
 - [@trannguyenvu3482](https://www.github.com/trannguyenvu3482)
 - [@Quindarts](https://www.github.com/Quindarts)
-
