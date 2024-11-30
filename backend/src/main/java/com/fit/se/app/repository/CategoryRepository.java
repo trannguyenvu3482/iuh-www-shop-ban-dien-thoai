@@ -26,4 +26,6 @@ public interface CategoryRepository extends JpaRepository<Category, Integer> {
             WHERE category_id != :categoryId;
             """, nativeQuery = true)
     List<Integer> findAllChildCategoryIds(Integer categoryId);
+
+    List<Category> findByIdIn(List<Integer> ids);
 }

@@ -2,27 +2,47 @@ package com.fit.se.app.service;
 
 import com.fit.se.app.common.constant.VnPayConstant;
 import com.fit.se.app.common.util.VnPayUtil;
-import com.fit.se.app.dto.request.RequestPaymentDTO;
+import com.fit.se.app.entity.Order;
+import com.fit.se.app.repository.OrderRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
+import java.math.BigDecimal;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 @Service
 public class PaymentService {
-    public Map<String, Object> createOrder(HttpServletRequest request, RequestPaymentDTO requestPaymentDTO) throws UnsupportedEncodingException {
+    private final OrderRepository orderRepository;
+
+    public PaymentService(OrderRepository orderRepository) {
+        this.orderRepository = orderRepository;
+    }
+
+    public String createOrder(HttpServletRequest request, Integer orderId) throws UnsupportedEncodingException {
+        Optional<Order> order = this.orderRepository.findById(orderId);
+
+        if (order.isEmpty()) {
+            throw new NoSuchElementException("Order not found");
+        }
+        Order orderEntity = order.get();
+
+        BigDecimal total = orderEntity.getTotalPrice();
+
+        String price = String.valueOf(total.intValueExact() * 100);
+
+        System.out.println("price: " + price);
 
         Map<String, Object> payload = new HashMap<>() {{
             put("vnp_Version", VnPayConstant.VNP_VERSION);
             put("vnp_Command", VnPayConstant.VNP_COMMAND_ORDER);
             put("vnp_TmnCode", VnPayConstant.VNP_TMN_CODE);
-            put("vnp_Amount", String.valueOf(requestPaymentDTO.getAmount() * 100));
+            put("vnp_Amount", price);
             put("vnp_CurrCode", VnPayConstant.VNP_CURRENCY_CODE);
-            put("vnp_TxnRef", VnPayUtil.getRandomNumber(8));
-            put("vnp_OrderInfo", requestPaymentDTO.getOrderInfo());
+            put("vnp_TxnRef", orderEntity.getOrderCode());
+            put("vnp_OrderInfo", "Thanh toan hoa don #" + orderEntity.getOrderCode());
             put("vnp_OrderType", VnPayConstant.ORDER_TYPE);
             put("vnp_Locale", VnPayConstant.VNP_LOCALE);
             put("vnp_ReturnUrl", VnPayConstant.VNP_RETURN_URL);
@@ -31,6 +51,8 @@ public class PaymentService {
             put("vnp_ExpireDate", VnPayUtil.generateDate(true));
         }};
 
+        System.out.println("payload: " + payload);
+
         String queryUrl = getQueryUrl(payload).get("queryUrl")
                 + "&vnp_SecureHash="
                 + VnPayUtil.hmacSHA512(VnPayConstant.SECRET_KEY, getQueryUrl(payload).get("hashData"));
@@ -38,10 +60,10 @@ public class PaymentService {
         String paymentUrl = VnPayConstant.VNP_PAY_URL + "?" + queryUrl;
         payload.put("redirect_url", paymentUrl);
 
-        return payload;
+        return paymentUrl;
     }
 
-    private Map<String, String> getQueryUrl(Map<String, Object> payload) throws UnsupportedEncodingException {
+    private Map<String, String> getQueryUrl(Map<String, Object> payload) {
 
         List<String> fieldNames = new ArrayList<>(payload.keySet());
         Collections.sort(fieldNames);

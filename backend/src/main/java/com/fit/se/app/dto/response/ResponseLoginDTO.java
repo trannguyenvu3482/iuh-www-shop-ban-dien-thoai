@@ -1,6 +1,7 @@
 package com.fit.se.app.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fit.se.app.common.constant.enums.UserTypeEnum;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,6 +26,7 @@ public class ResponseLoginDTO {
         private String name;
         private String phoneNumber;
         private String address;
+        private UserTypeEnum userType;
     }
 
     @Getter

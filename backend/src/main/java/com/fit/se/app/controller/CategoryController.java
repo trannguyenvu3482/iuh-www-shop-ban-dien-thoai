@@ -1,6 +1,7 @@
 package com.fit.se.app.controller;
 
 import com.fit.se.app.common.annotation.ApiMessage;
+import com.fit.se.app.dto.response.ResponseCategoryWithSubDTO;
 import com.fit.se.app.dto.response.ResponsePaginationDTO;
 import com.fit.se.app.entity.Product;
 import com.fit.se.app.service.CategoryService;
@@ -13,8 +14,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/categories")
@@ -35,8 +34,8 @@ public class CategoryController {
 
     @GetMapping("/{id}")
     @ApiMessage("Get category by id")
-    ResponseEntity<List<Integer>> getCategoryById(@PathVariable Integer id) {
-        List<Integer> category = categoryService.getCategoryById(id);
+    ResponseEntity<ResponseCategoryWithSubDTO> getCategoryById(@PathVariable Integer id) {
+        ResponseCategoryWithSubDTO category = categoryService.getCategoryById(id);
         return ResponseEntity.ok(category);
     }
 }

@@ -28,4 +28,5 @@ public class ResponseOrderDTO implements Serializable {
     private Instant createdAt;
     private Instant updatedAt;
     private OrderStatusEnum status;
+    private String orderCode;
 }
