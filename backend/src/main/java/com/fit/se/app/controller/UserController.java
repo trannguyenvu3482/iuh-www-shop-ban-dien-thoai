@@ -5,9 +5,11 @@ import com.fit.se.app.common.constant.enums.UserTypeEnum;
 import com.fit.se.app.dto.response.ResponsePaginationDTO;
 import com.fit.se.app.dto.response.ResponseUserDTO;
 import com.fit.se.app.entity.Cart;
+import com.fit.se.app.entity.Order;
 import com.fit.se.app.entity.User;
 import com.fit.se.app.service.CartService;
 import com.fit.se.app.service.CloudinaryService;
+import com.fit.se.app.service.OrderService;
 import com.fit.se.app.service.UserService;
 import com.turkraft.springfilter.boot.Filter;
 import jakarta.validation.Valid;
@@ -21,17 +23,20 @@ import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/api/v1/users")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class UserController {
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
     private final CloudinaryService cloudinaryService;
     private final CartService cartService;
+    private final OrderService orderService;
 
-    public UserController(UserService userService, PasswordEncoder passwordEncoder, CloudinaryService cloudinaryService, CartService cartService) {
+    public UserController(UserService userService, PasswordEncoder passwordEncoder, CloudinaryService cloudinaryService, CartService cartService, OrderService orderService) {
         this.userService = userService;
         this.passwordEncoder = passwordEncoder;
         this.cloudinaryService = cloudinaryService;
         this.cartService = cartService;
+        this.orderService = orderService;
     }
 
     @PostMapping
@@ -84,5 +89,11 @@ public class UserController {
     ResponseEntity<Void> deleteUser(@PathVariable Integer id) {
         userService.deleteUser(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+    }
+
+    @GetMapping("/{id}/orders")
+    @ApiMessage("Fetch all orders of a user")
+    ResponseEntity<ResponsePaginationDTO> getOrdersByUserId(@PathVariable Integer id, @Filter Specification<Order> spec, Pageable pageable) {
+        return ResponseEntity.ok(orderService.getOrdersByUserId(id, spec, pageable));
     }
 }

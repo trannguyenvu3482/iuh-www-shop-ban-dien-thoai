@@ -36,7 +36,7 @@ public class Order {
     @Column(name = "shipping_address", nullable = false)
     private String shippingAddress;
 
-    @Column(name = "total_price", precision = 10, scale = 2)
+    @Column(name = "total_price", precision = 12, scale = 2)
     private BigDecimal totalPrice;
 
     @Column(name = "payment_method", nullable = false)
