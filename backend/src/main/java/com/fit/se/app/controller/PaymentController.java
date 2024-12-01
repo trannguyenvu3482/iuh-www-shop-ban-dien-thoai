@@ -15,6 +15,7 @@ import java.util.Map;
 
 @Controller
 @RequestMapping("/api/v1/payment")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class PaymentController {
     private final PaymentService paymentService;
     private final PaymentStatusService paymentStatusService;

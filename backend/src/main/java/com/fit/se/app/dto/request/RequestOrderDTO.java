@@ -1,5 +1,6 @@
 package com.fit.se.app.dto.request;
 
+import com.fit.se.app.common.constant.enums.OrderStatusEnum;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -29,4 +30,6 @@ public class RequestOrderDTO implements Serializable {
 
     @NotBlank(message = "note không được để trống")
     private String note;
+
+    private OrderStatusEnum status;
 }

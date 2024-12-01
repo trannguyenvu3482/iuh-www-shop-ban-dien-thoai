@@ -4,11 +4,13 @@ import com.fit.se.app.common.constant.VnPayConstant;
 import com.fit.se.app.common.util.VnPayUtil;
 import com.fit.se.app.entity.Order;
 import com.fit.se.app.repository.OrderRepository;
+import io.github.cdimascio.dotenv.Dotenv;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
@@ -22,6 +24,8 @@ public class PaymentService {
     }
 
     public String createOrder(HttpServletRequest request, Integer orderId) throws UnsupportedEncodingException {
+        Dotenv dotenv = Dotenv.load();
+        String paymentEndpoint = dotenv.get("VNPAY_RETURN_URL");
         Optional<Order> order = this.orderRepository.findById(orderId);
 
         if (order.isEmpty()) {
@@ -31,9 +35,11 @@ public class PaymentService {
 
         BigDecimal total = orderEntity.getTotalPrice();
 
-        String price = String.valueOf(total.intValueExact() * 100);
+        BigDecimal bal = total.setScale(0, RoundingMode.HALF_UP).multiply(new BigDecimal(100));
+        String price = bal.toString();
 
-        System.out.println("price: " + price);
+        System.out.println("price: " + total);
+        System.out.println("price (String): " + bal.toString());
 
         Map<String, Object> payload = new HashMap<>() {{
             put("vnp_Version", VnPayConstant.VNP_VERSION);
@@ -45,7 +51,7 @@ public class PaymentService {
             put("vnp_OrderInfo", "Thanh toan hoa don #" + orderEntity.getOrderCode());
             put("vnp_OrderType", VnPayConstant.ORDER_TYPE);
             put("vnp_Locale", VnPayConstant.VNP_LOCALE);
-            put("vnp_ReturnUrl", VnPayConstant.VNP_RETURN_URL);
+            put("vnp_ReturnUrl", paymentEndpoint.concat(VnPayConstant.VNP_RETURN_URL));
             put("vnp_IpAddr", VnPayUtil.getIpAddress(request));
             put("vnp_CreateDate", VnPayUtil.generateDate(false));
             put("vnp_ExpireDate", VnPayUtil.generateDate(true));

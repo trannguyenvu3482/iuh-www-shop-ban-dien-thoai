@@ -46,7 +46,7 @@ public class CartService {
 
     public void recalculateCart(Cart cart) {
         BigDecimal totalPrice = cart.getCartDetails().stream()
-                .map(cartDetail -> cartDetail.getProduct().getBasePrice().multiply(BigDecimal.valueOf(cartDetail.getQuantity())))
+                .map(cartDetail -> cartDetail.getProductVariant().getPrice().multiply(BigDecimal.valueOf(cartDetail.getQuantity())))
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
         cart.setTotalPrice(totalPrice);
     }

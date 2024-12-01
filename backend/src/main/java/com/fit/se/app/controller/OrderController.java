@@ -1,16 +1,17 @@
 package com.fit.se.app.controller;
 
 import com.fit.se.app.dto.request.RequestOrderDTO;
+import com.fit.se.app.dto.response.ResponseOrderDTO;
 import com.fit.se.app.service.OrderService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/api/v1/orders")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class OrderController {
     private final OrderService orderService;
 
@@ -19,14 +20,19 @@ public class OrderController {
     }
 
     @PostMapping
-    public String createOrder(HttpServletRequest request, @Valid @RequestBody RequestOrderDTO order) {
-        Object result = orderService.createOrder(request, order);
+    public ResponseEntity<ResponseOrderDTO> createOrder(HttpServletRequest request, @Valid @RequestBody RequestOrderDTO order) {
+        ResponseOrderDTO result = orderService.createOrder(request, order);
 
-        if (result instanceof String) {
-            return "redirect:" + result;
-        } else {
-            return "Order created successfully";
-        }
+        return ResponseEntity.ok(result);
     }
 
+    @PutMapping("/{orderCode}")
+    public ResponseEntity<ResponseOrderDTO> updateOrder(@PathVariable String orderCode, @RequestBody RequestOrderDTO order) {
+        if (order.getStatus() != null) {
+            ResponseOrderDTO result = orderService.updateOrderStatus(orderCode, order);
+            return ResponseEntity.ok(result);
+        } else {
+            throw new RuntimeException("Không tìm thấy trạng thái cập nhật");
+        }
+    }
 }
