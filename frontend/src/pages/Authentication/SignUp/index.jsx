@@ -13,16 +13,33 @@ import Logo from '../../../assets/img/logo.png'
 import TextInput from '../../../components/TextInput'
 import { useUserStore } from '../../../zustand/userStore'
 import { SignUpSchema } from '../context'
+import { addUser } from '../../../service/apiUser'
 const SignUp = () => {
   const navigate = useNavigate()
   const { enqueueSnackbar, closeSnackbar } = useSnackbar()
   const { setUser, setAccessToken, setIsAuthenticated } = useUserStore()
 
-  const handleSignUp = (values) => {
+  const handleSignUp = async (values) => {
     console.log(values)
 
-    // const data = await login(values.email, values.password)
-
+    const data = await addUser(values)
+    if (data.statusCode >= 400 && data.statusCode < 500) {
+      console.log(data)
+      enqueueSnackbar(data.message, {
+        variant: 'error',
+        autoHideDuration: 3000,
+        preventDuplicate: true,
+      })
+      return
+    }
+    enqueueSnackbar(
+      'Đăng ký thành công, đang chuyển hướng đến trang đăng nhập',
+      {
+        variant: 'success',
+      },
+    )
+    navigate('/login')
+    return
     // if (data.statusCode === 401) {
     //   enqueueSnackbar(data.message, {
     //     variant: 'error',

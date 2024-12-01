@@ -4,14 +4,15 @@ import { useUserStore } from '../../zustand/userStore'
 
 const BASE_URL = [
   'http://localhost:8080/api/v1',
-  'http://192.168.0.114:8080/api/v1',
+  'https://main-gradually-octopus.ngrok-free.app/api/v1',
   'https://e3327ca97bd21c.lhr.life/api/v1',
 ]
 
 const instance = axios.create({
-  baseURL: BASE_URL[2],
+  baseURL: BASE_URL[1],
   headers: {
     'Content-Type': 'application/json',
+    // 'Access-Control-Allow-Origin': '*',
   },
   withCredentials: true,
 })

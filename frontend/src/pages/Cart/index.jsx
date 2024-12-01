@@ -16,6 +16,7 @@ import {
 import useMe from '../../hooks/useMe'
 import { formatVND } from '../../utils/format'
 import { createOrder } from '../../service/apiOrder'
+import { Navigate, redirect } from 'react-router-dom'
 
 const convertProvince = (provinces) => {
   if (!provinces || provinces === undefined || provinces === null) return []
@@ -78,7 +79,7 @@ const convertAddress = (
 }
 
 function CartPage() {
-  const { cartDetails, totalPrice, me } = useMe()
+  const { cartDetails, totalPrice, me, totalItems } = useMe()
   const [provinceId, setProvinceId] = useState('01')
   const [districtId, setDistrictId] = useState('001')
   const [communeId, setCommuneId] = useState('')
@@ -117,7 +118,10 @@ function CartPage() {
       paymentMethod: 'vnpay',
       note: 'Ship can than giup em',
     }
-    return await createOrder(data).then
+    const res = await createOrder(data)
+
+    if (res.statusCode === 200)
+      return (window.location.href = res.data.paymentUrl)
   }
 
   return (
@@ -156,7 +160,7 @@ function CartPage() {
                   {/*Card Item*/}
                   <div className="max-h-[700px] overflow-y-auto">
                     <div>
-                      {!cartDetails ? (
+                      {totalItems == 0 || cartDetails.length === 0 ? (
                         <div className="container mx-auto py-8">
                           <div className="rounded-lg bg-white p-8">
                             <div className="text-center">

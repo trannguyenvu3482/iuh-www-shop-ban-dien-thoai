@@ -6,7 +6,7 @@ const login = async (email, password) => {
     username: email,
     password: password,
   });
-};
+};  
 
 const logout = async () => {
   return await instance.get(`${BASE_URL}/logout`);
