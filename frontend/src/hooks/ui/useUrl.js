@@ -20,6 +20,12 @@ function useUrl() {
       replace: true,
     })
   }
+  const setTypeFilter = (type) => {
+    query.set('filter', type)
+    setQuery(query, {
+      replace: true,
+    })
+  }
   const getQueryField = (type) => {
     return query.get(type) ? `${query.get(type)}` : ''
   }
@@ -76,11 +82,12 @@ function useUrl() {
       })
     }
   }
-  
+
   return {
     onTypeSearchChange,
     setDefaultTypeSearch,
     setTypeSort,
+    setTypeFilter,
     getQueryField,
     onSearchChange,
     setLimit,

@@ -23,7 +23,7 @@ const CartPage = lazy(() => import('../pages/Cart'))
 const ProductDetail = lazy(() => import('../pages/ProductDetail'))
 const PaymentSuccess = lazy(() => import('../pages/PaymentSuccess'))
 const Categories = lazy(() => import('../pages/Categories'))
-
+const ProfilePage = lazy(() => import('../pages/Profile'))
 const router = createBrowserRouter([
   {
     path: '*',
@@ -69,6 +69,16 @@ const router = createBrowserRouter([
           <PrivateUserRoute>
             <Suspense fallback={<FixedLoading />}>
               <CartPage />
+            </Suspense>
+          </PrivateUserRoute>
+        ),
+      },
+      {
+        path: '/profile',
+        element: (
+          <PrivateUserRoute>
+            <Suspense fallback={<FixedLoading />}>
+              <ProfilePage />
             </Suspense>
           </PrivateUserRoute>
         ),
