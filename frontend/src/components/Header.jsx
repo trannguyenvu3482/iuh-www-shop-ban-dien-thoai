@@ -31,7 +31,6 @@ const Header = () => {
   const [listProducts, setListProducts] = useState([])
   const { isAuthenticated, logout: stateLogout } = useUserStore()
   const { totalItems, me } = useMe()
-
   useEffect(() => {
     const getProducts = async () => {
       if (!debouncedSearchValue || debouncedSearchValue === '') return
@@ -58,7 +57,6 @@ const Header = () => {
 
     navigate('/login')
   }
-
   return (
     <header>
       <div className={`${slideIndex === 0 ? 'bg-[#b82900]' : 'bg-black'}`}>
@@ -163,7 +161,7 @@ const Header = () => {
                 </div>
               </div>
 
-              {isAuthenticated ? (
+              {isAuthenticated && me.userType === 'USER' ? (
                 <>
                   <div className="cart relative ml-6">
                     <Link

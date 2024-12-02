@@ -16,10 +16,10 @@ const SignIn = () => {
       >
         <FaChevronLeft />
       </a>
-      <div className="mr-20 flex w-full max-w-lg flex-col rounded-lg bg-white p-10 shadow dark:bg-gray-800">
+      <div className="mr-20 flex w-full max-w-lg flex-col rounded-lg bg-gray-800 p-10 shadow">
         <a
           href="/"
-          className="flex items-center justify-center text-2xl font-semibold hover:opacity-90 dark:text-white"
+          className="flex items-center justify-center text-2xl font-semibold text-white hover:opacity-90"
         >
           <img src={Logo} className="mr-4 h-11" alt="FlowBite Logo" />
         </a>
@@ -66,20 +66,20 @@ const SignIn = () => {
                     aria-describedby="remember"
                     name="remember"
                     type="checkbox"
-                    className="focus:ring-3 focus:ring-primary-300 dark:focus:ring-primary-600 h-4 w-4 rounded border-gray-300 bg-gray-50 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800"
+                    className="focus:ring-3 focus:ring-primary-300 focus:ring-primary-600 h-4 w-4 rounded border-gray-300 border-gray-600 bg-gray-50 bg-gray-700 ring-offset-gray-800"
                   />
                 </div>
                 <div className="ml-3 text-sm">
                   <label
                     htmlFor="remember"
-                    className="font-medium text-gray-900 dark:text-white"
+                    className="font-medium text-gray-900 text-white"
                   >
                     Nhớ mật khẩu
                   </label>
                 </div>
                 <a
                   href="#"
-                  className="dark:text-primary-500 ml-auto text-sm text-white hover:underline"
+                  className="text-primary-500 ml-auto text-sm text-white hover:underline"
                 >
                   Quên mật khẩu?
                 </a>
@@ -90,11 +90,11 @@ const SignIn = () => {
               >
                 Đăng nhập
               </button>
-              <div className="mt-3 text-sm font-medium text-gray-500 dark:text-gray-400">
+              <div className="mt-3 text-sm font-medium text-gray-400 text-gray-500">
                 Chưa có tài khoản?{' '}
                 <Link
                   to="/signup"
-                  className="text-primary-700 dark:text-primary-500 cursor-pointer hover:underline"
+                  className="text-primary-700 text-primary-500 cursor-pointer hover:underline"
                 >
                   Tạo tài khoản
                 </Link>
