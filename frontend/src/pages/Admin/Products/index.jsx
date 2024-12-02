@@ -53,12 +53,12 @@ const Products = () => {
         ),
       },
       {
-        accessorKey: 'category.name',
+        accessorKey: 'categoryName',
         header: 'Danh Mục',
         Cell: ({ cell }) => <span>{cell.getValue()}</span>,
       },
       {
-        accessorKey: 'quantity',
+        accessorKey: 'totalStock',
         header: 'Số Lượng',
         size: 100,
         Cell: ({ cell }) => <span>{cell.getValue()}</span>,
@@ -138,7 +138,10 @@ const Products = () => {
           <SkeletonTable />
         ) : (
           <Table
-            data={products}
+            data={products.map((p) => ({
+              ...p,
+              categoryName: p.categories[0].name,
+            }))} // Cột Danh Mục
             fields={productsColumns}
             numberOfRows={products.length}
             enableTopToolBar={false}

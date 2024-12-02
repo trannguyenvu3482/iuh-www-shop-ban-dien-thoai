@@ -67,3 +67,42 @@ export const useProductsByCategory = () => {
     totalPages,
   }
 }
+
+export const useProductsByHome = () => {
+  const navigate = useNavigate()
+  const [products, setProducts] = useState(null)
+  const [isLoading, setLoading] = useState(false)
+  const [page, setPage] = useState(1)
+  const [pageSize, setPageSize] = useState(20)
+  const [totalItems, setTotalItems] = useState(0)
+  const [totalPages, setTotalPages] = useState(0)
+
+  useEffect(() => {
+    const handleFetch = async () => {
+      try {
+        setLoading(true)
+        const fetcher = await getProductsByCategory(2)
+        if (fetcher.statusCode === 200) {
+          setProducts(fetcher?.data?.result)
+          setTotalItems(fetcher?.data?.metadata.totalItems)
+          setTotalPages(fetcher?.data?.metadata.totalPages)
+          setPage(fetcher?.data?.metadata.page)
+          setPageSize(fetcher?.data?.metadata.pageSize)
+        }
+        setLoading(false)
+      } catch (error) {
+        console.log('🚀 ~ handleFetch ~ error:', error)
+        navigate('/404')
+      }
+    }
+    handleFetch()
+  }, [])
+  return {
+    products,
+    isLoading,
+    page,
+    pageSize,
+    totalItems,
+    totalPages,
+  }
+}

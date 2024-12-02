@@ -1,5 +1,6 @@
 import ScrollToTop from '../../components/ScrollToTop'
 import { SECTIONS_OF_HOME } from '../../constants'
+import { useProductsByHome } from '../../hooks/useProduct'
 import AccessoryCategory from './AccessoryList'
 import BannerHome from './Banner'
 import HeadSection from './HeadSection'

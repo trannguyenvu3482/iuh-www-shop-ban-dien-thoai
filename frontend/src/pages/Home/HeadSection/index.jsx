@@ -4,8 +4,12 @@ import { Navigation } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import CardProduct from '../../../components/Card/CardProduct'
 import { PRODUCT_DUMMY_DATA } from '../../../constants'
+import { useProductsByHome } from '../../../hooks/useProduct'
+import { formatVND } from '../../../utils/format'
 
 function HeadSection() {
+  const { products } = useProductsByHome()
+
   return (
     <section className="rounded-t-xl bg-[#bdc7ec]">
       <img
@@ -23,16 +27,18 @@ function HeadSection() {
           slidesPerView={5}
           autoHeight={true}
         >
-          {PRODUCT_DUMMY_DATA.map((product) => (
+          {products?.map((product) => (
             <SwiperSlide key={product.productId}>
               <CardProduct
-                imgURL={product.imgURL}
+                imgURL={product.thumbnailUrl}
                 name={product.name}
-                price={product.price}
-                oldPrice={product.oldPrice}
-                initPayment={product.initPayment}
+                price={formatVND(product.basePrice)}
+                oldPrice={formatVND(
+                  product.basePrice + product.basePrice * 0.4,
+                )}
+                initPayment={`${formatVND(product.basePrice - product.basePrice * 0.4)} đ`}
                 rating={product.rating}
-                productId={product.productId}
+                productId={product.id}
               />
             </SwiperSlide>
           ))}
