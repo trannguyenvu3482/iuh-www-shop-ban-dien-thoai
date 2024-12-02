@@ -9,7 +9,7 @@ const BASE_URL = [
 ]
 
 const instance = axios.create({
-  baseURL: BASE_URL[1],
+  baseURL: BASE_URL[0],
   headers: {
     'Content-Type': 'application/json',
     // 'Access-Control-Allow-Origin': '*',
