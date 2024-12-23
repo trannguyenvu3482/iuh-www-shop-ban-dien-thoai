@@ -8,6 +8,7 @@ import io.github.cdimascio.dotenv.Dotenv;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -24,8 +25,15 @@ public class PaymentService {
     }
 
     public String createOrder(HttpServletRequest request, Integer orderId) throws UnsupportedEncodingException {
-        Dotenv dotenv = Dotenv.load();
-        String paymentEndpoint = dotenv.get("VNPAY_RETURN_URL");
+        String paymentEndpoint = "";
+        File f = new File(".env");
+        if (f.exists()) {
+            Dotenv dotenv = Dotenv.load();
+            paymentEndpoint = dotenv.get("VNPAY_RETURN_URL");
+        } else {
+            paymentEndpoint = System.getenv("VNPAY_RETURN_URL");
+        }
+
         Optional<Order> order = this.orderRepository.findById(orderId);
 
         if (order.isEmpty()) {
@@ -41,6 +49,7 @@ public class PaymentService {
         System.out.println("price: " + total);
         System.out.println("price (String): " + bal.toString());
 
+        String finalPaymentEndpoint = paymentEndpoint;
         Map<String, Object> payload = new HashMap<>() {{
             put("vnp_Version", VnPayConstant.VNP_VERSION);
             put("vnp_Command", VnPayConstant.VNP_COMMAND_ORDER);
@@ -51,7 +60,7 @@ public class PaymentService {
             put("vnp_OrderInfo", "Thanh toan hoa don #" + orderEntity.getOrderCode());
             put("vnp_OrderType", VnPayConstant.ORDER_TYPE);
             put("vnp_Locale", VnPayConstant.VNP_LOCALE);
-            put("vnp_ReturnUrl", paymentEndpoint.concat(VnPayConstant.VNP_RETURN_URL));
+            put("vnp_ReturnUrl", finalPaymentEndpoint.concat(VnPayConstant.VNP_RETURN_URL));
             put("vnp_IpAddr", VnPayUtil.getIpAddress(request));
             put("vnp_CreateDate", VnPayUtil.generateDate(false));
             put("vnp_ExpireDate", VnPayUtil.generateDate(true));
