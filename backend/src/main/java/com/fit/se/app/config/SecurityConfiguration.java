@@ -23,9 +23,12 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtGra
 import org.springframework.security.oauth2.server.resource.web.BearerTokenAuthenticationEntryPoint;
 import org.springframework.security.oauth2.server.resource.web.access.BearerTokenAccessDeniedHandler;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
+import java.util.Arrays;
 
 
 @Configuration
@@ -80,6 +83,15 @@ public class SecurityConfiguration {
                                            CustomAuthenticationEntryPoint customAuthenticationEntryPoint) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
+                .cors(httpSecurityCorsConfigurer -> {
+                    CorsConfiguration configuration = new CorsConfiguration();
+                    configuration.setAllowedOrigins(Arrays.asList("*"));
+                    configuration.setAllowedMethods(Arrays.asList("*"));
+                    configuration.setAllowedHeaders(Arrays.asList("*"));
+                    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+                    source.registerCorsConfiguration("/**", configuration);
+                    httpSecurityCorsConfigurer.configurationSource(source);
+                })
                 .authorizeHttpRequests(
                         authz -> authz
                                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
